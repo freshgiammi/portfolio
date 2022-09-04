@@ -41,8 +41,8 @@ const Home: NextPage = () => {
       </div>
       <section className='flex-center-column h-full p-6'>
         <h1 className='text-center text-5xl font-bold md:text-6xl'>
-          Still building this. <br />
-          Come back in a while.
+          About me!
+          <br />
         </h1>
       </section>
     </LayoutBlock>

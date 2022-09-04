@@ -15,6 +15,17 @@
   ],
   "rules": {
     "max-len": ["error", { "code": 120, "ignoreComments": true, "ignoreUrls": true }], // This is '100' by default, but we can be a bit less restrictive.
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "import/extensions": [
+      // Airbnb config is for .js files only, so we need to add .ts and .tsx
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ]
   }
 }

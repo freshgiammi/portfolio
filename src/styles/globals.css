@@ -12,26 +12,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ! Oh this is dirty. I'm not even sure this is how we're supposed to do things, but 100vh is broken on mobile. Media query maybe? 
-** Source: https://gist.github.com/dmurawsky/d45f068097d181c733a53687edce1919
-**
-** Documentation on the nasty 100vh thing:
-** - https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
-** - https://stackoverflow.com/questions/52848856/100vh-height-when-address-bar-is-shown-chrome-mobile
-** - https://allthingssmitty.com/2020/05/11/css-fix-for-100vh-in-mobile-webkit/
-** - https://developer.chrome.com/blog/url-bar-resizing/
-** 
-*/
-/* stylelint-disable */
-html,
-body,
-body > div:first-child,
-div#__next,
-div#__next > div {
-  height: 100%;
-}
-/* stylelint-enable */
-
 a {
   color: inherit;
   text-decoration: none;
@@ -57,13 +37,36 @@ a {
   flex-direction: column;
 }
 
-/* === MISC === */
-.fade-div-out {
-  mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+/* === NAVBAR === */
+
+.sticky-navbar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 9;
+  width: 100%;
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 400ms ease-in-out;
 }
 
-.github-btns > *:not(:last-child) {
-  margin-right: 0.5rem;
+.sticky-navbar:not(.active) {
+  z-index: -1;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 400ms ease-in-out, visibility 400ms ease-in-out, z-index 400ms 0ms linear;
+}
+
+.sticky-navbar > div {
+  position: relative;
+  height: auto;
+  box-shadow: 0 4px 20px 0 rgb(0 0 0 / 9%);
+}
+
+/* === MISC === */
+
+.fade-div-out {
+  mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
 }
 
 /* === ANIMATIONS === */
@@ -86,3 +89,111 @@ a {
     opacity: 0;
   }
 }
+
+/* === Hamburger Menu animation. Credits: Mikael Ainalem - https://codepen.io/ainalem/pen/LJYRxz === */
+
+.ham > svg {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 400ms;
+  user-select: none;
+}
+
+.ham.active > svg {
+  transform: rotate(45deg);
+}
+
+.ham > svg > path {
+  fill: none;
+  animation-timing-function: ease-in-out;
+  transition: stroke-dasharray 500ms, stroke-dashoffset 500ms;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+}
+
+.ham > svg > path.top {
+  stroke-dasharray: 40 139;
+}
+
+.ham > svg > path.bottom {
+  stroke-dasharray: 40 180;
+}
+
+.ham.active > svg > path.top {
+  stroke-dashoffset: -98px;
+}
+
+.ham.active > svg > path.bottom {
+  stroke-dashoffset: -138px;
+}
+
+.ham-sider.active {
+  right: 0 !important;
+}
+
+/* === Hamburger Menu Sider === */
+
+.ham-sider {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 80px 0;
+  animation-timing-function: ease-in-out;
+  transition-duration: 600ms;
+}
+
+.page-item a {
+  position: relative;
+  transition-duration: 0.25s;
+}
+
+.page-item a.active::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #ffac33;
+  transform: scaleX(1);
+}
+
+.page-item a:not(.active)::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #ffac33;
+  transform: scaleX(0);
+  transform-origin: bottom left;
+  transition: transform 0.3s ease-in-out;
+}
+
+.page-item a:not(.active):hover::after {
+  transform: scaleX(1);
+}
+
+/* ! Oh this is dirty. I'm not even sure this is how we're supposed to do things, but 100vh is broken on mobile. Media query maybe? 
+** Source: https://gist.github.com/dmurawsky/d45f068097d181c733a53687edce1919
+**
+** Documentation on the nasty 100vh thing:
+** - https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
+** - https://stackoverflow.com/questions/52848856/100vh-height-when-address-bar-is-shown-chrome-mobile
+** - https://allthingssmitty.com/2020/05/11/css-fix-for-100vh-in-mobile-webkit/
+** - https://developer.chrome.com/blog/url-bar-resizing/
+** 
+*/
+/* stylelint-disable */
+html,
+body,
+body > div:first-child,
+div#__next,
+div#__next > div {
+  height: 100%;
+}
+/* stylelint-enable */

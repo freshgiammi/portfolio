@@ -5,12 +5,17 @@ import { useTheme } from 'next-themes';
 import { useRouter } from 'next/router';
 import { useLockedBody } from 'usehooks-ts';
 import useScroll from '@/hooks/useScroll';
+import { motion } from 'framer-motion';
 
 interface ThemeSwitcherProps extends React.HTMLProps<HTMLDivElement> {
   btnProps?: string;
 }
 
-export default function Navbar() {
+interface NavbarProps {
+  type: 'filled' | 'light';
+}
+
+export default function Navbar(navprops: NavbarProps) {
   const router = useRouter();
 
   const { theme, setTheme } = useTheme();
@@ -29,10 +34,16 @@ export default function Navbar() {
     setMounted(true);
   }, []);
 
+  const variants = {
+    open: { right: 0, transition: { duration: 0.6 }, easing: 'easeInOut' },
+    closed: { right: '-100%', transition: { duration: 0.6 }, easing: 'easeInOut' },
+  };
+
   const PagesList = (props: React.HTMLProps<HTMLDivElement>) => (
     <div {...props}>
       <Link href='/about'>
         <a
+          onClick={() => (burgerState ? setBurgerState(false) : null)}
           className={`text-zinc-600 dark:text-zinc-300 ${
             router.asPath === '/about' ? 'active font-bold' : 'font-normal'
           }`}
@@ -119,17 +130,23 @@ export default function Navbar() {
   );
 
   return (
-    <div
+    <nav
       className={`sticky-navbar mx-auto p-5 
       ${scrollDirection === 'down' || scrollDirection === undefined || window.scrollY < 100 ? 'active' : ''}`}
     >
-      <div className='flex items-center justify-between rounded-md bg-zinc-300 p-5 dark:bg-zinc-800 md:flex-row'>
+      <div
+        className={`flex items-center justify-between rounded-md p-5 transition-colors duration-[600ms] md:flex-row ${
+          navprops.type === 'filled'
+            ? 'bg-zinc-300 shadow dark:bg-zinc-800 '
+            : 'border-b-2 border-zinc-500 dark:border-zinc-500 '
+        }`}
+      >
         {/* Logo / Home / Text */}
         <div className='z-10 flex flex-col' style={{}}>
           <Link href='/'>
-            <a>
-              <h1 className='text-xl font-semibold text-zinc-800 dark:text-zinc-100'>freshgiammi</h1>
-              <p className='text-base font-light text-zinc-800 dark:text-zinc-300'>Fullstack developer</p>
+            <a onClick={() => (burgerState ? setBurgerState(false) : null)}>
+              <h1 className='text-xl font-semibold text-zinc-900 dark:text-zinc-100'>freshgiammi</h1>
+              <p className='text-base font-light text-zinc-900 dark:text-zinc-100'>Fullstack developer</p>
             </a>
           </Link>
         </div>
@@ -146,20 +163,21 @@ export default function Navbar() {
             }}
           >
             <path
-              className='top stroke-zinc-800 dark:stroke-zinc-300'
+              className='top stroke-zinc-900 dark:stroke-zinc-100'
               d='m 30,33 h 40 c 0,0 9.044436,-0.654587 9.044436,-8.508902 0,-7.854315 -8.024349,-11.958003 -14.89975,-10.85914 -6.875401,1.098863 -13.637059,4.171617 -13.637059,16.368042 v 40'
             />
-            <path className='middle stroke-zinc-800 dark:stroke-zinc-300' d='m 30,50 h 40' />
+            <path className='middle stroke-zinc-900 dark:stroke-zinc-100' d='m 30,50 h 40' />
             <path
-              className='bottom stroke-zinc-800 dark:stroke-zinc-300'
+              className='bottom stroke-zinc-900 dark:stroke-zinc-100'
               d='m 30,67 h 40 c 12.796276,0 15.357889,-11.717785 15.357889,-26.851538 0,-15.133752 -4.786586,-27.274118 -16.667516,-27.274118 -11.88093,0 -18.499247,6.994427 -18.435284,17.125656 l 0.252538,40'
             />
           </svg>
         </div>
-        <div
-          className={`ham-sider flex flex-col items-center justify-center bg-zinc-300 dark:bg-zinc-800 md:hidden ${
-            burgerState ? 'active' : ''
-          }`}
+        <motion.aside
+          initial={{ right: '-100%' }}
+          animate={burgerState ? 'open' : 'closed'}
+          variants={variants}
+          className={`ham-sider flex flex-col items-center justify-center bg-zinc-300 dark:bg-zinc-800 md:hidden`}
         >
           <PagesList className='page-item flex w-full flex-col items-center justify-center space-y-8 pb-12 text-5xl' />
           <div className='space-y-8 '>
@@ -170,7 +188,7 @@ export default function Navbar() {
               btnProps='dark:bg-zinc-200/[.05] bg-zinc-900/[.05]'
             />
           </div>
-        </div>
+        </motion.aside>
 
         {/* Desktop Menu */}
         <PagesList className='page-item hidden space-x-8 text-lg md:block' />
@@ -180,6 +198,6 @@ export default function Navbar() {
           <ThemeSwitcher />
         </div>
       </div>
-    </div>
+    </nav>
   );
 }

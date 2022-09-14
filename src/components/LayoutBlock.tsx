@@ -30,6 +30,7 @@ export default function LayoutBlock({ children, ...customMeta }: Props) {
     type: 'website',
     ...customMeta,
   };
+
   return (
     <div>
       <Head>
@@ -45,9 +46,17 @@ export default function LayoutBlock({ children, ...customMeta }: Props) {
         <meta property='og:image' content={meta.image} />
       </Head>
       <main className='h-full w-full'>
-        <Navbar />
+        {/* Navbar component (contains motion elements) */}
+        <Navbar type='light' />
+        {/* Background layer (element has a negative z-index to make sure a background is *always* provided) */}
+        <div
+          className='absolute inset-0 min-h-full min-w-full bg-sepia-300 
+          transition-colors duration-[600ms] dark:bg-zinc-900'
+          style={{ zIndex: '-10' }}
+        />
+
+        {/* Actual page content (might contain motion elements) */}
         <div className='h-full'>{children}</div>
-        {/* <Footer /> */}
       </main>
     </div>
   );

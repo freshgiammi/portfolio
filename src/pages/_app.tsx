@@ -26,9 +26,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Navbar type='light' />
       {/* Background layer (element has a negative z-index to make sure a background is *always* provided) */}
       <div
-        className='absolute inset-0 min-h-full min-w-full bg-sepia-300 
-          transition-colors duration-[600ms] dark:bg-zinc-900'
-        style={{ zIndex: '-10' }}
+        className='absolute inset-0 -z-10 min-h-full min-w-full 
+          bg-sepia-300 transition-colors duration-[600ms] dark:bg-zinc-900'
       />
 
       {/* Actual page content. Component must be a motion element to enable transitions. */}

@@ -1,15 +1,11 @@
 import React from 'react';
-import { HTMLMotionProps, motion, AnimationProps, Variant } from 'framer-motion';
+import { HTMLMotionProps, motion, AnimationProps } from 'framer-motion';
+import { CustomVariants } from '@/interfaces/animationHelpers';
 
 // Adapted from: https://codesandbox.io/s/framer-motion-responsive-text-animation-forked-z71c0o?file=/src/App.js:795-837
 // ! See if transition can be added to the props for a dynamic usage.
 
-type CustomVariants = {
-  hidden: Variant;
-  visible: Variant;
-};
-
-interface AnimatedTitleProps extends HTMLMotionProps<'div'> {
+export interface AnimatedTextProps extends HTMLMotionProps<'div'> {
   text: string;
   key: string;
   animateBy?: 'word' | 'character';
@@ -35,7 +31,7 @@ const AnimatedText = ({
   stagger = 0.05,
   delay = 0,
   ...props
-}: AnimatedTitleProps) => {
+}: AnimatedTextProps) => {
   // Framer Motion variant object, for controlling character animation
   const defaultAnimation: CustomVariants = {
     hidden: {

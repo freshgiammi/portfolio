@@ -138,7 +138,7 @@ export default function Navbar(navprops: NavbarProps) {
         className={`flex items-center justify-between rounded-md p-5 transition-colors duration-[600ms] md:flex-row ${
           navprops.type === 'filled'
             ? 'bg-zinc-300 shadow dark:bg-zinc-800 '
-            : 'border-b-2 border-zinc-500 dark:border-zinc-500 '
+            : 'border-b-2 border-zinc-500 dark:border-zinc-500/[.3]  '
         }`}
       >
         {/* Logo / Home / Text */}
@@ -177,7 +177,7 @@ export default function Navbar(navprops: NavbarProps) {
           initial={{ right: '-100%' }}
           animate={burgerState ? 'open' : 'closed'}
           variants={variants}
-          className={`ham-sider flex flex-col items-center justify-center bg-zinc-300 dark:bg-zinc-800 md:hidden`}
+          className={`ham-sider flex flex-col items-center justify-center bg-sepia-400 dark:bg-zinc-800 md:hidden`}
         >
           <PagesList className='page-item flex w-full flex-col items-center justify-center space-y-8 pb-12 text-5xl' />
           <div className='space-y-8 '>
@@ -185,7 +185,7 @@ export default function Navbar(navprops: NavbarProps) {
 
             <ThemeSwitcher
               className='flex flex-col items-center justify-center'
-              btnProps='dark:bg-zinc-200/[.05] bg-zinc-900/[.05]'
+              btnProps='dark:bg-sepia-200/[.05] bg-sepia-900/[.05]'
             />
           </div>
         </motion.aside>

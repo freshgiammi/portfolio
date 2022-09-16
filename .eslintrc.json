@@ -14,10 +14,13 @@
     "plugin:prettier/recommended"
   ],
   "rules": {
-    "max-len": ["error", { "code": 120, "ignoreComments": true, "ignoreUrls": true }], // This is '100' by default, but we can be a bit less restrictive.
-    "prettier/prettier": "error",
+    // DO NOT REMOVE:  Use TS specific 'no-shadow' to avoid enum false positives https://github.com/typescript-eslint/typescript-eslint/issues/2483
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"],
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+
+    // DO NOT REMOVE: This avoids errors such as 'Missing file extension "ts" import/extensions', which can be safely discarded
     "import/extensions": [
-      // Airbnb config is for .js files only, so we need to add .ts and .tsx
       "error",
       "ignorePackages",
       {
@@ -26,6 +29,37 @@
         "ts": "never",
         "tsx": "never"
       }
-    ]
+    ],
+
+    // airbnb doesn't allow for-of and for-in loops, but we're using them instead of forEach
+    "no-restricted-syntax": ["error", "LabeledStatement", "WithStatement"],
+
+    // be more lenient with line length
+    "max-len": [
+      "error",
+      { "code": 120, "ignoreComments": true, "ignoreUrls": true, "ignorePattern": "d='([\\s\\S]*?)'" }
+    ],
+
+    // allow underscore dangle for private variables and functions (such as _clearUser())
+    "no-underscore-dangle": "off",
+
+    // allow files to not have default exports: this being on is just annoying IMHO
+    "import/prefer-default-export": "off",
+
+    // mark all prettier warnings as errors
+    "prettier/prettier": "error",
+
+    // only prefer destructuring when it makes sense, not just for the sake of it
+    "prefer-destructuring": [
+      "error",
+      {
+        "array": false,
+        "object": true
+      }
+    ],
+
+    "@typescript-eslint/no-explicit-any": ["warn", { "ignoreRestArgs": true }],
+    "no-use-before-define": ["error", { "functions": false }],
+    "no-console": "off"
   }
 }

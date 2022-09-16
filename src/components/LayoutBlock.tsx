@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import Navbar from './Navbar';
+import { motion } from 'framer-motion';
 
 interface IMeta {
   title?: string;
@@ -14,6 +14,27 @@ interface Props {
   children?: ReactNode;
   customMeta?: IMeta;
 }
+
+const variants = {
+  hidden: {
+    opacity: 0,
+  },
+  enter: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.5,
+      ease: [0.2, 0.65, 0.3, 0.9],
+    },
+  },
+  exit: {
+    opacity: 0,
+    transition: {
+      duration: 0.5,
+      ease: [0.2, 0.65, 0.3, 0.9],
+    },
+  },
+};
 
 /**
  * This element takes care of the layout of the page.
@@ -32,7 +53,7 @@ export default function LayoutBlock({ children, ...customMeta }: Props) {
   };
 
   return (
-    <div>
+    <>
       <Head>
         <title>{meta.title}</title>
         <meta name='robots' content='follow, index' />
@@ -45,19 +66,9 @@ export default function LayoutBlock({ children, ...customMeta }: Props) {
         <meta property='og:title' content={meta.title} />
         <meta property='og:image' content={meta.image} />
       </Head>
-      <main className='h-full w-full'>
-        {/* Navbar component (contains motion elements) */}
-        <Navbar type='light' />
-        {/* Background layer (element has a negative z-index to make sure a background is *always* provided) */}
-        <div
-          className='absolute inset-0 min-h-full min-w-full bg-sepia-300 
-          transition-colors duration-[600ms] dark:bg-zinc-900'
-          style={{ zIndex: '-10' }}
-        />
-
-        {/* Actual page content (might contain motion elements) */}
-        <div className='h-full'>{children}</div>
-      </main>
-    </div>
+      <motion.main variants={variants} initial='hidden' animate='enter' exit='exit' className='h-full w-full'>
+        {children}
+      </motion.main>
+    </>
   );
 }

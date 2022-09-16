@@ -1,43 +1,38 @@
-import AnimatedTitle from '@/components/animated/AnimatedTitle';
+import AnimatedText from '@/components/animated/AnimatedText';
+import LayoutBlock from '@/components/LayoutBlock';
 import { motion } from 'framer-motion';
 import type { NextPage } from 'next';
-import { useRouter } from 'next/router';
 
 const Home: NextPage = () => {
-  const router = useRouter();
-
-  const staggerer = {
-    visible: {
-      transition: {
-        staggerChildren: 1,
-      },
+  const heroTitle = [
+    {
+      text: "Hello there, I'm freshgiammi.",
+      key: 'title1',
+      className: 'mb-3 text-center text-4xl font-bold text-zinc-800 dark:text-zinc-100 md:text-6xl',
     },
-  };
+    {
+      text: 'I build things for the web.',
+      key: 'title2',
+      className: 'mb-6 text-center text-2xl text-zinc-800 dark:text-zinc-100 md:text-2xl',
+    },
+  ];
 
   return (
-    <motion.section
-      key={router.asPath}
-      className='flex-center-column h-full p-6'
-      initial='hidden'
-      animate='visible'
-      variants={staggerer}
-    >
-      <AnimatedTitle
-        key='title1'
-        text='This, is a work of art.'
-        className='text-center text-4xl font-bold text-zinc-800 dark:text-zinc-100 md:text-8xl'
-      />
-      <AnimatedTitle
-        key='title2'
-        text="Don't believe me?"
-        className='text-center text-2xl text-zinc-800 dark:text-zinc-100 md:text-4xl'
-      />
-      <AnimatedTitle
-        key='title3'
-        text='Come and see for yourself.'
-        className='text-center text-2xl text-zinc-800 dark:text-zinc-100 md:text-4xl'
-      />
-    </motion.section>
+    <LayoutBlock>
+      <motion.section className='flex-center-column h-full p-6'>
+        {heroTitle.map((item, index) => {
+          return (
+            <AnimatedText
+              key={item.key}
+              text={item.text}
+              duration={0.3}
+              delay={(index === 0 ? 0 : heroTitle[index - 1].text.length) * 0.05} // Number of characters * stagger = delay
+              className={item.className}
+            />
+          );
+        })}
+      </motion.section>
+    </LayoutBlock>
   );
 };
 

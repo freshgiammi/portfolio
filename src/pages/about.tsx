@@ -1,11 +1,9 @@
-import AnimatedTitle from '@/components/animated/AnimatedTitle';
+import AnimatedText from '@/components/animated/AnimatedText';
+import LayoutBlock from '@/components/LayoutBlock';
 import { motion } from 'framer-motion';
 import type { NextPage } from 'next';
-import { useRouter } from 'next/router';
 
 const About: NextPage = () => {
-  const router = useRouter();
-
   const staggerer = {
     visible: {
       transition: {
@@ -15,19 +13,15 @@ const About: NextPage = () => {
   };
 
   return (
-    <motion.section
-      key={router.asPath}
-      className='flex-center-column h-full p-6'
-      initial='hidden'
-      animate='visible'
-      variants={staggerer}
-    >
-      <AnimatedTitle
-        key='title1'
-        text='About me.'
-        className='text-center text-5xl font-bold text-zinc-800 dark:text-zinc-100 md:text-6xl'
-      />
-    </motion.section>
+    <LayoutBlock>
+      <motion.section className='flex-center-column h-full p-6' initial='hidden' animate='visible' variants={staggerer}>
+        <AnimatedText
+          key='title1'
+          text='About me.'
+          className='text-center text-4xl font-bold text-zinc-800 dark:text-zinc-100 md:text-8xl'
+        />
+      </motion.section>
+    </LayoutBlock>
   );
 };
 

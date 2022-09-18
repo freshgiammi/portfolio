@@ -36,7 +36,7 @@ const Home: NextPage = () => {
   return (
     <LayoutBlock>
       <motion.section className='flex-center-column h-full p-6'>
-        <div className='flex-center-column absolute'>
+        <div className='flex-center-column'>
           {heroTitle.map(({ key, ...item }, index) => {
             return (
               <AnimatedText

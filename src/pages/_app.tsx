@@ -27,7 +27,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Navbar type='light' />
       {/* Background layer (element has a negative z-index to make sure a background is *always* provided) */}
       <div
-        className='absolute inset-0 -z-10 min-h-full min-w-full 
+        className='fixed inset-0 -z-20 min-h-full min-w-full 
           bg-sepia-300 transition-colors duration-[600ms] dark:bg-zinc-900'
       />
 

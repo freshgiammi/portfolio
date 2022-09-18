@@ -135,7 +135,12 @@ export default function Navbar(navprops: NavbarProps) {
   );
 
   return (
-    <nav className={`sticky-navbar mx-auto p-5 ${isHidden() ? 'active' : ''}`}>
+    <motion.nav
+      initial={{ opacity: 0, y: -100 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 1, duration: 2, ease: [0.68, -0.6, 0.32, 1.6] }} // EaseInOutBack
+      className={`sticky-navbar mx-auto p-5 ${isHidden() ? 'active' : ''}`}
+    >
       <div
         className={`flex items-center justify-between rounded-md border-b border-amber-800/[0.3] p-5 
         transition-colors duration-[400ms] dark:border-amber-300/[0.3] md:flex-row 
@@ -203,6 +208,6 @@ export default function Navbar(navprops: NavbarProps) {
           <ThemeSwitcher />
         </div>
       </div>
-    </nav>
+    </motion.nav>
   );
 }

@@ -26,6 +26,9 @@ export default function Navbar(navprops: NavbarProps) {
 
   // This handles automatic navbar hiding based on scroll direction
   const { scrollDirection } = useScroll();
+  const isHidden = () => {
+    return scrollDirection === 'down' || scrollDirection === undefined || window.scrollY < 100;
+  };
 
   // Block page scrolling
   const [locked, setLocked] = useLockedBody();
@@ -44,8 +47,10 @@ export default function Navbar(navprops: NavbarProps) {
       <Link href='/about'>
         <a
           onClick={() => (burgerState ? setBurgerState(false) : null)}
-          className={`text-zinc-600 dark:text-zinc-300 ${
-            router.asPath === '/about' ? 'active font-bold' : 'font-normal'
+          className={`text-zinc-700 dark:text-zinc-300 ${
+            router.asPath === '/about'
+              ? 'active font-bold after:bg-amber-800/30 after:dark:bg-amber-300/30' // background is user for the underline
+              : 'font-normal after:bg-amber-800/30 after:dark:bg-amber-300/30' // background is user for the underline
           }`}
         >
           About
@@ -130,15 +135,15 @@ export default function Navbar(navprops: NavbarProps) {
   );
 
   return (
-    <nav
-      className={`sticky-navbar mx-auto p-5 
-      ${scrollDirection === 'down' || scrollDirection === undefined || window.scrollY < 100 ? 'active' : ''}`}
-    >
+    <nav className={`sticky-navbar mx-auto p-5 ${isHidden() ? 'active' : ''}`}>
       <div
-        className={`flex items-center justify-between rounded-md p-5 transition-colors duration-[600ms] md:flex-row ${
-          navprops.type === 'filled'
-            ? 'bg-zinc-300 shadow dark:bg-zinc-800 '
-            : 'border-b-2 border-zinc-500 dark:border-zinc-500/[.3]  '
+        className={`flex items-center justify-between rounded-md border-b border-amber-800/[0.3] p-5 
+        transition-colors duration-[400ms] dark:border-amber-300/[0.3] md:flex-row 
+        ${
+          navprops.type === 'filled' ||
+          (typeof window !== 'undefined' && scrollDirection === 'down' && window.scrollY > 150)
+            ? 'bg-sepia-200 shadow dark:bg-zinc-800'
+            : ''
         }`}
       >
         {/* Logo / Home / Text */}
@@ -177,7 +182,7 @@ export default function Navbar(navprops: NavbarProps) {
           initial={{ right: '-100%' }}
           animate={burgerState ? 'open' : 'closed'}
           variants={variants}
-          className={`ham-sider flex flex-col items-center justify-center bg-sepia-400 dark:bg-zinc-800 md:hidden`}
+          className={`ham-sider flex flex-col items-center justify-center bg-sepia-200 dark:bg-zinc-800 md:hidden`}
         >
           <PagesList className='page-item flex w-full flex-col items-center justify-center space-y-8 pb-12 text-5xl' />
           <div className='space-y-8 '>

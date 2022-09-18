@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 // This is the root component. It wraps the whole app ina ThemeProvider to enable dark mode switching.
 // It also contains the Navbar and the background layer, since these are always present on every page.
 // ! Should we move background to LayoutBlock? This would enable us to have a different background for each page, with working transitions.
+// ! BUG: theme-color still does not have an API. https://github.com/pacocoursey/next-themes/issues/78
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { asPath } = useRouter();
@@ -31,7 +32,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       />
 
       {/* Actual page content. Component must be a motion element to enable transitions. */}
-      <AnimatePresence exitBeforeEnter>
+      <AnimatePresence mode='wait'>
         <Component {...pageProps} key={asPath} /> {/* Key is used to identify the component and allow transitions. */}
       </AnimatePresence>
     </ThemeProvider>

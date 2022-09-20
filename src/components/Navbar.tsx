@@ -1,11 +1,13 @@
 /* eslint-disable max-len */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
 import { useRouter } from 'next/router';
-import { useLockedBody } from 'usehooks-ts';
+import { useLockedBody, useWindowSize } from 'usehooks-ts';
 import useScroll from '@/hooks/useScroll';
-import { motion } from 'framer-motion';
+import { motion, useAnimationControls, Variants } from 'framer-motion';
+import resolveConfig from 'tailwindcss/resolveConfig';
+import tailwindConfig from '../../tailwind.config';
 
 interface ThemeSwitcherProps extends React.HTMLProps<HTMLDivElement> {
   btnProps?: string;
@@ -15,9 +17,15 @@ interface NavbarProps {
   type: 'filled' | 'light';
 }
 
+// ! BUG: See https://github.com/tailwindlabs/tailwindcss/issues/6422
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const fullConfig = resolveConfig(tailwindConfig) as any;
+
+// ! Decide if we should use a useRef keeping track of the scrollY value differential to trigger the animation.
+
 export default function Navbar(navprops: NavbarProps) {
   const router = useRouter();
-
+  const { width } = useWindowSize();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -25,9 +33,29 @@ export default function Navbar(navprops: NavbarProps) {
   const [burgerState, setBurgerState] = useState(false);
 
   // This handles automatic navbar hiding based on scroll direction
-  const { scrollDirection } = useScroll();
-  const isHidden = () => {
-    return scrollDirection === 'down' || scrollDirection === undefined || window.scrollY < 100;
+  const { scrollDirection, scrollY } = useScroll(250); // Throttle by 250ms,but scrollY will be affected.
+  const scrollYPrev = useRef(0);
+
+  const controls = useAnimationControls();
+  const navbarVariant: Variants = {
+    hidden: {
+      y: -100,
+      opacity: 0,
+      transition: { delay: 1, duration: 2, ease: [0.68, -0.6, 0.32, 1.6] },
+    },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { delay: 1, duration: 2, ease: [0.68, -0.6, 0.32, 1.6] },
+    },
+    hide: {
+      opacity: 0,
+      transition: { delay: 0.25, duration: 0.4, ease: 'easeInOut' },
+    },
+    show: {
+      opacity: 1,
+      transition: { delay: 0.25, duration: 0.4, ease: 'easeInOut' },
+    },
   };
 
   // Block page scrolling
@@ -35,7 +63,20 @@ export default function Navbar(navprops: NavbarProps) {
 
   useEffect(() => {
     setMounted(true);
-  }, []);
+    controls.start('visible');
+  }, [controls]);
+
+  useEffect(() => {
+    // Set a lower threshold for the navbar to hide on mobile screens (768px and below)
+    const threshold = parseInt(fullConfig?.theme?.screens?.md, 10) > width ? 50 : 100;
+
+    if (scrollDirection === 'up' && scrollY - scrollYPrev.current < -threshold) {
+      controls.start('show');
+    } else if (scrollDirection === 'down' && scrollY > 100 && scrollY - scrollYPrev.current > threshold) {
+      controls.start('hide');
+    }
+    scrollYPrev.current = scrollY;
+  }, [scrollDirection, controls, scrollY, width]);
 
   const variants = {
     open: { right: 0, transition: { duration: 0.6 }, easing: 'easeInOut' },
@@ -135,21 +176,11 @@ export default function Navbar(navprops: NavbarProps) {
   );
 
   return (
-    <motion.nav
-      initial={{ opacity: 0, y: -100 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 1, duration: 2, ease: [0.68, -0.6, 0.32, 1.6] }} // EaseInOutBack
-      className={`sticky-navbar mx-auto p-5 ${isHidden() ? 'active' : ''}`}
-    >
+    <motion.nav initial={'hidden'} variants={navbarVariant} animate={controls} className={`sticky-navbar mx-auto p-5`}>
       <div
         className={`flex items-center justify-between rounded-md border-b border-amber-800/[0.3] p-5 
-        transition-colors duration-[400ms] dark:border-amber-300/[0.3] md:flex-row 
-        ${
-          navprops.type === 'filled' ||
-          (typeof window !== 'undefined' && scrollDirection === 'down' && window.scrollY > 150)
-            ? 'bg-sepia-200 shadow dark:bg-zinc-800'
-            : ''
-        }`}
+        transition-colors duration-[200ms] dark:border-amber-300/[0.3] md:flex-row 
+        ${navprops.type === 'filled' || scrollY > 10 ? 'bg-sepia-200 shadow dark:bg-zinc-800' : ''}`}
       >
         {/* Logo / Home / Text */}
         <div className='z-10 flex flex-col' style={{}}>

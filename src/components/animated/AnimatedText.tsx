@@ -17,6 +17,22 @@ export interface AnimatedTextProps extends HTMLMotionProps<'div'> {
 }
 
 /**
+ * It calculates the delay of an item in the list by multiplying the length of the previous item's text
+ * by the previous item's stagger value
+ * @param {AnimatedTextProps[]} itemlist - The list of items that you want to stagger
+ * @param {number} index - The index of the item in the list
+ * @returns The delay of the previous item in the list.
+ */
+export function calculateStaggeredDelay(itemlist: AnimatedTextProps[], index: number) {
+  if (index === 0) {
+    return itemlist[index].delay || 0; // Set the item's delay to 0 if it's not defined
+  }
+  const previousItemTextLength = itemlist[index - 1].text.length;
+  const previousItemStagger = itemlist[index - 1].stagger || 0.05; // Set the item's stagger to the default value (0.05) if it's not defined
+  return previousItemTextLength * previousItemStagger;
+}
+
+/**
  * Animates a given text based as drop in from below.
  * Split the text into words, then split each word into characters.
  * A custom Variants object containing the animation can be passed to the component, if provided.

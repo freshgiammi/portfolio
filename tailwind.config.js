@@ -5,6 +5,9 @@ module.exports = {
   content: ['./src/pages/**/*.{js,ts,jsx,tsx}', './src/components/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'class',
   theme: {
+    fontFamily: {
+      'ibm-mono': ['IBM Plex Mono', 'monospace'],
+    },
     extend: {
       colors: {
         'sepia-900': '#2B2718',

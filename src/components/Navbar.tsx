@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { useLockedBody, useWindowSize } from 'usehooks-ts';
 import useScroll from '@/hooks/useScroll';
 import { motion, useAnimationControls, Variants } from 'framer-motion';
+
 import resolveConfig from 'tailwindcss/resolveConfig';
 import tailwindConfig from '../../tailwind.config';
 
@@ -14,26 +15,25 @@ interface ThemeSwitcherProps extends React.HTMLProps<HTMLDivElement> {
 }
 
 interface NavbarProps {
-  type: 'filled' | 'light';
+  autoHide?: boolean;
 }
 
-// ! BUG: See https://github.com/tailwindlabs/tailwindcss/issues/6422
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const fullConfig = resolveConfig(tailwindConfig) as any;
-
-// ! Decide if we should use a useRef keeping track of the scrollY value differential to trigger the animation.
-
-export default function Navbar(navprops: NavbarProps) {
+export default function Navbar({ autoHide = false }: NavbarProps) {
   const router = useRouter();
-  const { width } = useWindowSize();
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const fullConfig = resolveConfig(tailwindConfig) as any;
+
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+
+  const { width } = useWindowSize();
 
   // Handles Hamburger Menu state
   const [burgerState, setBurgerState] = useState(false);
 
   // This handles automatic navbar hiding based on scroll direction
-  const { scrollDirection, scrollY } = useScroll(250); // Throttle by 250ms,but scrollY will be affected.
+  const { scrollDirection, scrollY } = useScroll(); // Throttle by 250ms,but scrollY will be affected.
   const scrollYPrev = useRef(0);
 
   const controls = useAnimationControls();
@@ -46,15 +46,17 @@ export default function Navbar(navprops: NavbarProps) {
     visible: {
       y: 0,
       opacity: 1,
-      transition: { delay: 1, duration: 2, ease: [0.68, -0.6, 0.32, 1.6] },
+      transition: { delay: 1, duration: 2, ease: 'easeInOut' },
     },
     hide: {
+      y: -100,
       opacity: 0,
-      transition: { delay: 0.25, duration: 0.4, ease: 'easeInOut' },
+      transition: { duration: 0.4, ease: 'easeInOut' },
     },
     show: {
+      y: 0,
       opacity: 1,
-      transition: { delay: 0.25, duration: 0.4, ease: 'easeInOut' },
+      transition: { duration: 0.4, ease: 'easeInOut' },
     },
   };
 
@@ -67,16 +69,22 @@ export default function Navbar(navprops: NavbarProps) {
   }, [controls]);
 
   useEffect(() => {
-    // Set a lower threshold for the navbar to hide on mobile screens (768px and below)
-    const threshold = parseInt(fullConfig?.theme?.screens?.md, 10) > width ? 50 : 100;
-
-    if (scrollDirection === 'up' && scrollY - scrollYPrev.current < -threshold) {
-      controls.start('show');
-    } else if (scrollDirection === 'down' && scrollY > 100 && scrollY - scrollYPrev.current > threshold) {
-      controls.start('hide');
+    if (autoHide) {
+      const threshold = parseInt(fullConfig?.theme?.screens?.md, 10) > width ? 50 : 100;
+      if (scrollDirection === 'up' && scrollY - scrollYPrev.current < -threshold) {
+        scrollYPrev.current = scrollY;
+        controls.stop();
+        controls.start('show');
+      } else if (scrollDirection === 'down' && scrollY > 100 && scrollY - scrollYPrev.current > threshold) {
+        scrollYPrev.current = scrollY;
+        controls.stop();
+        controls.start('hide');
+      } else {
+        console.log('Navbar hiding deferred, scroll below trigger threshold: ', scrollY - scrollYPrev.current);
+        scrollYPrev.current = scrollY;
+      }
     }
-    scrollYPrev.current = scrollY;
-  }, [scrollDirection, controls, scrollY, width]);
+  }, [scrollDirection, controls, scrollY, fullConfig, width, autoHide]);
 
   const variants = {
     open: { right: 0, transition: { duration: 0.6 }, easing: 'easeInOut' },
@@ -87,7 +95,12 @@ export default function Navbar(navprops: NavbarProps) {
     <div {...props}>
       <Link href='/about'>
         <a
-          onClick={() => (burgerState ? setBurgerState(false) : null)}
+          onClick={() => {
+            if (burgerState) {
+              setBurgerState(false);
+              setLocked(false);
+            }
+          }}
           className={`text-zinc-700 dark:text-zinc-300 ${
             router.asPath === '/about'
               ? 'active font-bold after:bg-amber-800/30 after:dark:bg-amber-300/30' // background is user for the underline
@@ -176,16 +189,22 @@ export default function Navbar(navprops: NavbarProps) {
   );
 
   return (
-    <motion.nav initial={'hidden'} variants={navbarVariant} animate={controls} className={`sticky-navbar mx-auto p-5`}>
+    <motion.nav initial={'hidden'} variants={navbarVariant} animate={controls} className={`sticky-navbar`}>
       <div
-        className={`flex items-center justify-between rounded-md border-b border-amber-800/[0.3] p-5 
-        transition-colors duration-[200ms] dark:border-amber-300/[0.3] md:flex-row 
-        ${navprops.type === 'filled' || scrollY > 10 ? 'bg-sepia-200 shadow dark:bg-zinc-800' : ''}`}
+        className={`flex items-center justify-between rounded-md border-b border-amber-800/[0.3] bg-sepia-200 
+        p-5 shadow transition-colors duration-[600ms] dark:border-amber-300/[0.3] dark:bg-zinc-900 md:flex-row`}
       >
         {/* Logo / Home / Text */}
         <div className='z-10 flex flex-col' style={{}}>
           <Link href='/'>
-            <a onClick={() => (burgerState ? setBurgerState(false) : null)}>
+            <a
+              onClick={() => {
+                if (burgerState) {
+                  setBurgerState(false);
+                  setLocked(false);
+                }
+              }}
+            >
               <h1 className='text-xl font-semibold text-zinc-900 dark:text-zinc-100'>freshgiammi</h1>
               <p className='text-base font-light text-zinc-900 dark:text-zinc-100'>Fullstack developer</p>
             </a>

@@ -24,13 +24,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name='apple-mobile-web-app-status-bar-style' content='#e4e4e7' />
       </Head>
       {/* Navbar component (contains motion elements) */}
-      <Navbar type='light' />
-      {/* Background layer (element has a negative z-index to make sure a background is *always* provided) */}
-      <div
-        className='fixed inset-0 -z-20 min-h-full min-w-full 
-          bg-sepia-300 transition-colors duration-[600ms] dark:bg-zinc-900'
-      />
-
+      <Navbar />
       {/* Actual page content. Component must be a motion element to enable transitions. */}
       <AnimatePresence mode='wait'>
         <Component {...pageProps} key={asPath} /> {/* Key is used to identify the component and allow transitions. */}

@@ -1,71 +1,7 @@
-@font-face {
-  font-family: 'Noto Sans';
-  font-style: normal;
-  font-weight: 100;
-  font-display: block;
-  src: url('../../public/fonts/NotoSans-Thin.woff2') format('woff2ù');
-}
+/* Imported fonts must be placed at top level. */
 
-@font-face {
-  font-family: 'Noto Sans';
-  font-style: normal;
-  font-weight: 200;
-  font-display: block;
-  src: url('../../public/fonts/NotoSans-ExtraLight.woff2') format('woff2');
-}
+/* === IBM Mono Plex === */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@100;200;300;400;500;600;700&display=block');
 
-@font-face {
-  font-family: 'Noto Sans';
-  font-style: normal;
-  font-weight: 300;
-  font-display: block;
-  src: url('../../public/fonts/NotoSans-Light.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Noto Sans';
-  font-style: normal;
-  font-weight: 400;
-  font-display: block;
-  src: url('../../public/fonts/NotoSans-Regular.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Noto Sans';
-  font-style: normal;
-  font-weight: 500;
-  font-display: block;
-  src: url('../../public/fonts/NotoSans-Medium.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Noto Sans';
-  font-style: normal;
-  font-weight: 600;
-  font-display: block;
-  src: url('../../public/fonts/NotoSans-Bold.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Noto Sans';
-  font-style: normal;
-  font-weight: 700;
-  font-display: block;
-  src: url('../../public/fonts/NotoSans-Bold.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Noto Sans';
-  font-style: normal;
-  font-weight: 800;
-  font-display: block;
-  src: url('../../public/fonts/NotoSans-ExtraBold.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Noto Sans';
-  font-style: normal;
-  font-weight: 900;
-  font-display: block;
-  src: url('../../public/fonts/NotoSans-Black.woff2') format('woff2');
-}
+/* === Noto Sans === */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100;200;300;400;500;600;700&display=block');

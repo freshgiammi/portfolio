@@ -19,11 +19,7 @@ export default function useScroll(throttled?: number) {
   // Wait until document is loaded to get the body offset
   useEffect(() => {
     function listener() {
-      console.debug('New useScroll event, executed at:', new Date().toLocaleTimeString());
       const bodyOffset = document.body.getBoundingClientRect();
-      console.debug('Previous Y-axis', scrollY);
-      console.debug('Current Y-axis', -bodyOffset.top);
-      console.debug('Assigned direction:', scrollY > -bodyOffset.top ? 'up' : 'down');
       setScrollY(-bodyOffset.top);
       setScrollX(bodyOffset.left);
       setScrollDirection(scrollY > -bodyOffset.top ? 'up' : 'down');

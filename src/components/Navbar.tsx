@@ -1,62 +1,33 @@
 /* eslint-disable max-len */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
 import { useRouter } from 'next/router';
-import { useLockedBody, useWindowSize } from 'usehooks-ts';
-import useScroll from '@/hooks/useScroll';
-import { motion, useAnimationControls, Variants } from 'framer-motion';
-
-import resolveConfig from 'tailwindcss/resolveConfig';
-import tailwindConfig from '../../tailwind.config';
+import { useLockedBody } from 'usehooks-ts';
+import { motion, Variants } from 'framer-motion';
 
 interface ThemeSwitcherProps extends React.HTMLProps<HTMLDivElement> {
   btnProps?: string;
 }
 
-interface NavbarProps {
-  autoHide?: boolean;
-}
-
-export default function Navbar({ autoHide = false }: NavbarProps) {
+export default function Navbar() {
   const router = useRouter();
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const fullConfig = resolveConfig(tailwindConfig) as any;
 
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  const { width } = useWindowSize();
-
   // Handles Hamburger Menu state
   const [burgerState, setBurgerState] = useState(false);
 
-  // This handles automatic navbar hiding based on scroll direction
-  const { scrollDirection, scrollY } = useScroll(); // Throttle by 250ms,but scrollY will be affected.
-  const scrollYPrev = useRef(0);
-
-  const controls = useAnimationControls();
   const navbarVariant: Variants = {
     hidden: {
       y: -100,
       opacity: 0,
-      transition: { delay: 1, duration: 2, ease: [0.68, -0.6, 0.32, 1.6] },
     },
     visible: {
       y: 0,
       opacity: 1,
-      transition: { delay: 1, duration: 2, ease: 'easeInOut' },
-    },
-    hide: {
-      y: -100,
-      opacity: 0,
-      transition: { duration: 0.4, ease: 'easeInOut' },
-    },
-    show: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.4, ease: 'easeInOut' },
+      transition: { duration: 1, ease: 'easeInOut' },
     },
   };
 
@@ -65,26 +36,7 @@ export default function Navbar({ autoHide = false }: NavbarProps) {
 
   useEffect(() => {
     setMounted(true);
-    controls.start('visible');
-  }, [controls]);
-
-  useEffect(() => {
-    if (autoHide) {
-      const threshold = parseInt(fullConfig?.theme?.screens?.md, 10) > width ? 50 : 100;
-      if (scrollDirection === 'up' && scrollY - scrollYPrev.current < -threshold) {
-        scrollYPrev.current = scrollY;
-        controls.stop();
-        controls.start('show');
-      } else if (scrollDirection === 'down' && scrollY > 100 && scrollY - scrollYPrev.current > threshold) {
-        scrollYPrev.current = scrollY;
-        controls.stop();
-        controls.start('hide');
-      } else {
-        console.log('Navbar hiding deferred, scroll below trigger threshold: ', scrollY - scrollYPrev.current);
-        scrollYPrev.current = scrollY;
-      }
-    }
-  }, [scrollDirection, controls, scrollY, fullConfig, width, autoHide]);
+  }, []);
 
   const variants = {
     open: { right: 0, transition: { duration: 0.6 }, easing: 'easeInOut' },
@@ -189,7 +141,7 @@ export default function Navbar({ autoHide = false }: NavbarProps) {
   );
 
   return (
-    <motion.nav initial={'hidden'} variants={navbarVariant} animate={controls} className={`sticky-navbar`}>
+    <motion.nav initial='hidden' animate='visible' variants={navbarVariant} className={`sticky-navbar`}>
       <div
         className={`flex items-center justify-between rounded-md border-b border-amber-800/[0.3] bg-sepia-200 
         p-5 shadow transition-colors duration-[600ms] dark:border-amber-300/[0.3] dark:bg-zinc-900 md:flex-row`}

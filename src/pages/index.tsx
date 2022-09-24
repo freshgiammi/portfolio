@@ -10,6 +10,7 @@ import Jecommimg from '~/img/jecomm.png';
 import Superchargednextimg from '~/img/superchargednext.png';
 import propic from '~/img/propic.jpg';
 import DownArrow from '@/components/animated/DownArrow';
+import HeroProject, { HeroProjectProps } from '@/components/HeroProject';
 
 const Home: NextPage = () => {
   const heroTitle: AnimatedTextProps[] = [
@@ -29,9 +30,10 @@ const Home: NextPage = () => {
     },
   ];
 
-  const projects = [
+  const projects: HeroProjectProps[] = [
     {
-      id: 'supercharged-next',
+      orientation: 'right',
+      key: 'supercharged-next',
       src: Superchargednextimg,
       alt: 'Supercharged-Next',
       title: 'Supercharged-Next',
@@ -43,7 +45,8 @@ const Home: NextPage = () => {
       tags: ['Open-Source', 'Next.js', 'React', 'Tailwind'],
     },
     {
-      id: 'escamadul',
+      orientation: 'left',
+      key: 'escamadul',
       src: Escamadulimg,
       alt: "E' Scamàdul",
       title: "E' Scamàdul",
@@ -53,7 +56,8 @@ const Home: NextPage = () => {
       tags: ['Wordpress', 'Brizy', 'Web developement'],
     },
     {
-      id: 'jecomm',
+      orientation: 'right',
+      key: 'jecomm',
       src: Jecommimg,
       alt: 'JECoMM',
       title: 'JECoMM',
@@ -65,33 +69,8 @@ const Home: NextPage = () => {
   ];
 
   const aboutVariants: Variants = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 1,
-      },
-    },
-  };
-
-  const aboutItemVariants: Variants = {
-    hidden: { opacity: 0, transition: { duration: 1, ease: 'easeInOut' } },
-    show: { opacity: 1, transition: { duration: 1, ease: 'easeInOut' } },
-  };
-
-  const projectVariants: Variants = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 1,
-      },
-    },
-  };
-
-  const projectItemVariants: Variants = {
-    hidden: { opacity: 0, transition: { duration: 1, ease: 'easeInOut' } },
-    show: { opacity: 1, transition: { duration: 1, ease: 'easeInOut' } },
+    hidden: { opacity: 0, x: -100, transition: { delay: 0.5, duration: 1, ease: 'easeInOut' } },
+    show: { opacity: 1, x: 0, transition: { delay: 0.5, duration: 1, ease: 'easeInOut' } },
   };
 
   return (
@@ -142,7 +121,10 @@ const Home: NextPage = () => {
             />
           </div>
           <motion.div
-            variants={aboutItemVariants}
+            initial='hidden'
+            whileInView='show'
+            viewport={{ once: true }}
+            variants={aboutVariants}
             className='z-10 mx-auto space-y-4 self-center text-center text-base text-zinc-800 
           dark:text-zinc-100 md:text-lg lg:col-[2_/_3]'
           >
@@ -210,68 +192,11 @@ const Home: NextPage = () => {
       </motion.section>
       {/* Projects -  Section */}
       <motion.section
-        className='mx-4 space-y-40 border-t-2 border-amber-800/30 py-12 
-      dark:border-amber-300/30 md:mx-12'
+        className='mx-4 space-y-20 border-t-2 border-amber-800/30 py-12 dark:border-amber-300/30 
+      md:mx-12 lg:space-y-40'
       >
-        {projects.map((p, i) => {
-          return (
-            <motion.div
-              key={p.id}
-              initial='hidden'
-              whileInView='show'
-              viewport={{ once: true }}
-              variants={projectVariants}
-              className='grid grid-cols-1 gap-4 text-zinc-800 transition-all duration-500 
-              dark:text-zinc-100 lg:grid-cols-12'
-            >
-              <motion.div
-                variants={projectItemVariants}
-                className={`${i % 2 === 0 ? 'lg:col-[1_/_10]' : 'lg:col-[4_/_13]'} row-start-1 row-end-2 lg:row-end-1`}
-              >
-                <Link href={p.url}>
-                  <Image
-                    alt='p.alt'
-                    src={p.src}
-                    className='cursor-pointer shadow brightness-90 transition-all duration-500 hover:brightness-100 
-                    dark:brightness-50 dark:hover:brightness-75'
-                  ></Image>
-                </Link>
-              </motion.div>
-              <motion.div
-                variants={projectItemVariants}
-                className={`${
-                  i % 2 === 0 ? 'text-right lg:col-[9_/_13]' : 'text-left lg:col-[1_/_5]'
-                } z-10 row-start-2 row-end-3 space-y-3 self-center lg:row-end-1 
-              `}
-              >
-                <p className='font-ibm-mono text-xs text-amber-600 dark:text-amber-300'>{p.type}</p>
-                <p className='text-xl font-bold md:text-4xl'>{p.title}</p>
-                <p
-                  className='h-full rounded bg-sepia-200 p-4 text-base shadow-xl transition-all duration-500 
-                dark:bg-zinc-800 md:text-base'
-                >
-                  {p.description}
-                </p>
-                <div
-                  className={`${i % 2 === 0 ? 'justify-end' : 'justify-start'} flex flex-row flex-wrap gap-2 
-              `}
-                >
-                  {p.tags.map((t) => {
-                    return (
-                      <div
-                        key={t}
-                        /* Keep an eye out: shadow-md has mobile lag. */
-                        className='rounded bg-sepia-200 py-1 px-2 font-ibm-mono text-xs 
-                        shadow transition-all duration-500 dark:bg-zinc-800'
-                      >
-                        {t}
-                      </div>
-                    );
-                  })}
-                </div>
-              </motion.div>
-            </motion.div>
-          );
+        {projects.map(({ key, ...p }, _i) => {
+          return <HeroProject key={key} {...p} />;
         })}
       </motion.section>
     </LayoutBlock>

@@ -189,7 +189,7 @@ export default function Navbar() {
           initial={{ right: '-100%' }}
           animate={burgerState ? 'open' : 'closed'}
           variants={variants}
-          className={`ham-sider flex flex-col items-center justify-center bg-sepia-200 dark:bg-zinc-800 md:hidden`}
+          className={`ham-sider flex flex-col items-center justify-center bg-sepia-200 transition-colors duration-[600ms] dark:bg-zinc-800 md:hidden`}
         >
           <PagesList className='page-item flex w-full flex-col items-center justify-center space-y-8 pb-12 text-5xl' />
           <div className='space-y-8 '>

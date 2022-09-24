@@ -158,6 +158,7 @@ a {
 .page-item a:not(.active):hover::after {
   transform: scaleX(1);
 }
+
 /* ! Oh this is dirty. I'm not even sure this is how we're supposed to do things, but 100vh is broken on mobile. Media query maybe? 
 ** Source: https://gist.github.com/dmurawsky/d45f068097d181c733a53687edce1919
 **

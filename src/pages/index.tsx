@@ -15,14 +15,14 @@ const Home: NextPage = () => {
     {
       text: "Hi, I'm freshgiammi.",
       key: 'title1',
-      className: 'text-center text-4xl font-bold text-zinc-800 dark:text-zinc-100 md:text-6xl',
+      className: 'text-center text-4xl font-bold text-carbon-800 dark:text-carbon-100 md:text-6xl',
       duration: 0.5,
       stagger: 0.05,
     },
     {
       text: 'a fullstack developer, with a passion for web design.',
       key: 'title2',
-      className: 'px-3 md:px-0 text-center text-base text-zinc-800 dark:text-zinc-100 md:text-xl',
+      className: 'px-3 md:px-0 text-center text-base text-carbon-800 dark:text-carbon-100 md:text-xl',
       duration: 1.5,
       stagger: 0,
     },
@@ -89,7 +89,7 @@ const Home: NextPage = () => {
             strokeStyle='stroke-amber-800 dark:stroke-amber-300'
           />
         </div>
-        <DownArrow key='downarrow' className='z-10 stroke-zinc-500 dark:stroke-zinc-500' delay={2} />
+        <DownArrow key='downarrow' className='z-10 stroke-carbon-500 dark:stroke-carbon-500' delay={2} />
       </motion.section>
       {/* Projects -  Section */}
       <motion.section

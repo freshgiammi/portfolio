@@ -37,7 +37,7 @@ const About: NextPage = () => {
             <AnimatedText
               key='aboutme-hero'
               text='About me'
-              className='text-center text-4xl font-bold text-zinc-800 dark:text-zinc-100 md:text-6xl'
+              className='text-center text-4xl font-bold text-carbon-800 dark:text-carbon-100 md:text-6xl'
             />
           </div>
           <AnimatedWave
@@ -67,7 +67,7 @@ const About: NextPage = () => {
             whileInView='show'
             viewport={{ once: true }}
             variants={aboutVariants}
-            className='z-10 mx-auto space-y-4 self-center text-base text-zinc-800 dark:text-zinc-100 
+            className='z-10 mx-auto space-y-4 self-center text-base text-carbon-800 dark:text-carbon-100 
           md:text-lg lg:col-[2_/_3]'
           >
             <motion.p className='text-4xl font-bold md:text-4xl'>{`Hello there! 👋`}</motion.p>
@@ -122,7 +122,7 @@ const About: NextPage = () => {
                     key={t}
                     /* Keep an eye out: shadow-md has mobile lag. */
                     className='rounded bg-sepia-200 py-1 px-2 font-ibm-mono text-xs 
-                        shadow transition-all duration-500 dark:bg-zinc-800'
+                        shadow transition-all duration-500 dark:bg-carbon-800'
                   >
                     {t}
                   </div>

@@ -33,7 +33,7 @@ export default function HeroProject({ orientation, tags = [], ...props }: HeroPr
   };
 
   return (
-    <motion.div className='grid grid-cols-12 gap-4 text-zinc-800 transition-all duration-500 dark:text-zinc-100'>
+    <motion.div className='grid grid-cols-12 gap-4 text-carbon-800 transition-all duration-500 dark:text-carbon-100'>
       <motion.div
         className={`${orientation === 'right' ? 'lg:col-[1_/_10]' : 'lg:col-[4_/_13]'} 
         col-[1_/_13] lg:row-end-1`}
@@ -79,7 +79,7 @@ export default function HeroProject({ orientation, tags = [], ...props }: HeroPr
         >
           <p
             className='h-full w-5/6 rounded bg-sepia-200
-          p-4 text-base shadow transition-colors duration-500 dark:bg-zinc-800 md:text-base lg:w-full'
+          p-4 text-base shadow transition-colors duration-500 dark:bg-carbon-800 md:text-base lg:w-full'
           >
             {props.description}
           </p>
@@ -94,7 +94,7 @@ export default function HeroProject({ orientation, tags = [], ...props }: HeroPr
                 key={t}
                 /* Keep an eye out: shadow can trigger mobile lag. */
                 className='rounded bg-sepia-200 py-1 px-2 font-ibm-mono text-xs 
-            shadow transition-colors duration-500 dark:bg-zinc-800'
+            shadow transition-colors duration-500 dark:bg-carbon-800'
               >
                 {t}
               </div>

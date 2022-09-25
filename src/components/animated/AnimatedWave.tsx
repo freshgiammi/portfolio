@@ -56,7 +56,11 @@ const AnimatedWave = ({ strokeStyle, duration = 3, stagger = 0.1, loop = false, 
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
     >
-      <motion.g className={strokeStyle || 'stroke-zinc-500 dark:stroke-zinc-500'} strokeWidth='2' strokeLinecap='round'>
+      <motion.g
+        className={strokeStyle || 'stroke-carbon-500 dark:stroke-carbon-500'}
+        strokeWidth='2'
+        strokeLinecap='round'
+      >
         <motion.path
           d='M0 32.0074C25.6944 34.0907 69.8611 48.674 123.333 42.0074C176.806 35.3407 201.111 0.632355 256.667 0.00735471C312.222 -0.617645 334.444 38.799 390 39.0074C445.556 39.2157 467.778 -0.867645 523.333 1.00735C578.889 2.88235 601.111 44.674 656.667 48.0074C712.222 51.3407 762.222 23.4657 790 17.0074'
           variants={defaultPathVariant}

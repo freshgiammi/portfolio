@@ -7,7 +7,7 @@ import { useState, useRef, useEffect } from 'react';
  * the final one.
  */
 
-export default function useParallax(start = 0, offset = 100) {
+export default function useParallax({ start = 0, offset = 100 }) {
   const { scrollY } = useScroll();
 
   const [elementTop, setElementTop] = useState<number>(0);

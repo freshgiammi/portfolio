@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 
 interface IMeta {
   title?: string;
@@ -15,7 +15,7 @@ interface Props {
   customMeta?: IMeta;
 }
 
-const variants = {
+const variants: Variants = {
   hidden: {
     opacity: 0,
   },
@@ -66,7 +66,7 @@ export default function LayoutBlock({ children, ...customMeta }: Props) {
         <meta property='og:title' content={meta.title} />
         <meta property='og:image' content={meta.image} />
       </Head>
-      <motion.main variants={variants} initial='hidden' animate='enter' exit='exit' className='h-full w-full'>
+      <motion.main variants={variants} initial='hidden' animate='enter' exit='exit' className='w-full pt-48'>
         {children}
       </motion.main>
     </>

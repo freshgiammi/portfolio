@@ -14,11 +14,11 @@ export interface HeroProjectProps {
   description: string;
   type: string;
   url: string | UrlObject;
-  tags: string[];
+  tags?: string[];
 }
 
-export default function HeroProject({ orientation, ...props }: HeroProjectProps) {
-  const { parallaxRef, yPos } = useParallax(50);
+export default function HeroProject({ orientation, tags = [], ...props }: HeroProjectProps) {
+  const { parallaxRef, yPos } = useParallax({ offset: 75 });
 
   const projectVariants: Variants = {
     hidden: { opacity: 0, transition: { duration: 1, ease: 'easeInOut' } },
@@ -33,12 +33,8 @@ export default function HeroProject({ orientation, ...props }: HeroProjectProps)
   };
 
   return (
-    <motion.div
-      {...animation}
-      className='grid grid-cols-12 gap-4 text-zinc-800 transition-all duration-500 dark:text-zinc-100'
-    >
+    <motion.div className='grid grid-cols-12 gap-4 text-zinc-800 transition-all duration-500 dark:text-zinc-100'>
       <motion.div
-        {...animation}
         className={`${orientation === 'right' ? 'lg:col-[1_/_10]' : 'lg:col-[4_/_13]'} 
         col-[1_/_13] lg:row-end-1`}
       >
@@ -92,13 +88,13 @@ export default function HeroProject({ orientation, ...props }: HeroProjectProps)
           className={`${orientation === 'right' ? 'justify-end' : 'justify-start'} flex flex-row flex-wrap gap-2 
 `}
         >
-          {props.tags.map((t) => {
+          {tags.map((t) => {
             return (
               <div
                 key={t}
                 /* Keep an eye out: shadow can trigger mobile lag. */
                 className='rounded bg-sepia-200 py-1 px-2 font-ibm-mono text-xs 
-           shadow transition-colors duration-500 dark:bg-zinc-800'
+            shadow transition-colors duration-500 dark:bg-zinc-800'
               >
                 {t}
               </div>

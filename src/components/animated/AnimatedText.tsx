@@ -105,9 +105,10 @@ const AnimatedText = ({
             {words[index].flat().map((element, windex) => {
               return (
                 // Character
+                // Careful to applied classes here: this can be heavy on mobiles. (i.e. see top overscroll with 'display: inline-block')
                 <motion.span
                   key={windex}
-                  className='inline-block h-full'
+                  className='h-full'
                   variants={animateBy === 'character' ? customVariants || defaultAnimation : undefined}
                 >
                   {element}

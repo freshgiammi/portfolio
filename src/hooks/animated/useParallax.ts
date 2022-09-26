@@ -1,13 +1,18 @@
 import { useScroll, useSpring, useTransform } from 'framer-motion';
 import { useState, useRef, useEffect } from 'react';
+
+// ! This is generally a good implementation, but it's not the one I'm using in the project.
+// ! This is just a reference for the future.
+
 /**
- * It returns a ref and a spring that can be used to create a parallax effect
+ * It returns a ref that can be used to create a parallax effect.
  * @param [start=0] - the initial position of the element.
  * @param [offset=100] - the distance the element will move when scrolled from the initial position to
+ * @param [stiffness=500] - stiffness of the spring. Higher values will create more sudden movement.
+ * @param [damping=80] - strength of opposing force. If set to 0, spring will oscillate indefinitely.
  * the final one.
  */
-
-export default function useParallax({ start = 0, offset = 100 }) {
+export default function useParallax({ start = 0, offset = 100, stiffness = 500, damping = 80 }) {
   const { scrollY } = useScroll();
 
   const [elementTop, setElementTop] = useState<number>(0);
@@ -23,7 +28,7 @@ export default function useParallax({ start = 0, offset = 100 }) {
   // This is the actual animation: the element will move from 0 to offset when scroleld
   // vertically from the initial position to the final one.
   const yValue = useTransform(scrollY, [initialPos, finalPos], [start, -offset]);
-  const yPos = useSpring(yValue, { stiffness: 1000, damping: 100 });
+  const yPos = useSpring(yValue, { stiffness, damping });
 
   /*
    * Why 'useEffect' instead of 'useLayoutEffect'?

@@ -1,5 +1,5 @@
 import React from 'react';
-import { HTMLMotionProps, motion, AnimationProps } from 'framer-motion';
+import { HTMLMotionProps, motion, MotionProps } from 'framer-motion';
 import { CustomVariants } from '@/interfaces/animationHelpers';
 
 // Adapted from: https://codesandbox.io/s/framer-motion-responsive-text-animation-forked-z71c0o?file=/src/App.js:795-837
@@ -8,8 +8,6 @@ import { CustomVariants } from '@/interfaces/animationHelpers';
 export interface AnimatedTextProps extends HTMLMotionProps<'div'> {
   text: string;
   key: string;
-  animateBy?: 'word' | 'character';
-  customVariants?: CustomVariants;
   duration?: number;
   stagger?: number;
   delay?: number;
@@ -35,19 +33,9 @@ export function calculateStaggeredDelay(itemlist: AnimatedTextProps[], index: nu
 /**
  * Animates a given text based as drop in from below.
  * Split the text into words, then split each word into characters.
- * A custom Variants object containing the animation can be passed to the component, if provided.
- * If both 'duration' and 'customVariants' are provided, the latter will be used.
  * @returns A 'motion.div' element, where every word is wrapped in a span and every character is wrapped in a span as well.
  */
-const AnimatedText = ({
-  text,
-  animateBy = 'character',
-  customVariants,
-  duration = 0.75,
-  stagger = 0.05,
-  delay = 0,
-  ...props
-}: AnimatedTextProps) => {
+const AnimatedText = ({ text, duration = 0.75, stagger = 0.05, delay = 0, ...props }: AnimatedTextProps) => {
   // Framer Motion variant object, for controlling character animation
   const defaultAnimation: CustomVariants = {
     hidden: {
@@ -78,9 +66,10 @@ const AnimatedText = ({
     }
   });
 
-  const animationConfig: AnimationProps = {
+  const animationConfig: MotionProps = {
     initial: 'hidden',
-    animate: 'visible',
+    whileInView: 'visible',
+    viewport: { once: true },
     variants: {
       visible: {
         transition: {
@@ -97,20 +86,12 @@ const AnimatedText = ({
       {words.map((_word, index) => {
         return (
           // Word
-          <motion.span
-            key={index}
-            className='inline-block whitespace-nowrap'
-            variants={animateBy === 'word' ? customVariants || defaultAnimation : undefined}
-          >
+          <motion.span key={index} className='inline-block whitespace-nowrap'>
             {words[index].flat().map((element, windex) => {
               return (
                 // Character
                 // Careful to applied classes here: this can be heavy on mobiles. (i.e. see top overscroll with 'display: inline-block')
-                <motion.span
-                  key={windex}
-                  className='h-full'
-                  variants={animateBy === 'character' ? customVariants || defaultAnimation : undefined}
-                >
+                <motion.span key={windex} className='inline-block' variants={defaultAnimation}>
                   {element}
                 </motion.span>
               );

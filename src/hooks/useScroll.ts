@@ -1,13 +1,15 @@
-/**
- * useScroll React custom hook
- * Usage:
- *    const { scrollX, scrollY, scrollDirection } = useScroll(throttled?: number);
- */
 import lodash from 'lodash';
 import { useState, useEffect } from 'react';
 
 type ScrollDirectionType = 'up' | 'down' | undefined;
 
+// ! This is generally a good implementation, but it's not the one I'm using in the project.
+// ! This is just a reference for the future.
+
+/**
+ * It returns an object with the current scroll position and direction.
+ * @param {number} [throttled] - The number of milliseconds to throttle the scroll event.
+ */
 export default function useScroll(throttled?: number) {
   // the vertical direction
   const [scrollY, setScrollY] = useState<number>(0);

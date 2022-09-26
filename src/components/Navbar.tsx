@@ -143,7 +143,7 @@ export default function Navbar() {
   return (
     <motion.nav initial='hidden' animate='visible' variants={navbarVariant} className={`sticky-navbar`}>
       <div
-        className={`flex items-center justify-between rounded-md border-b border-amber-800/[0.3] bg-sepia-200 
+        className={`flex items-center justify-between border-b border-amber-800/[0.3] bg-sepia-200 
         p-5 shadow transition-colors duration-[600ms] dark:border-amber-300/[0.3] dark:bg-carbon-900 md:flex-row`}
       >
         {/* Logo / Home / Text */}
@@ -189,7 +189,7 @@ export default function Navbar() {
           initial={{ right: '-100%' }}
           animate={burgerState ? 'open' : 'closed'}
           variants={variants}
-          className={`ham-sider flex flex-col items-center justify-center bg-sepia-200 transition-colors duration-[600ms] dark:bg-carbon-800 md:hidden`}
+          className={`ham-sider flex flex-col items-center justify-center bg-sepia-200 transition-colors duration-500 dark:bg-carbon-900 md:hidden`}
         >
           <PagesList className='page-item flex w-full flex-col items-center justify-center space-y-8 pb-12 text-5xl' />
           <div className='space-y-8 '>

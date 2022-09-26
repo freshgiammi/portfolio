@@ -57,7 +57,7 @@ const About: NextPage = () => {
               alt='p.alt'
               src={propic}
               sizes='100vw'
-              className='mx-auto h-auto max-w-[200px] rounded-full border-4 
+              className='mx-auto h-auto max-w-[200px] border-4 
             border-amber-800/30 object-cover shadow brightness-90 dark:border-amber-300/30 
             md:max-w-[300px] lg:max-w-[400px] xl:max-w-[500px]'
             />
@@ -121,8 +121,8 @@ const About: NextPage = () => {
                   <div
                     key={t}
                     /* Keep an eye out: shadow-md has mobile lag. */
-                    className='rounded bg-sepia-200 py-1 px-2 font-ibm-mono text-xs 
-                        shadow transition-all duration-500 dark:bg-carbon-800'
+                    className='shadow-relaxed  rounded bg-sepia-200 py-1 px-2 font-ibm-mono 
+                        text-xs transition-all duration-500 dark:bg-carbon-800'
                   >
                     {t}
                   </div>

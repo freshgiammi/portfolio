@@ -54,32 +54,6 @@ a {
   height: auto;
 }
 
-/* === MISC === */
-.fade-div-out {
-  mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
-}
-
-/* === ANIMATIONS === */
-.bolt {
-  position: absolute;
-  top: 80vh;
-  left: 45vw;
-  opacity: 0;
-  animation: bolting 5s ease-in both infinite;
-}
-
-@keyframes bolting {
-  from {
-    transform: scale(0) rotate(0deg) translate(-50%, -50%);
-    opacity: 0.25;
-  }
-
-  to {
-    transform: scale(12) rotate(15deg) translate(-50%, -50%);
-    opacity: 0;
-  }
-}
-
 /* === Hamburger Menu animation. Credits: Mikael Ainalem - https://codepen.io/ainalem/pen/LJYRxz === */
 
 .ham > svg {
@@ -159,22 +133,22 @@ a {
   transform: scaleX(1);
 }
 
-/* ! Oh this is dirty. I'm not even sure this is how we're supposed to do things, but 100vh is broken on mobile. Media query maybe? 
-** Source: https://gist.github.com/dmurawsky/d45f068097d181c733a53687edce1919
-**
-** Documentation on the nasty 100vh thing:
-** - https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
-** - https://stackoverflow.com/questions/52848856/100vh-height-when-address-bar-is-shown-chrome-mobile
-** - https://allthingssmitty.com/2020/05/11/css-fix-for-100vh-in-mobile-webkit/
-** - https://developer.chrome.com/blog/url-bar-resizing/
-** 
-*/
-/* stylelint-disable */
-html,
-body,
-body > div:first-child,
-div#__next,
-div#__next > div {
-  height: 100%;
+@layer utilities {
+  .hero-full {
+    height: calc(100vh - 6rem); /* 6rem = navbar height, sorta */
+  }
 }
-/* stylelint-enable */
+
+.paragraph-divider::after {
+  content: '';
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 1px;
+  margin-left: 20px;
+  background-color: white;
+}
+
+.shadow-relaxed {
+  box-shadow: 1rem 1rem 1rem -0.5rem rgb(0 0 0 / 5%);
+}

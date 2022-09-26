@@ -66,7 +66,7 @@ export default function LayoutBlock({ children, ...customMeta }: Props) {
         <meta property='og:title' content={meta.title} />
         <meta property='og:image' content={meta.image} />
       </Head>
-      <motion.main variants={variants} initial='hidden' animate='enter' exit='exit' className='w-full pt-48'>
+      <motion.main variants={variants} initial='hidden' animate='enter' exit='exit' className='pt-24'>
         {children}
       </motion.main>
     </>

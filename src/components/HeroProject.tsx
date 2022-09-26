@@ -1,9 +1,10 @@
-import useParallax from '@/hooks/animated/useParallax';
-import { motion, Variants } from 'framer-motion';
+import { motion, MotionProps, Variants } from 'framer-motion';
 import Image, { StaticImageData } from 'next/future/image';
 import Link from 'next/link';
 
+import { useParallax } from 'react-scroll-parallax';
 import { UrlObject } from 'url';
+import AnimatedText from './animated/AnimatedText';
 
 export interface HeroProjectProps {
   orientation: 'left' | 'right';
@@ -18,14 +19,18 @@ export interface HeroProjectProps {
 }
 
 export default function HeroProject({ orientation, tags = [], ...props }: HeroProjectProps) {
-  const { parallaxRef, yPos } = useParallax({ offset: 75 });
+  const parallax = useParallax<HTMLDivElement>({
+    translateY: [+20, -20],
+    easing: 'easeInOut',
+    shouldAlwaysCompleteAnimation: true,
+  });
 
   const projectVariants: Variants = {
-    hidden: { opacity: 0, transition: { duration: 1, ease: 'easeInOut' } },
-    show: { opacity: 1, transition: { duration: 1, ease: 'easeInOut' } },
+    hidden: { opacity: 0, transition: { delay: 0.5, duration: 1, ease: 'easeInOut' } },
+    show: { opacity: 1, transition: { delay: 0.5, duration: 1, ease: 'easeInOut' } },
   };
 
-  const animation = {
+  const animation: MotionProps = {
     initial: 'hidden',
     whileInView: 'show',
     viewport: { once: true },
@@ -44,60 +49,66 @@ export default function HeroProject({ orientation, tags = [], ...props }: HeroPr
             <Image
               alt='p.alt'
               src={props.src}
-              className='cursor-pointer shadow brightness-75 grayscale dark:brightness-50'
+              className='shadow-relaxed  cursor-pointer brightness-75 grayscale dark:brightness-50'
             ></Image>
           </a>
         </Link>
       </motion.div>
       <motion.div
-        ref={parallaxRef}
-        style={{ y: yPos }}
-        {...animation}
+        ref={parallax.ref}
         className={`${
           orientation === 'right' ? 'text-right lg:col-[9_/_13]' : 'text-left lg:col-[1_/_5]'
         } z-10 col-[1_/_13] space-y-3 self-center lg:row-end-1
 `}
       >
-        <div
+        <motion.div
+          {...animation}
           className={`${
             orientation === 'right' ? 'justify-end' : 'justify-start'
           } flex w-full flex-row flex-wrap gap-2`}
         >
           <p
-            className='rounded bg-amber-600/30 py-1 px-2 font-ibm-mono text-xs 
-            shadow transition-colors duration-500 dark:bg-amber-300/30'
+            className='shadow-relaxed  rounded bg-amber-600/30 py-1 px-2 font-ibm-mono 
+            text-xs transition-colors duration-500 dark:bg-amber-300/30'
           >
             {props.type}
           </p>
-        </div>
-        <p className='text-2xl font-bold md:text-4xl'>{props.title}</p>
+        </motion.div>
+        <AnimatedText
+          stagger={0.05}
+          key={`${props.key}-title`}
+          text={props.title}
+          className='text-2xl font-bold md:text-4xl'
+        />
 
-        <div
+        <motion.div
+          {...animation}
           className={`${
             orientation === 'right' ? 'justify-end' : 'justify-start'
           } flex w-full flex-row flex-wrap gap-2`}
         >
           <p
-            className='h-full w-5/6 rounded bg-sepia-200
-          p-4 text-base shadow transition-colors duration-500 dark:bg-carbon-800 md:text-base lg:w-full'
+            className='shadow-relaxed  h-full w-5/6 rounded
+          bg-sepia-200 p-4 text-base transition-colors duration-500 dark:bg-carbon-800 md:text-base lg:w-full'
           >
             {props.description}
           </p>
-        </div>
+        </motion.div>
         <div
           className={`${orientation === 'right' ? 'justify-end' : 'justify-start'} flex flex-row flex-wrap gap-2 
 `}
         >
           {tags.map((t) => {
             return (
-              <div
+              <motion.div
+                {...animation}
                 key={t}
-                /* Keep an eye out: shadow can trigger mobile lag. */
-                className='rounded bg-sepia-200 py-1 px-2 font-ibm-mono text-xs 
-            shadow transition-colors duration-500 dark:bg-carbon-800'
+                /* Keep an eye out: shadow-relaxed  can trigger mobile lag. */
+                className='shadow-relaxed  rounded bg-sepia-200 py-1 px-2 font-ibm-mono 
+            text-xs transition-colors duration-500 dark:bg-carbon-800'
               >
                 {t}
-              </div>
+              </motion.div>
             );
           })}
         </div>

@@ -1,4 +1,4 @@
-import AnimatedText, { AnimatedTextProps, calculateStaggeredDelay } from '@/components/animated/AnimatedText';
+import AnimatedText from '@/components/animated/AnimatedText';
 import AnimatedWave from '@/components/animated/AnimatedWave';
 import LayoutBlock from '@/components/LayoutBlock';
 import { motion } from 'framer-motion';
@@ -11,23 +11,6 @@ import DownArrow from '@/components/animated/DownArrow';
 import HeroProject, { HeroProjectProps } from '@/components/HeroProject';
 
 const Home: NextPage = () => {
-  const heroTitle: AnimatedTextProps[] = [
-    {
-      text: "Hi, I'm freshgiammi.",
-      key: 'title1',
-      className: 'text-center text-4xl font-bold text-carbon-800 dark:text-carbon-100 md:text-6xl',
-      duration: 0.5,
-      stagger: 0.05,
-    },
-    {
-      text: 'a fullstack developer, with a passion for web design.',
-      key: 'title2',
-      className: 'px-3 md:px-0 text-center text-base text-carbon-800 dark:text-carbon-100 md:text-xl',
-      duration: 1.5,
-      stagger: 0,
-    },
-  ];
-
   const projects: HeroProjectProps[] = [
     {
       orientation: 'right',
@@ -69,18 +52,29 @@ const Home: NextPage = () => {
   return (
     <LayoutBlock>
       {/* Hero - Section */}
-      <motion.section className='flex-center-column'>
+      <motion.section className='flex-center-column lg:hero-full py-24'>
         <div className='grid-row-1 grid grid-cols-1'>
-          <div className='col-end-2 row-end-2 space-y-3 self-center'>
-            {heroTitle.map(({ key, ...item }, index) => {
-              return (
-                <AnimatedText
-                  key={key}
-                  {...item}
-                  delay={calculateStaggeredDelay(heroTitle, index)} // This should be an external function.
-                />
-              );
-            })}
+          <div className='z-10 col-end-2 row-end-2 space-y-3 self-center'>
+            <AnimatedText
+              key='herotitle'
+              text="Hi, I'm freshgiammi."
+              className='text-center text-4xl font-bold text-carbon-800 dark:text-carbon-100 md:text-6xl'
+              duration={0.5}
+              stagger={0.05}
+              /* delay={calculateStaggeredDelay(heroTitle, index)} */
+            />
+            <motion.p
+              initial='hidden'
+              whileInView='visible'
+              viewport={{ once: true }}
+              variants={{
+                hidden: { opacity: 0, transition: { delay: 0.5, duration: 1, ease: 'easeInOut' } },
+                visible: { opacity: 1, transition: { delay: 0.5, duration: 1, ease: 'easeInOut' } },
+              }}
+              className='px-3 text-center text-base text-carbon-800 dark:text-carbon-100 md:px-0 md:text-xl'
+            >
+              a fullstack developer, with a passion for web design.
+            </motion.p>
           </div>
           <AnimatedWave
             key='wave'
@@ -89,13 +83,17 @@ const Home: NextPage = () => {
             strokeStyle='stroke-amber-800 dark:stroke-amber-300'
           />
         </div>
-        <DownArrow key='downarrow' className='z-10 stroke-carbon-500 dark:stroke-carbon-500' delay={2} />
+        <DownArrow key='downarrow' className='stroke-carbon-500 dark:stroke-carbon-500' delay={2} />
       </motion.section>
       {/* Projects -  Section */}
-      <motion.section
-        className='mx-4 space-y-20 py-6 transition-all 
-        duration-500  lg:space-y-40 xl:mx-40'
-      >
+      <motion.section className='mx-4 space-y-20 py-6 transition-all duration-500 lg:space-y-40 xl:mx-40'>
+        <div
+          className='paragraph-divider flex flex-row items-center justify-start space-x-2 
+        font-ibm-mono text-base font-semibold after:bg-amber-800/30 dark:after:bg-amber-300/30 md:text-2xl'
+        >
+          <h2 className='text-amber-800/60 dark:text-amber-300/60'>01.</h2>
+          <h2>Projects</h2>
+        </div>
         {projects.map(({ key, ...p }, _i) => {
           return <HeroProject key={key} {...p} />;
         })}

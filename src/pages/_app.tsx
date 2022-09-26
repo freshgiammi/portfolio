@@ -5,6 +5,8 @@ import { ThemeProvider } from 'next-themes';
 import Navbar from '@/components/Navbar';
 import { AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
+import Footer from '@/components/Footer';
+import { ParallaxProvider } from 'react-scroll-parallax';
 
 // This is the root component. It wraps the whole app ina ThemeProvider to enable dark mode switching.
 // It also contains the Navbar and the background layer, since these are always present on every page.
@@ -15,21 +17,24 @@ function MyApp({ Component, pageProps }: AppProps) {
   const { asPath } = useRouter();
 
   return (
-    <ThemeProvider defaultTheme='system' attribute='class'>
-      <Head>
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
-        {/* Chrome (Doesn't apply on dark-mode, see: https://caniuse.com/?search=theme-color */}
-        <meta name='theme-color' content='#e4e4e7' />
-        {/*  IOS Safari */}
-        <meta name='apple-mobile-web-app-status-bar-style' content='#e4e4e7' />
-      </Head>
-      {/* Navbar component (contains motion elements) */}
-      <Navbar />
-      {/* Actual page content. Component must be a motion element to enable transitions. */}
-      <AnimatePresence mode='wait'>
-        <Component {...pageProps} key={asPath} /> {/* Key is used to identify the component and allow transitions. */}
-      </AnimatePresence>
-    </ThemeProvider>
+    <ParallaxProvider>
+      <ThemeProvider defaultTheme='system' attribute='class'>
+        <Head>
+          <meta name='viewport' content='width=device-width, initial-scale=1' />
+          {/* Chrome (Doesn't apply on dark-mode, see: https://caniuse.com/?search=theme-color */}
+          <meta name='theme-color' content='#e4e4e7' />
+          {/*  IOS Safari */}
+          <meta name='apple-mobile-web-app-status-bar-style' content='#e4e4e7' />
+        </Head>
+        {/* Navbar component (contains motion elements) */}
+        <Navbar />
+        {/* Actual page content. Component must be a motion element to enable transitions. */}
+        <AnimatePresence mode='wait'>
+          <Component {...pageProps} key={asPath} /> {/* Key is used to identify the component and allow transitions. */}
+        </AnimatePresence>
+        <Footer />
+      </ThemeProvider>
+    </ParallaxProvider>
   );
 }
 

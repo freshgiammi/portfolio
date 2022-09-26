@@ -14,7 +14,16 @@ import { ParallaxProvider } from 'react-scroll-parallax';
 // ! BUG: theme-color still does not have an API. https://github.com/pacocoursey/next-themes/issues/78
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const { asPath } = useRouter();
+  const router = useRouter();
+
+  if (router.pathname === '/404')
+    return (
+      <ThemeProvider defaultTheme='system' attribute='class'>
+        <AnimatePresence mode='wait'>
+          <Component {...pageProps} key={router.pathname} />
+        </AnimatePresence>
+      </ThemeProvider>
+    );
 
   return (
     <ParallaxProvider>
@@ -30,7 +39,8 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Navbar />
         {/* Actual page content. Component must be a motion element to enable transitions. */}
         <AnimatePresence mode='wait'>
-          <Component {...pageProps} key={asPath} /> {/* Key is used to identify the component and allow transitions. */}
+          <Component {...pageProps} key={router.pathname} />{' '}
+          {/* Key is used to identify the component and allow transitions. */}
         </AnimatePresence>
         <Footer />
       </ThemeProvider>

@@ -78,17 +78,17 @@ const About: NextPage = () => {
             </motion.p>
             <motion.p className='px-3 md:px-0'>
               {`Born in `}
-              <Link href='https://en.wikipedia.org/wiki/Pesaro'>
+              <Link href='https://en.wikipedia.org/wiki/Pesaro' scroll={false}>
                 <span className='text-amber-800/70 underline dark:text-amber-300/70'>Pesaro</span>
               </Link>
               {` but (self) made in Milan. I graduated with 102/110 in `}
-              <Link href='https://www.unimi.it/en/education/computer-science-new-media-communications'>
+              <Link href='https://www.unimi.it/en/education/computer-science-new-media-communications' scroll={false}>
                 <span className='text-amber-800/70 underline dark:text-amber-300/70'>
                   Computer Science for New Media Communications
                 </span>
               </Link>
               {` at Università Degli Studi di Milano, with a thesis on `}
-              <Link href='https://github.com/freshgiammi/tesi'>
+              <Link href='https://github.com/freshgiammi/tesi' scroll={false}>
                 <span className='text-amber-800/70 underline dark:text-amber-300/70'>
                   an Agent-based Epidemic Model based on Multilayer Networks
                 </span>

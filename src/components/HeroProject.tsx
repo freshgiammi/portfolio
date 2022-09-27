@@ -44,7 +44,7 @@ export default function HeroProject({ orientation, tags = [], ...props }: HeroPr
         col-[1_/_13] lg:row-end-1`}
       >
         {/* An anchor element is needed to pass href to Link element. */}
-        <Link href={props.url} passHref>
+        <Link href={props.url} passHref scroll={false}>
           <a>
             <Image
               alt='p.alt'

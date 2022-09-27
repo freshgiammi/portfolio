@@ -45,7 +45,7 @@ export default function Navbar() {
 
   const PagesList = (props: React.HTMLProps<HTMLDivElement>) => (
     <div {...props}>
-      <Link href='/about'>
+      <Link href='/about' scroll={false}>
         <a
           onClick={() => {
             if (burgerState) {
@@ -148,7 +148,7 @@ export default function Navbar() {
       >
         {/* Logo / Home / Text */}
         <div className='z-10 flex flex-col' style={{}}>
-          <Link href='/'>
+          <Link href='/' scroll={false}>
             <a
               onClick={() => {
                 if (burgerState) {

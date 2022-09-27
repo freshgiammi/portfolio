@@ -65,7 +65,7 @@ export default function Custom404() {
         className='shadow-relaxed m-2 rounded bg-amber-500 px-4 py-2 text-white 
         transition-colors duration-500 hover:bg-amber-600'
       >
-        <Link href='/' passHref>
+        <Link href='/' passHref scroll={false}>
           <a>
             <span className='select-none'>Go back!</span>
           </a>

@@ -11,7 +11,7 @@ export default function Footer() {
     >
       <p className='col-[1_/_3] text-left'>
         Made with <span style={{ color: '#e25555' }}>♥</span> by{' '}
-        <Link href='https://freshgiammi.github.io' passHref>
+        <Link href='https://freshgiammi.github.io' passHref scroll={false}>
           <a className='text-amber-800/70 underline dark:text-amber-300/70'>freshgiammi</a>
         </Link>
       </p>

@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { motion, Variants } from 'framer-motion';
+import Footer from './Footer';
 
 interface IMeta {
   title?: string;
@@ -68,6 +69,7 @@ export default function LayoutBlock({ children, ...customMeta }: Props) {
       </Head>
       <motion.main variants={variants} initial='hidden' animate='enter' exit='exit' className='pt-24'>
         {children}
+        <Footer />
       </motion.main>
     </>
   );

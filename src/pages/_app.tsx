@@ -5,7 +5,6 @@ import { ThemeProvider } from 'next-themes';
 import Navbar from '@/components/Navbar';
 import { AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
-import Footer from '@/components/Footer';
 import { ParallaxProvider } from 'react-scroll-parallax';
 
 // This is the root component. It wraps the whole app ina ThemeProvider to enable dark mode switching.
@@ -42,7 +41,6 @@ function MyApp({ Component, pageProps }: AppProps) {
           <Component {...pageProps} key={router.pathname} />{' '}
           {/* Key is used to identify the component and allow transitions. */}
         </AnimatePresence>
-        <Footer />
       </ThemeProvider>
     </ParallaxProvider>
   );

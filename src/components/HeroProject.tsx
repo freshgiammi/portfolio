@@ -38,26 +38,26 @@ export default function HeroProject({ orientation, tags = [], ...props }: HeroPr
   };
 
   return (
-    <motion.div className='grid grid-cols-12 gap-4 text-carbon-800 transition-all duration-500 dark:text-carbon-100'>
+    <motion.div
+      className='grid grid-cols-12 gap-4 text-carbon-800 transition-all duration-500 
+    dark:text-carbon-100 xl:px-20'
+    >
       <motion.div
         className={`${orientation === 'right' ? 'lg:col-[1_/_10]' : 'lg:col-[4_/_13]'} 
-        col-[1_/_13] lg:row-end-1`}
+        relative col-[1_/_13] lg:row-end-1`}
       >
         {/* An anchor element is needed to pass href to Link element. */}
         <Link href={props.url} passHref scroll={false}>
           <a>
-            <Image
-              alt='p.alt'
-              src={props.src}
-              className='shadow-relaxed  cursor-pointer brightness-75 grayscale dark:brightness-50'
-            ></Image>
+            <Image alt='p.alt' src={props.src} className='shadow-relaxed cursor-pointer'></Image>
           </a>
         </Link>
+        <div className='vignette absolute inset-0'></div>
       </motion.div>
       <motion.div
         ref={parallax.ref}
         className={`${
-          orientation === 'right' ? 'text-right lg:col-[9_/_13]' : 'text-left lg:col-[1_/_5]'
+          orientation === 'right' ? 'text-right lg:col-[8_/_13]' : 'text-left lg:col-[1_/_5]'
         } z-10 col-[1_/_13] space-y-3 self-center lg:row-end-1
 `}
       >
@@ -68,7 +68,7 @@ export default function HeroProject({ orientation, tags = [], ...props }: HeroPr
           } flex w-full flex-row flex-wrap gap-2`}
         >
           <p
-            className='shadow-relaxed  rounded bg-amber-600/30 py-1 px-2 font-ibm-mono 
+            className='shadow-relaxed rounded bg-amber-600/30 py-1 px-2 font-ibm-mono 
             text-xs transition-colors duration-500 dark:bg-amber-300/30'
           >
             {props.type}
@@ -78,7 +78,7 @@ export default function HeroProject({ orientation, tags = [], ...props }: HeroPr
           stagger={0.05}
           key={`${props.key}-title`}
           text={props.title}
-          className='text-2xl font-bold md:text-4xl'
+          className='text-4xl font-bold md:text-6xl'
         />
 
         <motion.div
@@ -88,8 +88,8 @@ export default function HeroProject({ orientation, tags = [], ...props }: HeroPr
           } flex w-full flex-row flex-wrap gap-2`}
         >
           <p
-            className='shadow-relaxed  h-full w-5/6 rounded
-          bg-sepia-200 p-4 text-base transition-colors duration-500 dark:bg-carbon-800 md:text-base lg:w-full'
+            className='shadow-relaxed h-full w-5/6 rounded
+          bg-sepia-200 p-4 text-base transition-colors duration-500 dark:bg-carbon-800 sm:text-lg md:text-xl lg:w-full'
           >
             {props.description}
           </p>

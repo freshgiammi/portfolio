@@ -4,12 +4,25 @@
 @tailwind components;
 @tailwind utilities;
 
+/* === VARIABLES === */
+:root {
+  --custom-scale: 2;
+  --navbar-height: 6rem;
+}
+
+/* This represents 'sm' breakpoint */
+@media (min-width: 640px) {
+  :root {
+    --custom-scale: 5;
+  }
+}
+
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
-    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: Mukta, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -21,6 +34,25 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+.cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 16px;
+  z-index: 999;
+  pointer-events: none;
+  @apply border bg-amber-700/30 dark:bg-amber-300/30;
+}
+
+/* Deactivate custom cursor on mobile */
+@media (pointer: none), (pointer: coarse) {
+  .cursor {
+    display: none;
+  }
 }
 
 /* === MARGIN HELPERS AND FLEXBOXES === */
@@ -39,6 +71,10 @@ a {
   flex-direction: column;
 }
 
+.section-common {
+  @apply mx-4 space-y-20 py-6 transition-all duration-500 sm:mx-10 lg:space-y-40;
+}
+
 /* === NAVBAR === */
 
 .sticky-navbar {
@@ -51,7 +87,7 @@ a {
 
 .sticky-navbar > div {
   position: relative;
-  height: auto;
+  height: var(--navbar-height);
 }
 
 /* === Hamburger Menu animation. Credits: Mikael Ainalem - https://codepen.io/ainalem/pen/LJYRxz === */
@@ -102,41 +138,28 @@ a {
   padding: 80px 0;
 }
 
-.page-item a {
-  position: relative;
-  transition-duration: 0.25s;
+/* This is an underline effect for anchor/Link elements */
+.underline-custom {
+  border-bottom-width: 0;
+  background-size: 0 3px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.25s ease-in-out;
+  @apply bg-gradient-to-r from-amber-800/30 to-amber-800/30 dark:from-amber-300/30 dark:to-amber-300/30;
 }
 
-.page-item a.active::after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  bottom: 0;
-  left: 0;
-  transform: scaleX(1);
+.underline-custom:hover,
+.underline-custom.active {
+  background-size: 100% 3px;
 }
 
-.page-item a:not(.active)::after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 1px;
-  bottom: 0;
-  left: 0;
-  transform: scaleX(0);
-  transform-origin: bottom left;
-  transition: transform 0.3s ease-in-out;
-}
-
-.page-item a:not(.active):hover::after {
-  transform: scaleX(1);
-}
-
-@layer utilities {
-  .hero-full {
-    height: calc(100vh - 6rem); /* 6rem = navbar height, sorta */
-  }
+/* This creates a h-50% background, kind of like an highlighter works */
+.highlighted {
+  border-bottom-width: 0;
+  background-size: 100% 50%;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  @apply bg-gradient-to-r from-amber-800/[.15] to-amber-800/[.15] dark:from-amber-300/10 dark:to-amber-300/10;
 }
 
 .paragraph-divider::after {
@@ -151,4 +174,86 @@ a {
 
 .shadow-relaxed {
   box-shadow: 1rem 1rem 1rem -0.5rem rgb(0 0 0 / 5%);
+}
+
+.img-squareshadow {
+  box-shadow: 12px 12px 0 0 rgb(116 70 70 / 20%);
+  @apply transition-all duration-200;
+}
+
+.img-squareshadow:hover {
+  box-shadow: 6px 6px 0 0 rgb(116 70 70 / 40%);
+  @apply transition-all duration-200;
+}
+
+.vignette {
+  background: linear-gradient(rgba(0 0 0 / 25%) 0%, rgba(0 0 0 / 75%) 100%) 0% 0% / 100%;
+  transition: opacity 0.75s ease-in-out;
+}
+
+@media (min-width: 768px) {
+  /* md breakpoint and above */
+  .vignette {
+    background: linear-gradient(to left, rgba(0 0 0 / 25%) 0%, rgba(0 0 0 / 75%) 100%) 0% 0% / 200% 100%;
+    transition: opacity 0.75s ease-in-out;
+  }
+}
+
+.vignette:hover {
+  opacity: 0.8;
+}
+
+.hero-full {
+  min-height: 100vh; /* Fallback if dynamic viewport units are not supported (< Chrome 108, Firefox 101, Safari 15.4) */
+  min-height: 100lvh;
+}
+
+.outline {
+  color: rgba(0 0 0 / 0%);
+  -webkit-text-stroke: 2px black;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizelegibility;
+}
+
+/* === ANIMATIONS === */
+
+.wave {
+  animation-name: wave-animation; /* Refers to the name of your @keyframes element below */
+  animation-duration: 2.5s; /* Change to speed up or slow down */
+  animation-iteration-count: infinite; /* Never stop waving :) */
+  transform-origin: 70% 70%; /* Pivot around the bottom-left palm */
+  transform: scale(4);
+}
+
+@keyframes wave-animation {
+  0% {
+    transform: rotate(0deg) scale(var(--custom-scale));
+  }
+
+  10% {
+    transform: rotate(14deg) scale(var(--custom-scale));
+  } /* The following five values can be played with to make the waving more or less extreme */
+  20% {
+    transform: rotate(-8deg) scale(var(--custom-scale));
+  }
+
+  30% {
+    transform: rotate(14deg) scale(var(--custom-scale));
+  }
+
+  40% {
+    transform: rotate(-4deg) scale(var(--custom-scale));
+  }
+
+  50% {
+    transform: rotate(10deg) scale(var(--custom-scale));
+  }
+
+  60% {
+    transform: rotate(0deg) scale(var(--custom-scale));
+  } /* Reset for the last half to pause */
+  100% {
+    transform: rotate(0deg) scale(var(--custom-scale));
+  }
 }

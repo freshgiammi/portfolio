@@ -7,6 +7,7 @@ module.exports = {
   theme: {
     fontFamily: {
       'ibm-mono': ['IBM Plex Mono', 'monospace'],
+      fraunces: ['Fraunces', 'serif'],
     },
     extend: {
       colors: {
@@ -22,7 +23,7 @@ module.exports = {
         'sepia-100': '#FCFBFA',
         // Carbon
         'carbon-900': '#131212',
-        'carbon-800': '#2b2a2a',
+        'carbon-800': '#1f1e1e',
         'carbon-700': '#424141',
         'carbon-600': '#5a5959',
         'carbon-500': '#717171',

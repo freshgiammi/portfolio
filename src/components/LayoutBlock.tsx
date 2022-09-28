@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { motion, Variants } from 'framer-motion';
+import { HTMLMotionProps, motion, Variants } from 'framer-motion';
 import Footer from './Footer';
 
 interface IMeta {
@@ -11,7 +11,7 @@ interface IMeta {
   type?: string;
 }
 
-interface Props {
+interface Props extends HTMLMotionProps<'main'> {
   children?: ReactNode;
   customMeta?: IMeta;
 }
@@ -42,7 +42,7 @@ const variants: Variants = {
  * Shows a Navbar, a Footer, and a children between them..
  * @param {IMeta}  - `title` - The title of the page.
  */
-export default function LayoutBlock({ children, ...customMeta }: Props) {
+export default function LayoutBlock({ children, customMeta, ...props }: Props) {
   const router = useRouter();
 
   const meta: IMeta = {
@@ -67,7 +67,7 @@ export default function LayoutBlock({ children, ...customMeta }: Props) {
         <meta property='og:title' content={meta.title} />
         <meta property='og:image' content={meta.image} />
       </Head>
-      <motion.main variants={variants} initial='hidden' animate='enter' exit='exit' className='pt-24'>
+      <motion.main variants={variants} initial='hidden' animate='enter' exit='exit' {...props}>
         {children}
         <Footer />
       </motion.main>

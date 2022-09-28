@@ -58,11 +58,11 @@ const AnimatedText = ({ text, duration = 0.75, stagger = 0.05, delay = 0, ...pro
     words.push(word.split(''));
   }
 
-  // Add a whitespace ("\u00A0") to the end of each word (except the last one).
+  // Add a whitespace ("\u00A0") to the start of each word (except the first one).
   // eslint-disable-next-line consistent-return
   words.forEach((word: string[], index: number) => {
-    if (index !== words.length - 1) {
-      return word.push('\u00A0');
+    if (index !== 0) {
+      return word.unshift('\u00A0');
     }
   });
 

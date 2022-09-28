@@ -7,6 +7,8 @@ import Image from 'next/future/image';
 import Link from 'next/link';
 import propic from '~/img/propic.jpg';
 
+// ! Ooooouh something ugly is going on in the LayoutBlock props...
+
 const About: NextPage = () => {
   const aboutVariants: Variants = {
     hidden: { opacity: 0, x: -100, transition: { delay: 0.5, duration: 1, ease: 'easeInOut' } },
@@ -29,10 +31,10 @@ const About: NextPage = () => {
   };
 
   return (
-    <LayoutBlock>
+    <LayoutBlock className='pt-[var(--navbar-height)]'>
       {/* Hero - Section */}
       <motion.section variants={container} initial='hidden' animate='show' className='flex-center-column'>
-        <motion.div variants={item} className='grid-row-1 grid grid-cols-1'>
+        <motion.div variants={item} className='grid-row-1 grid grid-cols-1 sm:pt-10'>
           <div className='col-end-2 row-end-2 space-y-3 self-center'>
             <AnimatedText
               key='aboutme-hero'
@@ -49,17 +51,16 @@ const About: NextPage = () => {
         </motion.div>
         <motion.div
           variants={item}
-          className='mx-4 grid h-full grid-cols-1 gap-4 self-center py-6 text-center 
-          lg:grid-cols-2 lg:text-left xl:mx-40'
+          className='mx-4 grid h-full grid-cols-1 gap-8 self-center py-6 text-center 
+          sm:py-24 lg:grid-cols-2 lg:text-left xl:mx-40'
         >
-          <div className='row-[1_/_1] lg:col-[1_/_2]'>
+          <div className='row-[1_/_1] self-center lg:col-[1_/_2]'>
             <Image
               alt='p.alt'
               src={propic}
               sizes='100vw'
-              className='mx-auto h-auto max-w-[200px] border-4 
-            border-amber-800/30 object-cover shadow brightness-90 dark:border-amber-300/30 
-            md:max-w-[300px] lg:max-w-[400px] xl:max-w-[500px]'
+              className='img-squareshadow mx-auto h-auto max-w-[200px] rounded object-cover shadow brightness-90
+            md:max-w-[300px] lg:max-w-[400px]'
             />
           </div>
           <motion.div
@@ -79,19 +80,19 @@ const About: NextPage = () => {
             <motion.p className='px-3 md:px-0'>
               {`Born in `}
               <Link href='https://en.wikipedia.org/wiki/Pesaro' scroll={false}>
-                <span className='text-amber-800/70 underline dark:text-amber-300/70'>Pesaro</span>
+                <a className='highlighted font-semibold text-amber-800/70 dark:text-amber-300/70'>Pesaro</a>
               </Link>
               {` but (self) made in Milan. I graduated with 102/110 in `}
               <Link href='https://www.unimi.it/en/education/computer-science-new-media-communications' scroll={false}>
-                <span className='text-amber-800/70 underline dark:text-amber-300/70'>
+                <a className='highlighted font-semibold text-amber-800/70 dark:text-amber-300/70'>
                   Computer Science for New Media Communications
-                </span>
+                </a>
               </Link>
               {` at Università Degli Studi di Milano, with a thesis on `}
               <Link href='https://github.com/freshgiammi/tesi' scroll={false}>
-                <span className='text-amber-800/70 underline dark:text-amber-300/70'>
+                <a className='highlighted font-semibold text-amber-800/70 dark:text-amber-300/70'>
                   an Agent-based Epidemic Model based on Multilayer Networks
-                </span>
+                </a>
               </Link>
               {`.`}
             </motion.p>

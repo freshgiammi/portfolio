@@ -3,9 +3,10 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { ThemeProvider } from 'next-themes';
 import Navbar from '@/components/Navbar';
-import { AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
 import { ParallaxProvider } from 'react-scroll-parallax';
+import useMousePosition from '@/hooks/animated/useMousePosition';
 
 // This is the root component. It wraps the whole app ina ThemeProvider to enable dark mode switching.
 // It also contains the Navbar and the background layer, since these are always present on every page.
@@ -14,6 +15,7 @@ import { ParallaxProvider } from 'react-scroll-parallax';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
+  const { x, y } = useMousePosition(-100, (a: number) => a - 10);
 
   if (router.pathname === '/404')
     return (
@@ -37,10 +39,24 @@ function MyApp({ Component, pageProps }: AppProps) {
         {/* Navbar component (contains motion elements) */}
         <Navbar />
         {/* Actual page content. Component must be a motion element to enable transitions. */}
-        <AnimatePresence mode='wait'>
+        <AnimatePresence
+          mode='wait'
+          onExitComplete={() => {
+            if (typeof window !== 'undefined') {
+              window.scrollTo({ top: 0 });
+            }
+          }}
+        >
           <Component {...pageProps} key={router.pathname} />{' '}
           {/* Key is used to identify the component and allow transitions. */}
         </AnimatePresence>
+        <motion.div
+          className='cursor'
+          style={{
+            translateX: x,
+            translateY: y,
+          }}
+        />
       </ThemeProvider>
     </ParallaxProvider>
   );

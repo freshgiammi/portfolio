@@ -17,6 +17,19 @@
   }
 }
 
+/* Disable highlighting on anchor touch on mobile */
+@media (pointer: none), (pointer: coarse) {
+  a {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
+  }
+
+  a:focus {
+    outline: none !important;
+  }
+}
+
 html,
 body {
   padding: 0;
@@ -235,6 +248,13 @@ a {
 
 .btn-animatefill:hover::after {
   width: 100%;
+}
+
+/* Make buttons be already filled on mobile */
+@media (pointer: none), (pointer: coarse) {
+  .btn-animatefill::after {
+    width: 100%;
+  }
 }
 
 /* === ANIMATIONS === */

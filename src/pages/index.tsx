@@ -154,8 +154,7 @@ const Home: NextPage = () => {
               alt='p.alt'
               src={heroPropic}
               sizes='100vw'
-              className='img-squareshadow mx-auto w-1/2 rounded object-cover opacity-10 shadow 
-              dark:opacity-20 lg:w-5/6 lg:opacity-100'
+              className='img-squareshadow mx-auto w-1/2 rounded object-cover opacity-10 shadow  lg:w-5/6 lg:opacity-100'
             />
           </motion.div>
         </motion.div>

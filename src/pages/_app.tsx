@@ -2,7 +2,7 @@ import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { ThemeProvider } from 'next-themes';
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/layouts/Navbar';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
 import { ParallaxProvider } from 'react-scroll-parallax';

@@ -72,7 +72,7 @@ a {
 }
 
 .section-common {
-  @apply mx-4 space-y-20 py-6 transition-all duration-500 sm:mx-10 lg:space-y-40;
+  @apply space-y-20 px-4 py-6 transition-all duration-500 sm:px-10 lg:space-y-40;
 }
 
 /* === NAVBAR === */
@@ -208,12 +208,33 @@ a {
   min-height: 100lvh;
 }
 
-.outline {
-  color: rgba(0 0 0 / 0%);
-  -webkit-text-stroke: 2px black;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizelegibility;
+.btn {
+  font-weight: 400;
+  border-width: 2px;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  margin: inherit; /* If wrapped in anchor element, this can be used to inherit values. Else, we can specify them inline. */
+  position: relative;
+  @apply shadow-relaxed border-carbon-900 text-lg text-carbon-900 transition-colors duration-500 dark:border-sepia-200 dark:text-sepia-300;
+}
+
+.btn::before,
+.btn::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  @apply transition-all duration-500;
+}
+
+.btn-animatefill::after {
+  height: 100%;
+  width: 0;
+  top: 0;
+  left: 0;
+}
+
+.btn-animatefill:hover::after {
+  width: 100%;
 }
 
 /* === ANIMATIONS === */

@@ -1,6 +1,6 @@
 import AnimatedText from '@/components/animated/AnimatedText';
 import AnimatedWave from '@/components/animated/AnimatedWave';
-import LayoutBlock from '@/components/LayoutBlock';
+import LayoutBlock from '@/components/layouts/LayoutBlock';
 import { motion, Variants } from 'framer-motion';
 import type { NextPage } from 'next';
 import Image from 'next/future/image';

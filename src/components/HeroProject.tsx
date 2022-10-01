@@ -43,7 +43,7 @@ export default function HeroProject({ orientation, tags = [], ...props }: HeroPr
     dark:text-carbon-100 xl:px-20'
     >
       <motion.div
-        className={`${orientation === 'right' ? 'lg:col-[1_/_10]' : 'lg:col-[4_/_13]'} 
+        className={`${orientation === 'right' ? 'lg:col-[1_/_9]' : 'lg:col-[5_/_13]'} 
         relative col-[1_/_13] lg:row-end-1`}
       >
         {/* An anchor element is needed to pass href to Link element. */}
@@ -57,7 +57,7 @@ export default function HeroProject({ orientation, tags = [], ...props }: HeroPr
       <motion.div
         ref={parallax.ref}
         className={`${
-          orientation === 'right' ? 'text-right lg:col-[8_/_13]' : 'text-left lg:col-[1_/_5]'
+          orientation === 'right' ? 'text-right lg:col-[9_/_13]' : 'text-left lg:col-[1_/_5]'
         } z-10 col-[1_/_13] space-y-3 self-center lg:row-end-1
 `}
       >
@@ -87,12 +87,7 @@ export default function HeroProject({ orientation, tags = [], ...props }: HeroPr
             orientation === 'right' ? 'justify-end' : 'justify-start'
           } flex w-full flex-row flex-wrap gap-2`}
         >
-          <p
-            className='shadow-relaxed h-full w-5/6 rounded
-          bg-sepia-200 p-4 text-base transition-colors duration-500 dark:bg-carbon-800 sm:text-lg md:text-xl lg:w-full'
-          >
-            {props.description}
-          </p>
+          <p className='h-full w-5/6 rounded text-base transition-colors duration-500'>{props.description}</p>
         </motion.div>
         <div
           className={`${orientation === 'right' ? 'justify-end' : 'justify-start'} flex flex-row flex-wrap gap-2 

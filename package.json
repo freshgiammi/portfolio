@@ -16,7 +16,7 @@
     "start": "next start",
     "lint": "next lint && stylelint '**/*.css'",
     "lint:fix": "next lint --fix && stylelint '**/*.css' --fix",
-    "lint:strict": "next lint --max-warnings=0",
+    "lint:strict": "next lint --max-warnings=0 && stylelint '**/*.css'",
     "prettify": "prettier -w .",
     "prettify:check": "prettier -c .",
     "prepare": "husky install",

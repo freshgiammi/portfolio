@@ -14,6 +14,7 @@ import Image from 'next/future/image';
 import heroPropic from '~/img/hero_propic.jpg';
 import Button from '@/components/Button';
 import Link from 'next/link';
+import { HighlightedText } from '@/components/animated/HighlightedText';
 
 const Home: NextPage = () => {
   const { x, y } = useMousePosition(0, (a: number) => a / 50);
@@ -60,35 +61,6 @@ const Home: NextPage = () => {
     },
   ];
 
-  const highlightedSlideIn: Variants = {
-    hidden: { backgroundSize: '0% 50%' },
-    show: { backgroundSize: '100% 50%', transition: { delay: 1, duration: 2, ease: 'easeInOut' } },
-  };
-
-  const animatedHighlighted = (text: string) => {
-    return (
-      <motion.span
-        className='highlighted font-fraunces font-bold text-amber-800/70 dark:text-amber-300/70'
-        initial='hidden'
-        whileInView='show'
-        viewport={{ once: true }}
-        variants={highlightedSlideIn}
-      >
-        {text}
-      </motion.span>
-    );
-  };
-
-  const heroAnim: Variants = {
-    hidden: { opacity: 0, y: 100 },
-    show: { opacity: 1, y: 0, transition: { duration: 1, ease: 'easeInOut' } },
-  };
-
-  const dividerAnim: Variants = {
-    hidden: { opacity: 0, width: 0 },
-    show: { opacity: 1, width: '100%', transition: { duration: 2, ease: 'easeInOut' } },
-  };
-
   const heroTopAnim: Variants = {
     hidden: { opacity: 0 },
     show: {
@@ -97,6 +69,11 @@ const Home: NextPage = () => {
         staggerChildren: 0.4,
       },
     },
+  };
+
+  const scrollInVIew: Variants = {
+    hidden: { opacity: 0, y: 100 },
+    show: { opacity: 1, y: 0, transition: { duration: 1, ease: 'easeInOut' } },
   };
 
   return (
@@ -116,10 +93,10 @@ const Home: NextPage = () => {
             style={{ y, x }}
           >
             <motion.div className='flex-center-row overflow-hidden'>
-              <motion.p variants={heroAnim} className='text-center font-bold'>
+              <motion.p variants={scrollInVIew} className='text-center font-bold'>
                 {"Hi, I'm freshgiammi."}
                 <motion.span
-                  className='inline-block h-6 md:h-10'
+                  className='inline-block h-6 md:h-12'
                   animate={{ rotate: -360 }}
                   transition={{ duration: 2, loop: Infinity, ease: 'linear' }}
                 >
@@ -128,25 +105,28 @@ const Home: NextPage = () => {
               </motion.p>
             </motion.div>
             <motion.div className='flex-center-row overflow-hidden'>
-              <motion.p variants={heroAnim} className='text-center text-2xl font-light md:text-5xl'>
+              <motion.p variants={scrollInVIew} className='text-center text-2xl font-light md:text-5xl'>
                 {"I'm a fullstack developer & web designer based in "}
-                {animatedHighlighted('Milan, Italy')}
+                <HighlightedText>{'Milan, Italy'}</HighlightedText>
                 {'. '}
               </motion.p>
             </motion.div>
             <motion.div
-              variants={dividerAnim}
+              variants={{
+                hidden: { opacity: 0, width: 0 },
+                show: { opacity: 1, width: '100%', transition: { duration: 2, ease: 'easeInOut' } },
+              }}
               className='paragraph-divider  
             after:m-0 after:bg-amber-800/30 dark:after:bg-amber-300/30'
             />
             <motion.div className='flex-center-row overflow-hidden'>
-              <motion.p variants={heroAnim} className='text-center text-sm font-light md:text-base'>
+              <motion.p variants={scrollInVIew} className='text-center text-sm font-light md:text-base'>
                 {"* Technically speaking I'm just a website, but that's who built me."}
               </motion.p>
             </motion.div>
           </motion.div>
           <motion.div
-            variants={heroAnim}
+            variants={scrollInVIew}
             className='col-[1_/_13] row-end-1 space-y-3 lg:col-[9_/_13]'
             style={{ y: yPic }}
           >
@@ -175,17 +155,38 @@ const Home: NextPage = () => {
         md:text-6xl xl:px-20'
         >
           <div className='grid-row-1 grid grid-cols-12'>
-            <div className='col-[1_/_13] row-end-2 mx-4 space-y-14 sm:col-[1_/_11] md:mx-10 md:space-y-20'>
-              <ScrollLinkedOpacityText className='w-full text-carbon-800 dark:text-zinc-100'>
+            <div
+              className='col-[1_/_13] row-end-2 mx-4 space-y-14 overflow-hidden sm:col-[1_/_10] 
+            md:mx-10 md:space-y-20'
+            >
+              <ScrollLinkedOpacityText
+                initial='hidden'
+                whileInView='show'
+                viewport={{ once: true }}
+                variants={{
+                  hidden: { y: 100 },
+                  show: { y: 0, transition: { duration: 1, ease: 'easeInOut' } },
+                }}
+                className='w-full text-carbon-800 dark:text-zinc-100'
+              >
                 {'I develop digital products, create '}
-                {animatedHighlighted('experiences')}
+                <HighlightedText>{'experiences'}</HighlightedText>
                 {' and I have a thing for '}
-                {animatedHighlighted('intuitively implemented')}
+                <HighlightedText>{'intuitively implemented'}</HighlightedText>
                 {' UX'}.
               </ScrollLinkedOpacityText>
-              <ScrollLinkedOpacityText className='w-full text-carbon-800 dark:text-zinc-100'>
+              <ScrollLinkedOpacityText
+                initial='hidden'
+                whileInView='show'
+                viewport={{ once: true }}
+                variants={{
+                  hidden: { y: 100 },
+                  show: { y: 0, transition: { duration: 1, ease: 'easeInOut' } },
+                }}
+                className='w-full text-carbon-800 dark:text-zinc-100'
+              >
                 {'Currently working at '}
-                {animatedHighlighted('Deloitte Risk Advisory')}
+                <HighlightedText>{'Deloitte Risk Advisory'}</HighlightedText>
                 {', where I develop custom solutions for clients while leading teams across different fields.'}
               </ScrollLinkedOpacityText>
               <Link href='/about' passHref scroll={false}>
@@ -222,11 +223,32 @@ const Home: NextPage = () => {
           <h2 className='text-amber-800/60 dark:text-amber-300/60'>03.</h2>
           <h2 className='highlighted'>Contact</h2>
         </div>
-        <motion.div className='h-fulldark:text-zinc-100 text-center text-4xl font-medium text-carbon-800 md:text-6xl'>
-          <p className='w-full text-carbon-800 dark:text-zinc-100'>
-            {'Have an idea already? Send me a message and '}
-            {animatedHighlighted("let's jam!")}
-          </p>
+        <motion.div
+          initial='hidden'
+          whileInView='show'
+          viewport={{ once: true }}
+          variants={heroTopAnim}
+          className='grid h-full grid-cols-12 grid-rows-2 gap-4 text-center text-3xl font-medium text-carbon-800 
+            dark:text-zinc-100 md:text-5xl'
+        >
+          <div className='col-[1_/_13] row-end-1 self-center overflow-hidden'>
+            <motion.p variants={scrollInVIew} className='text-carbon-800 dark:text-zinc-100'>
+              {'Have an idea already?'}
+              <HighlightedText>{"Let's jam."}</HighlightedText>
+            </motion.p>
+          </div>
+          <div className='col-[1_/_13] row-end-2 flex justify-center overflow-hidden'>
+            <Link href='mailto:rengucci.gianmarco@gmail.com' passHref>
+              <a>
+                <motion.p
+                  variants={scrollInVIew}
+                  className='underline-custom w-fit text-lg text-carbon-500 dark:text-zinc-300 md:text-3xl'
+                >
+                  {'rengucci.gianmarco@gmail.com'}
+                </motion.p>
+              </a>
+            </Link>
+          </div>
         </motion.div>
       </motion.section>
     </LayoutBlock>

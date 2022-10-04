@@ -134,7 +134,7 @@ const Home: NextPage = () => {
               alt='p.alt'
               src={heroPropic}
               sizes='100vw'
-              className='img-squareshadow mx-auto w-1/2 rounded object-cover opacity-10 shadow  lg:w-5/6 lg:opacity-100'
+              className='img-squareshadow mx-auto w-1/2 rounded object-cover opacity-10 shadow lg:w-5/6 lg:opacity-100'
             />
           </motion.div>
         </motion.div>
@@ -152,12 +152,12 @@ const Home: NextPage = () => {
         <motion.div
           className='flex flex-col items-center justify-center
         text-3xl font-medium tracking-tight text-carbon-800 dark:text-zinc-100 
-        md:text-6xl xl:px-20'
+        md:text-5xl xl:px-20 xl:text-6xl'
         >
           <div className='grid-row-1 grid grid-cols-12'>
             <div
-              className='col-[1_/_13] row-end-2 mx-4 space-y-14 overflow-hidden sm:col-[1_/_10] 
-            md:mx-10 md:space-y-20'
+              className='col-[1_/_13] row-end-2 mx-4 space-y-14 overflow-hidden pb-4 
+            sm:col-[1_/_10] md:mx-10 md:space-y-20'
             >
               <ScrollLinkedOpacityText
                 initial='hidden'
@@ -191,7 +191,7 @@ const Home: NextPage = () => {
               </ScrollLinkedOpacityText>
               <Link href='/about' passHref scroll={false}>
                 <a>
-                  <Button>{'Want to know more?'}</Button>
+                  <Button className='img-squareshadow'>{'Want to know more?'}</Button>
                 </a>
               </Link>
             </div>

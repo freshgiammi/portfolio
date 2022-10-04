@@ -39,25 +39,28 @@ export default function HeroProject({ orientation, tags = [], ...props }: HeroPr
 
   return (
     <motion.div
-      className='grid grid-cols-12 gap-4 text-carbon-800 transition-all duration-500 
-    dark:text-carbon-100 xl:px-20'
+      className='grid grid-cols-12 gap-4 px-4 text-carbon-800 transition-all 
+    duration-500 dark:text-carbon-100 lg:px-20 xl:px-44'
     >
       <motion.div
-        className={`${orientation === 'right' ? 'lg:col-[1_/_9]' : 'lg:col-[5_/_13]'} 
+        className={`${orientation === 'right' ? 'lg:col-[1_/_7]' : 'lg:col-[7_/_13]'} 
         relative col-[1_/_13] lg:row-end-1`}
       >
         {/* An anchor element is needed to pass href to Link element. */}
         <Link href={props.url} passHref scroll={false}>
           <a>
-            <Image alt='p.alt' src={props.src} className='shadow-relaxed cursor-pointer'></Image>
+            <Image
+              alt='p.alt'
+              src={props.src}
+              className='img-squareshadow cursor-pointer brightness-75 hover:brightness-100'
+            ></Image>
           </a>
         </Link>
-        <div className='vignette absolute inset-0'></div>
       </motion.div>
       <motion.div
         ref={parallax.ref}
         className={`${
-          orientation === 'right' ? 'text-right lg:col-[9_/_13]' : 'text-left lg:col-[1_/_5]'
+          orientation === 'right' ? 'text-right lg:col-[7_/_13]' : 'text-left lg:col-[1_/_7]'
         } z-10 col-[1_/_13] space-y-3 self-center lg:row-end-1
 `}
       >
@@ -78,7 +81,7 @@ export default function HeroProject({ orientation, tags = [], ...props }: HeroPr
           stagger={0.05}
           key={`${props.key}-title`}
           text={props.title}
-          className='text-4xl font-bold md:text-6xl'
+          className='text-4xl font-bold md:text-5xl xl:text-6xl'
         />
 
         <motion.div
@@ -87,7 +90,7 @@ export default function HeroProject({ orientation, tags = [], ...props }: HeroPr
             orientation === 'right' ? 'justify-end' : 'justify-start'
           } flex w-full flex-row flex-wrap gap-2`}
         >
-          <p className='h-full w-5/6 rounded text-base transition-colors duration-500'>{props.description}</p>
+          <p className='h-full w-5/6 text-base transition-colors duration-500'>{props.description}</p>
         </motion.div>
         <div
           className={`${orientation === 'right' ? 'justify-end' : 'justify-start'} flex flex-row flex-wrap gap-2 
@@ -98,8 +101,7 @@ export default function HeroProject({ orientation, tags = [], ...props }: HeroPr
               <motion.div
                 {...animation}
                 key={t}
-                /* Keep an eye out: shadow-relaxed  can trigger mobile lag. */
-                className='shadow-relaxed  rounded bg-sepia-200 py-1 px-2 font-ibm-mono 
+                className='shadow-relaxed rounded bg-sepia-200 py-1 px-2 font-ibm-mono 
             text-xs transition-colors duration-500 dark:bg-carbon-800'
               >
                 {t}

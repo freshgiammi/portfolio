@@ -137,7 +137,7 @@ export default function Navbar() {
         p-5 transition-colors duration-500 dark:bg-carbon-900 md:flex-row md:px-28`}
       >
         {/* Logo / Home / Text */}
-        <div className='z-10 flex flex-col' style={{}}>
+        <div className='flex-center-row z-10' style={{}}>
           <Link href='/' scroll={false}>
             <a
               onClick={() => {

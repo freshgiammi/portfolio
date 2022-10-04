@@ -189,14 +189,24 @@ a {
   box-shadow: 1rem 1rem 1rem -0.5rem rgb(0 0 0 / 5%);
 }
 
+.dark .img-squareshadow {
+  box-shadow: 12px 12px 0 0 rgb(252 211 77 / 20%);
+  @apply transition-all duration-500;
+}
+
+.dark .img-squareshadow:hover {
+  box-shadow: 6px 6px 0 0 rgb(252 211 77 / 20%);
+  @apply transition-all duration-500;
+}
+
 .img-squareshadow {
   box-shadow: 12px 12px 0 0 rgb(116 70 70 / 20%);
-  @apply transition-all duration-200;
+  @apply transition-all duration-500;
 }
 
 .img-squareshadow:hover {
   box-shadow: 6px 6px 0 0 rgb(116 70 70 / 40%);
-  @apply transition-all duration-200;
+  @apply transition-all duration-500;
 }
 
 .vignette {
@@ -228,7 +238,7 @@ a {
   border-radius: 0.25rem;
   margin: inherit; /* If wrapped in anchor element, this can be used to inherit values. Else, we can specify them inline. */
   position: relative;
-  @apply shadow-relaxed border-carbon-900 text-lg text-carbon-900 transition-colors duration-500 dark:border-sepia-200 dark:text-sepia-300;
+  @apply border-carbon-900 text-lg text-carbon-900 transition-all duration-500 dark:border-sepia-200 dark:text-sepia-300;
 }
 
 .btn::before,

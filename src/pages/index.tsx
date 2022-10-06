@@ -7,7 +7,6 @@ import Superchargednextimg from '~/img/superchargednext.png';
 
 import DownArrow from '@/components/animated/DownArrow';
 import HeroProject, { HeroProjectProps } from '@/components/HeroProject';
-import { ScrollLinkedOpacityText } from '@/components/animated/ScrollLinkedOpacityText';
 import HandWave from '~/assets/handwave.svg';
 import useMousePosition from '@/hooks/animated/useMousePosition';
 import Image from 'next/future/image';
@@ -160,14 +159,11 @@ const Home: NextPage = () => {
               className='col-[1_/_13] row-end-2 mx-4 space-y-14 overflow-hidden pb-4 
             sm:col-[1_/_10] md:mx-10 md:space-y-20'
             >
-              <ScrollLinkedOpacityText
+              <motion.h1
                 initial='hidden'
                 whileInView='show'
                 viewport={{ once: true }}
-                variants={{
-                  hidden: { y: 100 },
-                  show: { y: 0, transition: { duration: 1, ease: 'easeInOut' } },
-                }}
+                variants={scrollInVIew}
                 className='w-full text-carbon-800 dark:text-zinc-100'
               >
                 {'I develop digital products, create '}
@@ -175,21 +171,18 @@ const Home: NextPage = () => {
                 {' and I have a thing for '}
                 <HighlightedText>{'intuitively implemented'}</HighlightedText>
                 {' UX'}.
-              </ScrollLinkedOpacityText>
-              <ScrollLinkedOpacityText
+              </motion.h1>
+              <motion.h1
                 initial='hidden'
                 whileInView='show'
                 viewport={{ once: true }}
-                variants={{
-                  hidden: { y: 100 },
-                  show: { y: 0, transition: { duration: 1, ease: 'easeInOut' } },
-                }}
+                variants={scrollInVIew}
                 className='w-full text-carbon-800 dark:text-zinc-100'
               >
                 {'Currently working at '}
                 <HighlightedText>{'Deloitte Risk Advisory'}</HighlightedText>
                 {', where I develop custom solutions for clients while leading teams across different fields.'}
-              </ScrollLinkedOpacityText>
+              </motion.h1>
               <Link href='/about' passHref scroll={false}>
                 <a>
                   <Button className='img-squareshadow'>{'Want to know more?'}</Button>

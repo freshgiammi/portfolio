@@ -1,6 +1,5 @@
 import React from 'react';
-import { HTMLMotionProps, motion, MotionProps } from 'framer-motion';
-import { CustomVariants } from '@/interfaces/animationHelpers';
+import { HTMLMotionProps, motion, MotionProps, Variants } from 'framer-motion';
 
 // Adapted from: https://codesandbox.io/s/framer-motion-responsive-text-animation-forked-z71c0o?file=/src/App.js:795-837
 // ! See if transition can be added to the props for a dynamic usage.
@@ -37,7 +36,7 @@ export function calculateStaggeredDelay(itemlist: AnimatedTextProps[], index: nu
  */
 const AnimatedText = ({ text, duration = 0.75, stagger = 0.05, delay = 0, ...props }: AnimatedTextProps) => {
   // Framer Motion variant object, for controlling character animation
-  const defaultAnimation: CustomVariants = {
+  const defaultAnimation: Variants = {
     hidden: {
       opacity: 0,
       y: '1em',

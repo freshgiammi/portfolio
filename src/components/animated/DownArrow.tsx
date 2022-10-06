@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { motion, SVGMotionProps, useAnimationControls } from 'framer-motion';
-import { CustomVariants } from '@/interfaces/animationHelpers';
+import { motion, SVGMotionProps, useAnimationControls, Variants } from 'framer-motion';
 
 // SVG Credits: https://iconic.app
 
@@ -29,7 +28,7 @@ const DownArrow = ({ delay = 3, ...props }: DownArrowProps) => {
   }, [controls]);
 
   // Default path variant animations. These will be used if no custom 'pathVariant' is provided.
-  const defaultPathVariant: CustomVariants = {
+  const defaultPathVariant: Variants = {
     hidden: {
       opacity: 0,
       y: -10,

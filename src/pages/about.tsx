@@ -1,6 +1,6 @@
 import AnimatedText from '@/components/animated/AnimatedText';
-import AnimatedWave from '@/components/animated/AnimatedWave';
 import LayoutBlock from '@/components/layouts/LayoutBlock';
+import useMousePosition from '@/hooks/animated/useMousePosition';
 import { motion, Variants } from 'framer-motion';
 import type { NextPage } from 'next';
 import Image from 'next/future/image';
@@ -10,6 +10,8 @@ import propic from '~/img/propic.jpg';
 // ! Ooooouh something ugly is going on in the LayoutBlock props...
 
 const About: NextPage = () => {
+  const { x, y } = useMousePosition(0, (a: number) => a / 100);
+
   const aboutVariants: Variants = {
     hidden: { opacity: 0, x: -100, transition: { delay: 0.5, duration: 1, ease: 'easeInOut' } },
     show: { opacity: 1, x: 0, transition: { delay: 0.5, duration: 1, ease: 'easeInOut' } },
@@ -33,26 +35,26 @@ const About: NextPage = () => {
   return (
     <LayoutBlock className='pt-[var(--navbar-height)]'>
       {/* Hero - Section */}
-      <motion.section variants={container} initial='hidden' animate='show' className='flex-center-column'>
-        <motion.div variants={item} className='grid-row-1 grid grid-cols-1 sm:pt-10'>
-          <div className='col-end-2 row-end-2 space-y-3 self-center'>
-            <AnimatedText
-              key='aboutme-hero'
-              text='About me'
-              className='text-center text-4xl font-bold text-carbon-800 dark:text-carbon-100 md:text-6xl'
-            />
-          </div>
-          <AnimatedWave
-            key='wave'
-            loop={true}
-            className='col-end-2 row-end-2 w-full self-center overflow-hidden opacity-20' // width: fit-content is not working on chrome mobile.
-            strokeStyle='stroke-amber-800 dark:stroke-amber-300'
+      <motion.section variants={container} initial='hidden' animate='show' className='flex-center-column md:mb-20'>
+        <motion.div className='col-end-2 row-end-2 space-y-3 self-center sm:pt-10' style={{ x, y }}>
+          <AnimatedText
+            key='aboutme-hero'
+            text='About me'
+            className='text-center text-4xl font-bold text-carbon-800 dark:text-carbon-100 md:text-6xl'
+          />
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, width: 0 },
+              show: { opacity: 1, width: '100%', transition: { duration: 2, ease: 'easeInOut' } },
+            }}
+            className='paragraph-divider  
+            after:m-0 after:bg-amber-800/30 dark:after:bg-amber-300/30'
           />
         </motion.div>
         <motion.div
           variants={item}
           className='mx-4 grid h-full grid-cols-1 gap-8 self-center py-6 text-center 
-          sm:py-24 lg:grid-cols-2 lg:text-left xl:mx-40'
+          sm:py-24 md:mx-20 lg:grid-cols-2 lg:text-left xl:mx-40'
         >
           <div className='row-[1_/_1] self-center lg:col-[1_/_2]'>
             <Image
@@ -132,6 +134,10 @@ const About: NextPage = () => {
             </div>
           </motion.div>
         </motion.div>
+      </motion.section>
+      {/* Skills - Section */}
+      <motion.section variants={container} initial='hidden' animate='show' className='flex-center-column md:mb-20'>
+        <Image alt='p.alt' src={propic} sizes='100vw' className='mx-auto h-40 w-full object-contain brightness-90' />
       </motion.section>
     </LayoutBlock>
   );

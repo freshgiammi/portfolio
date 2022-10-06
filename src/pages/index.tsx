@@ -144,7 +144,8 @@ const Home: NextPage = () => {
       <motion.section className='section-common'>
         <div
           className='paragraph-divider flex flex-row items-center justify-start space-x-2 
-        font-ibm-mono text-base font-semibold after:bg-amber-800/30 dark:after:bg-amber-300/30 md:text-2xl'
+        font-ibm-mono text-base font-semibold after:bg-amber-800/30 dark:after:bg-amber-300/30 md:text-2xl
+        '
         >
           <h2 className='text-amber-800/60 dark:text-amber-300/60'>01.</h2>
           <h2 className='highlighted'>About</h2>

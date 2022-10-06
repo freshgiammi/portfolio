@@ -1,9 +1,11 @@
-import { motion, MotionProps, Variants } from 'framer-motion';
+import { motion, MotionProps, useScroll, useTransform, Variants } from 'framer-motion';
 import Image, { StaticImageData } from 'next/future/image';
 import Link from 'next/link';
 
 import { useParallax } from 'react-scroll-parallax';
 import { UrlObject } from 'url';
+import Tilt from 'react-parallax-tilt';
+import { useRef } from 'react';
 import AnimatedText from './animated/AnimatedText';
 
 export interface HeroProjectProps {
@@ -37,30 +39,43 @@ export default function HeroProject({ orientation, tags = [], ...props }: HeroPr
     variants: projectVariants,
   };
 
+  const ref = useRef(null);
+
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'start start'],
+  });
+
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 1, 1]);
+
   return (
     <motion.div
+      ref={ref}
       className='grid grid-cols-12 gap-4 px-4 text-carbon-800 transition-all 
-    duration-500 dark:text-carbon-100 lg:px-20 xl:px-44'
+    duration-500 dark:text-carbon-100 lg:px-20 xl:px-44 '
+      style={{ opacity }}
     >
       <motion.div
-        className={`${orientation === 'right' ? 'lg:col-[1_/_7]' : 'lg:col-[7_/_13]'} 
+        className={`${orientation === 'right' ? 'lg:col-[1_/_8]' : 'lg:col-[6_/_13]'} 
         relative col-[1_/_13] lg:row-end-1`}
       >
-        {/* An anchor element is needed to pass href to Link element. */}
-        <Link href={props.url} passHref scroll={false}>
-          <a>
-            <Image
-              alt='p.alt'
-              src={props.src}
-              className='img-squareshadow cursor-pointer brightness-75 hover:brightness-100'
-            ></Image>
-          </a>
-        </Link>
+        <Tilt reset={false} tiltMaxAngleX={15} tiltMaxAngleY={15} transitionSpeed={2000} gyroscope={true}>
+          {/* An anchor element is needed to pass href to Link element. */}
+          <Link href={props.url} passHref scroll={false}>
+            <motion.div>
+              <Image
+                alt='p.alt'
+                src={props.src}
+                className='img-squareshadow cursor-pointer brightness-75 hover:brightness-100'
+              ></Image>
+            </motion.div>
+          </Link>
+        </Tilt>
       </motion.div>
       <motion.div
         ref={parallax.ref}
         className={`${
-          orientation === 'right' ? 'text-right lg:col-[7_/_13]' : 'text-left lg:col-[1_/_7]'
+          orientation === 'right' ? 'text-right lg:col-[8_/_13]' : 'text-left lg:col-[1_/_6]'
         } z-10 col-[1_/_13] space-y-3 self-center lg:row-end-1
 `}
       >

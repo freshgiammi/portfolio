@@ -98,7 +98,7 @@ export default function Navbar() {
       <button
         aria-label='Dark/Light Mode'
         type='button'
-        className={`h-10 w-10 rounded p-3 focus:outline-none ${btnProps}`}
+        className={`h-10 w-10 rounded border-0 p-3 focus:outline-none ${btnProps}`}
         onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
       >
         {mounted && (

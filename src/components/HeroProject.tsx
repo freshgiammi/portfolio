@@ -51,8 +51,8 @@ export default function HeroProject({ orientation, tags = [], ...props }: HeroPr
   return (
     <motion.div
       ref={ref}
-      className='grid grid-cols-12 gap-4 px-4 text-carbon-800 transition-all 
-    duration-500 dark:text-carbon-100 lg:px-20 xl:px-44 '
+      className='grid grid-cols-12 gap-4 px-4 pb-40 text-carbon-800 
+    transition-all duration-500 dark:text-carbon-100 lg:px-20 xl:px-44 '
       style={{ opacity }}
     >
       <motion.div

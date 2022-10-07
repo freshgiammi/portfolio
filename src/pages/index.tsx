@@ -143,8 +143,8 @@ const Home: NextPage = () => {
       <motion.section className='section-common'>
         <div
           className='paragraph-divider flex flex-row items-center justify-start space-x-2 
-        font-ibm-mono text-base font-semibold after:bg-amber-800/30 dark:after:bg-amber-300/30 md:text-2xl
-        '
+        pb-20 font-ibm-mono text-base font-semibold after:bg-amber-800/30
+        dark:after:bg-amber-300/30 md:justify-center'
         >
           <h2 className='text-amber-800/60 dark:text-amber-300/60'>01.</h2>
           <h2 className='highlighted'>About</h2>
@@ -152,7 +152,7 @@ const Home: NextPage = () => {
         <motion.div
           className='flex flex-col items-center justify-center
         text-3xl font-medium tracking-tight text-carbon-800 dark:text-zinc-100 
-        md:text-5xl xl:px-20 xl:text-6xl'
+        md:text-5xl xl:px-20 xl:text-4xl '
         >
           <div className='grid-row-1 grid grid-cols-12'>
             <div
@@ -199,7 +199,7 @@ const Home: NextPage = () => {
       <motion.section className='section-common my-6 md:my-20'>
         <div
           className='paragraph-divider flex flex-row items-center justify-start space-x-2 
-        font-ibm-mono text-base font-semibold after:bg-amber-800/30 dark:after:bg-amber-300/30 md:text-2xl'
+        pb-20 font-ibm-mono text-base font-semibold after:bg-amber-800/30 dark:after:bg-amber-300/30 md:text-2xl'
         >
           <h2 className='text-amber-800/60 dark:text-amber-300/60'>02.</h2>
           <h2 className='highlighted'>Projects</h2>
@@ -212,7 +212,7 @@ const Home: NextPage = () => {
       <motion.section className='section-common mb-6 md:mb-20'>
         <div
           className='paragraph-divider flex flex-row items-center justify-start space-x-2 
-        font-ibm-mono text-base font-semibold after:bg-amber-800/30 dark:after:bg-amber-300/30 md:text-2xl'
+        pb-20 font-ibm-mono text-base font-semibold after:bg-amber-800/30 dark:after:bg-amber-300/30 md:text-2xl'
         >
           <h2 className='text-amber-800/60 dark:text-amber-300/60'>03.</h2>
           <h2 className='highlighted'>Contact</h2>
@@ -225,13 +225,13 @@ const Home: NextPage = () => {
           className='grid h-full grid-cols-12 grid-rows-2 gap-4 text-center text-3xl font-medium text-carbon-800 
             dark:text-zinc-100 md:text-5xl'
         >
-          <div className='col-[1_/_13] row-end-1 self-center overflow-hidden'>
+          <div className='col-[1_/_13] self-center overflow-hidden'>
             <motion.p variants={scrollInVIew} className='text-carbon-800 dark:text-zinc-100'>
               {'Have an idea already?'}
               <HighlightedText>{"Let's jam."}</HighlightedText>
             </motion.p>
           </div>
-          <div className='col-[1_/_13] row-end-2 flex justify-center overflow-hidden'>
+          <div className='col-[1_/_13] flex justify-center overflow-hidden'>
             <Link href='mailto:rengucci.gianmarco@gmail.com' passHref>
               <a>
                 <motion.p

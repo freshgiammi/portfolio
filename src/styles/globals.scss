@@ -85,7 +85,7 @@ a {
 }
 
 .section-common {
-  @apply space-y-20 px-4 py-6 transition-all duration-500 sm:px-10 lg:space-y-40;
+  @apply px-4 py-6 transition-all duration-500 sm:px-10;
 }
 
 /* === NAVBAR === */
@@ -190,12 +190,12 @@ a {
 }
 
 .dark .img-squareshadow {
-  box-shadow: 12px 12px 0 0 rgb(252 211 77 / 20%);
+  box-shadow: 12px 12px 0 0 rgb(240 235 228 / 40%);
   @apply transition-all duration-500;
 }
 
 .dark .img-squareshadow:hover {
-  box-shadow: 6px 6px 0 0 rgb(252 211 77 / 20%);
+  box-shadow: 6px 6px 0 0 rgb(240 235 228 / 20%);
   @apply transition-all duration-500;
 }
 

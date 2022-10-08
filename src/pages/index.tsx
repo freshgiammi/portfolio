@@ -225,36 +225,6 @@ const Home: NextPage = () => {
       </motion.section>
       {/* Divider */}
       <Divider />
-      {/* Contact -  Section */}
-      <motion.section className='section-common my-12 md:my-20 lg:my-44'>
-        <motion.div
-          initial='hidden'
-          whileInView='visible'
-          viewport={{ once: true }}
-          variants={heroTopAnim}
-          className='grid h-full grid-cols-12 grid-rows-2 gap-4 text-center text-3xl font-medium text-carbon-800 
-            dark:text-zinc-100 md:text-7xl'
-        >
-          <div className='col-[1_/_13] self-center overflow-hidden'>
-            <motion.p variants={scrollInView} className='text-carbon-800 dark:text-zinc-100'>
-              {'Have an idea already?'}
-              <HighlightedText>{"Let's jam."}</HighlightedText>
-            </motion.p>
-          </div>
-          <div className='col-[1_/_13] flex justify-center overflow-hidden'>
-            <Link href='mailto:rengucci.gianmarco@gmail.com' passHref>
-              <a>
-                <motion.p
-                  variants={scrollInView}
-                  className='underline-custom w-fit text-lg text-carbon-500 dark:text-zinc-300 md:text-3xl'
-                >
-                  {'rengucci.gianmarco@gmail.com'}
-                </motion.p>
-              </a>
-            </Link>
-          </div>
-        </motion.div>
-      </motion.section>
     </LayoutBlock>
   );
 };

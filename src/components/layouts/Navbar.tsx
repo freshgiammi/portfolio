@@ -190,10 +190,9 @@ export default function Navbar() {
           </div>
         </motion.aside>
 
-        {/* Desktop Menu */}
-        <PagesList className='hidden space-x-12 text-lg md:block' />
-
-        <div className='hidden items-center md:flex md:flex-row'>
+        <div className='hidden items-center space-x-12 md:flex md:flex-row'>
+          {/* Desktop Menu */}
+          <PagesList className='hidden space-x-12 text-lg md:block' />
           <ThemeSwitcher
             className='flex flex-col items-center justify-center'
             btnProps='rounded-full dark:bg-carbon-200/[.05] bg-carbon-800/[.05]'

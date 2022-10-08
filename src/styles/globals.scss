@@ -6,15 +6,7 @@
 
 /* === VARIABLES === */
 :root {
-  --custom-scale: 2;
   --navbar-height: 6rem;
-}
-
-/* This represents 'sm' breakpoint */
-@media (min-width: 640px) {
-  :root {
-    --custom-scale: 5;
-  }
 }
 
 /* Disable highlighting on anchor touch on mobile */
@@ -170,7 +162,7 @@ a {
 .highlighted {
   border-bottom-width: 0;
   background-size: 100% 50%;
-  background-position: 0 100%;
+  background-position: 0 80%;
   background-repeat: no-repeat;
   @apply bg-gradient-to-r from-amber-800/[.15] to-amber-800/[.15] dark:from-amber-300/10 dark:to-amber-300/10;
 }
@@ -279,32 +271,32 @@ a {
 
 @keyframes wave-animation {
   0% {
-    transform: rotate(0deg) scale(var(--custom-scale));
+    transform: rotate(0deg);
   }
 
   10% {
-    transform: rotate(14deg) scale(var(--custom-scale));
+    transform: rotate(14deg);
   } /* The following five values can be played with to make the waving more or less extreme */
   20% {
-    transform: rotate(-8deg) scale(var(--custom-scale));
+    transform: rotate(-8deg);
   }
 
   30% {
-    transform: rotate(14deg) scale(var(--custom-scale));
+    transform: rotate(14deg);
   }
 
   40% {
-    transform: rotate(-4deg) scale(var(--custom-scale));
+    transform: rotate(-4deg);
   }
 
   50% {
-    transform: rotate(10deg) scale(var(--custom-scale));
+    transform: rotate(10deg);
   }
 
   60% {
-    transform: rotate(0deg) scale(var(--custom-scale));
+    transform: rotate(0deg);
   } /* Reset for the last half to pause */
   100% {
-    transform: rotate(0deg) scale(var(--custom-scale));
+    transform: rotate(0deg);
   }
 }

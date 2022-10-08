@@ -7,14 +7,14 @@ interface Props extends HTMLMotionProps<'span'> {
 export function HighlightedText({ children }: Props) {
   const highlightedSlideIn: Variants = {
     hidden: { backgroundSize: '0% 50%' },
-    show: { backgroundSize: '100% 50%', transition: { delay: 1, duration: 2, ease: 'easeInOut' } },
+    visible: { backgroundSize: '100% 50%', transition: { delay: 1, duration: 2, ease: 'easeInOut' } },
   };
 
   return (
     <motion.span
       className='highlighted font-fraunces font-bold text-amber-800/70 dark:text-amber-300/70'
       initial='hidden'
-      whileInView='show'
+      whileInView='visible'
       viewport={{ once: true }}
       variants={highlightedSlideIn}
     >

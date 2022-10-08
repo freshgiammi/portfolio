@@ -11,7 +11,7 @@ import AnimatedText from './animated/AnimatedText';
 export interface HeroProjectProps {
   orientation: 'left' | 'right';
   key: string;
-  src: string | StaticImageData;
+  src: StaticImageData;
   alt: string;
   title: string;
   description: string;
@@ -29,12 +29,12 @@ export default function HeroProject({ orientation, tags = [], ...props }: HeroPr
 
   const projectVariants: Variants = {
     hidden: { opacity: 0, transition: { delay: 0.5, duration: 1, ease: 'easeInOut' } },
-    show: { opacity: 1, transition: { delay: 0.5, duration: 1, ease: 'easeInOut' } },
+    visible: { opacity: 1, transition: { delay: 0.5, duration: 1, ease: 'easeInOut' } },
   };
 
   const animation: MotionProps = {
     initial: 'hidden',
-    whileInView: 'show',
+    whileInView: 'visible',
     viewport: { once: true },
     variants: projectVariants,
   };
@@ -51,8 +51,8 @@ export default function HeroProject({ orientation, tags = [], ...props }: HeroPr
   return (
     <motion.div
       ref={ref}
-      className='grid grid-cols-12 gap-4 px-4 pb-40 text-carbon-800 
-    transition-all duration-500 dark:text-carbon-100 lg:px-20 xl:px-44 '
+      className='grid grid-cols-12 gap-4 text-carbon-800 
+    transition-all duration-500 dark:text-carbon-100'
       style={{ opacity }}
     >
       <motion.div

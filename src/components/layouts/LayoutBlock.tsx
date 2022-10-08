@@ -39,7 +39,7 @@ const variants: Variants = {
 
 /**
  * This element takes care of the layout of the page.
- * Shows a Navbar, a Footer, and a children between them..
+ * visibles a Navbar, a Footer, and a children between them..
  * @param {IMeta}  - `title` - The title of the page.
  */
 export default function LayoutBlock({ children, customMeta, ...props }: Props) {

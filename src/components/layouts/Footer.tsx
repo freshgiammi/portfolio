@@ -41,8 +41,8 @@ export default function Footer() {
 
   return (
     <motion.footer
-      className='grid grid-cols-2 gap-4 border-t border-amber-800/[0.3] bg-sepia-200 py-5 text-center text-sm text-carbon-700 shadow 
-  transition-colors duration-500 dark:border-amber-300/[0.3] dark:bg-carbon-900 dark:text-zinc-300 md:px-20'
+      className='grid grid-cols-2 gap-4 bg-sepia-200 py-5 text-center text-sm text-carbon-700 
+  transition-colors duration-500 dark:bg-carbon-900 dark:text-zinc-300 md:px-20'
     >
       <p className='col-[1_/_-1] text-center md:col-[1_/_2] md:text-left'>
         © 2022 • Made with <span style={{ color: '#e25555' }}>♥</span> by{' '}

@@ -53,10 +53,9 @@ const CardStack = ({ cardImages }: CardStackProps) => {
           >
             <Image
               alt='p.alt'
-              src={card.src}
+              src={card}
               sizes='100vw'
-              height={500}
-              width={500}
+              placeholder='blur'
               draggable={false}
               className='img-squareshadow h-[300px] rounded-md 
               object-cover object-[15%_50%] md:h-[400px]'

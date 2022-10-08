@@ -6,63 +6,63 @@ import Jecommimg from '~/img/jecomm.png';
 import Superchargednextimg from '~/img/superchargednext.png';
 
 import DownArrow from '@/components/animated/DownArrow';
-import HeroProject, { HeroProjectProps } from '@/components/HeroProject';
-import HandWave from '~/assets/handwave.svg';
 import useMousePosition from '@/hooks/animated/useMousePosition';
 import Image from 'next/future/image';
 import heroPropic from '~/img/hero_propic.jpg';
+import bannerpic from '~/img/bannerpic.jpg';
+import friendspic from '~/img/friendspic.jpg';
+import familypic from '~/img/familypic.jpg';
 import Button from '@/components/Button';
 import Link from 'next/link';
 import { HighlightedText } from '@/components/animated/HighlightedText';
+import ProjectStack, { ProjectStackData } from '@/components/animated/ProjectStack';
+import CardHover from '@/components/animated/CardHover';
+import Divider from '@/components/Divider';
+
+const projects: ProjectStackData[] = [
+  {
+    key: 'supercharged-next',
+    src: Superchargednextimg,
+    alt: 'Supercharged Next',
+    title: 'Supercharged Next',
+    description:
+      'A supercharged Next.js template that comes with built-in batteries: ' +
+      'husky, commitlint, lint-staged and much more.',
+    type: 'Web Developement',
+    url: 'https://supercharged-next.vercel.app',
+    tags: ['Open-Source', 'Next.js', 'React', 'Tailwind'],
+  },
+  {
+    key: 'escamadul',
+    src: Escamadulimg,
+    alt: "E' Scamàdul",
+    title: "E' Scamàdul",
+    description: 'Website design & development. Currently maintained and updated based on scheduled events.',
+    type: 'Web Developement',
+    url: 'https://escamadul.it',
+    tags: ['Wordpress', 'Brizy', 'Web developement'],
+  },
+  {
+    key: 'jecomm',
+    src: Jecommimg,
+    alt: 'JECoMM',
+    title: 'JECoMM',
+    description: 'Website re-design & development. Google Analytics tracking and SEO optimization.',
+    type: 'Web Developement',
+    url: 'https://jecomm.it',
+    tags: ['Wordpress', 'Brizy', 'Web developement', 'Google Analytics'],
+  },
+];
 
 const Home: NextPage = () => {
   const { x, y } = useMousePosition(0, (a: number) => a / 50);
   const { scrollY: y2 } = useScroll();
 
   const springConfig = { stiffness: 900, damping: 100 };
-  const yPic = useSpring(useTransform(y2, [0, 1000], [0, 200]), springConfig);
-
-  const projects: HeroProjectProps[] = [
-    {
-      orientation: 'right',
-      key: 'supercharged-next',
-      src: Superchargednextimg,
-      alt: 'Supercharged Next',
-      title: 'Supercharged Next',
-      description:
-        'A supercharged Next.js template that comes with built-in batteries: ' +
-        'husky, commitlint, lint-staged and much more.',
-      type: 'Web Developement',
-      url: 'https://supercharged-next.vercel.app',
-      tags: ['Open-Source', 'Next.js', 'React', 'Tailwind'],
-    },
-    {
-      orientation: 'left',
-      key: 'escamadul',
-      src: Escamadulimg,
-      alt: "E' Scamàdul",
-      title: "E' Scamàdul",
-      description: 'Website design & development. Currently maintained and updated based on scheduled events.',
-      type: 'Web Developement',
-      url: 'https://escamadul.it',
-      tags: ['Wordpress', 'Brizy', 'Web developement'],
-    },
-    {
-      orientation: 'right',
-      key: 'jecomm',
-      src: Jecommimg,
-      alt: 'JECoMM',
-      title: 'JECoMM',
-      description: 'Website re-design & development. Google Analytics tracking and SEO optimization.',
-      type: 'Web Developement',
-      url: 'https://jecomm.it',
-      tags: ['Wordpress', 'Brizy', 'Web developement', 'Google Analytics'],
-    },
-  ];
+  const yPic = useSpring(useTransform(y2, [0, 1000], [0, 100]), springConfig);
 
   const heroTopAnim: Variants = {
-    hidden: { opacity: 0 },
-    show: {
+    visible: {
       opacity: 1,
       transition: {
         staggerChildren: 0.4,
@@ -70,21 +70,21 @@ const Home: NextPage = () => {
     },
   };
 
-  const scrollInVIew: Variants = {
+  const scrollInView: Variants = {
     hidden: { opacity: 0, y: 100 },
-    show: { opacity: 1, y: 0, transition: { duration: 1, ease: 'easeInOut' } },
+    visible: { opacity: 1, y: 0, transition: { duration: 1, ease: 'easeInOut' } },
   };
 
   return (
     <LayoutBlock className='overflow-hidden'>
       {/* Hero - Section */}
-      <motion.section className='flex-center-column hero-full'>
+      <motion.section className='section-common flex-center-column hero-full'>
         <motion.div
           initial='hidden'
-          animate='show'
+          animate='visible'
           variants={heroTopAnim}
           className='grid h-full grid-cols-12 text-4xl
-        text-carbon-800 dark:text-zinc-100 md:px-32 md:text-7xl md:leading-[5rem]'
+        text-carbon-800 dark:text-zinc-100 md:text-7xl md:leading-[5rem]'
         >
           <motion.div
             variants={heroTopAnim}
@@ -92,7 +92,7 @@ const Home: NextPage = () => {
             style={{ y, x }}
           >
             <motion.div className='flex-center-row overflow-hidden'>
-              <motion.p variants={scrollInVIew} className='text-center font-bold'>
+              <motion.p variants={scrollInView} className='text-center font-bold'>
                 {"Hi, I'm freshgiammi."}
                 <motion.span
                   className='inline-block h-6 md:h-12'
@@ -104,7 +104,7 @@ const Home: NextPage = () => {
               </motion.p>
             </motion.div>
             <motion.div className='flex-center-row overflow-hidden'>
-              <motion.p variants={scrollInVIew} className='text-center text-2xl font-light md:text-5xl'>
+              <motion.p variants={scrollInView} className='text-center text-2xl font-light md:text-5xl'>
                 {"I'm a fullstack developer & web designer based in "}
                 <HighlightedText>{'Milan, Italy'}</HighlightedText>
                 {'. '}
@@ -113,19 +113,19 @@ const Home: NextPage = () => {
             <motion.div
               variants={{
                 hidden: { opacity: 0, width: 0 },
-                show: { opacity: 1, width: '100%', transition: { duration: 2, ease: 'easeInOut' } },
+                visible: { opacity: 1, width: '100%', transition: { duration: 2, ease: 'easeInOut' } },
               }}
               className='paragraph-divider  
             after:m-0 after:bg-amber-800/30 dark:after:bg-amber-300/30'
             />
             <motion.div className='flex-center-row overflow-hidden'>
-              <motion.p variants={scrollInVIew} className='text-center text-sm font-light md:text-base'>
+              <motion.p variants={scrollInView} className='text-center text-sm font-light md:text-base'>
                 {"* Technically speaking I'm just a website, but that's who built me."}
               </motion.p>
             </motion.div>
           </motion.div>
           <motion.div
-            variants={scrollInVIew}
+            variants={scrollInView}
             className='col-[1_/_13] row-end-1 space-y-3 lg:col-[9_/_13]'
             style={{ y: yPic }}
           >
@@ -139,94 +139,104 @@ const Home: NextPage = () => {
         </motion.div>
         <DownArrow key='downarrow' className='absolute bottom-8 stroke-carbon-500 dark:stroke-carbon-500' delay={2} />
       </motion.section>
-      {/* About -  Section */}
-      <motion.section className='section-common'>
-        <div
-          className='paragraph-divider flex flex-row items-center justify-start space-x-2 
-        pb-20 font-ibm-mono text-base font-semibold after:bg-amber-800/30
-        dark:after:bg-amber-300/30 md:justify-center'
-        >
-          <h2 className='text-amber-800/60 dark:text-amber-300/60'>01.</h2>
-          <h2 className='highlighted'>About</h2>
-        </div>
-        <motion.div
-          className='flex flex-col items-center justify-center
-        text-3xl font-medium tracking-tight text-carbon-800 dark:text-zinc-100 
-        md:text-5xl xl:px-20 xl:text-4xl '
-        >
-          <div className='grid-row-1 grid grid-cols-12'>
-            <div
-              className='col-[1_/_13] row-end-2 mx-4 space-y-14 overflow-hidden pb-4 
-            sm:col-[1_/_10] md:mx-10 md:space-y-20'
-            >
-              <motion.h1
-                initial='hidden'
-                whileInView='show'
-                viewport={{ once: true }}
-                variants={scrollInVIew}
-                className='w-full text-carbon-800 dark:text-zinc-100'
-              >
-                {'I develop digital products, create '}
-                <HighlightedText>{'experiences'}</HighlightedText>
-                {' and I have a thing for '}
-                <HighlightedText>{'intuitively implemented'}</HighlightedText>
-                {' UX'}.
-              </motion.h1>
-              <motion.h1
-                initial='hidden'
-                whileInView='show'
-                viewport={{ once: true }}
-                variants={scrollInVIew}
-                className='w-full text-carbon-800 dark:text-zinc-100'
-              >
-                {'Currently working at '}
-                <HighlightedText>{'Deloitte Risk Advisory'}</HighlightedText>
-                {', where I develop custom solutions for clients while leading teams across different fields.'}
-              </motion.h1>
-              <Link href='/about' passHref scroll={false}>
-                <a>
-                  <Button className='img-squareshadow'>{'Want to know more?'}</Button>
-                </a>
-              </Link>
-            </div>
-            <div className='-z-10 col-[1_/_2] row-end-2 sm:col-[1_/_13] sm:self-center sm:justify-self-end'>
-              <HandWave className='wave opacity-30 md:opacity-10' />
-            </div>
-          </div>
+      {/* Divider */}
+      <Divider />
+      {/* Projects -  Section */}
+      <motion.section className='section-common my-12 md:my-20 lg:my-44'>
+        <motion.div className='grid grid-cols-1 gap-8 lg:grid-cols-12 lg:text-left'>
+          <ProjectStack data={projects} />
         </motion.div>
       </motion.section>
-      {/* Projects -  Section */}
-      <motion.section className='section-common my-6 md:my-20'>
-        <div
-          className='paragraph-divider flex flex-row items-center justify-start space-x-2 
-        pb-20 font-ibm-mono text-base font-semibold after:bg-amber-800/30 dark:after:bg-amber-300/30 md:text-2xl'
-        >
-          <h2 className='text-amber-800/60 dark:text-amber-300/60'>02.</h2>
-          <h2 className='highlighted'>Projects</h2>
-        </div>
-        {projects.map(({ key, ...p }, _i) => {
-          return <HeroProject key={key} {...p} />;
-        })}
-      </motion.section>
-      {/* Contact -  Section */}
-      <motion.section className='section-common mb-6 md:mb-20'>
-        <div
-          className='paragraph-divider flex flex-row items-center justify-start space-x-2 
-        pb-20 font-ibm-mono text-base font-semibold after:bg-amber-800/30 dark:after:bg-amber-300/30 md:text-2xl'
-        >
-          <h2 className='text-amber-800/60 dark:text-amber-300/60'>03.</h2>
-          <h2 className='highlighted'>Contact</h2>
-        </div>
+      {/* Divider */}
+      <Divider />
+      {/* About -  Section */}
+      <motion.section className='section-common my-12 md:my-20 lg:my-44'>
         <motion.div
           initial='hidden'
-          whileInView='show'
+          whileInView='visible'
+          viewport={{ once: true }}
+          variants={{
+            visible: {
+              opacity: 1,
+              transition: {
+                staggerChildren: 1,
+              },
+            },
+          }}
+          className=' grid grid-cols-1 grid-rows-1 gap-8 lg:grid-cols-[3fr_2fr]'
+        >
+          <motion.div
+            variants={scrollInView}
+            className='space-y-4 self-center text-3xl font-medium
+          text-carbon-800 dark:text-zinc-100 md:text-5xl md:font-bold'
+          >
+            <motion.div className={`flex w-full flex-row flex-wrap gap-2`}>
+              <p
+                className='shadow-relaxed flex-center-row rounded bg-amber-600/30 py-1 
+            px-2 text-xs transition-colors duration-500 dark:bg-amber-300/30'
+              >
+                <motion.span className='mr-1 h-[0.5rem] w-[0.5rem] rounded-full bg-green-300/70'></motion.span>
+                {'Available for hire!'}
+              </p>
+            </motion.div>
+            <motion.h1 className='w-full'>
+              {'I develop digital products, create '}
+              <HighlightedText>{'experiences'}</HighlightedText>
+              {' and I have a thing for intuitively implemented UX.'}
+            </motion.h1>
+            <Link href='/about' passHref scroll={false}>
+              <a>
+                <Button>About me</Button>
+              </a>
+            </Link>
+          </motion.div>
+          <motion.div
+            initial='hidden'
+            whileInView='visible'
+            viewport={{ once: true }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.1,
+                },
+              },
+            }}
+            className='grid grid-cols-2 grid-rows-2 gap-8 text-center text-2xl font-bold text-white lg:text-4xl'
+          >
+            <motion.div variants={scrollInView} className='col-[1_/_2] row-[1_/_3]'>
+              <CardHover src={bannerpic}>
+                <motion.p>{"That's me!"}</motion.p>
+              </CardHover>
+            </motion.div>
+            <motion.div variants={scrollInView} className='col-[2_/_3] row-[1_/_2]'>
+              <CardHover src={friendspic}>
+                <motion.p>{'These are my friends.'}</motion.p>
+              </CardHover>
+            </motion.div>
+            <motion.div variants={scrollInView} className='col-[2_/_3] row-[2_/_3]'>
+              <CardHover src={familypic}>
+                <motion.p>{'And this is my family.'}</motion.p>
+              </CardHover>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      </motion.section>
+      {/* Divider */}
+      <Divider />
+      {/* Contact -  Section */}
+      <motion.section className='section-common my-12 md:my-20 lg:my-44'>
+        <motion.div
+          initial='hidden'
+          whileInView='visible'
           viewport={{ once: true }}
           variants={heroTopAnim}
           className='grid h-full grid-cols-12 grid-rows-2 gap-4 text-center text-3xl font-medium text-carbon-800 
-            dark:text-zinc-100 md:text-5xl'
+            dark:text-zinc-100 md:text-7xl'
         >
           <div className='col-[1_/_13] self-center overflow-hidden'>
-            <motion.p variants={scrollInVIew} className='text-carbon-800 dark:text-zinc-100'>
+            <motion.p variants={scrollInView} className='text-carbon-800 dark:text-zinc-100'>
               {'Have an idea already?'}
               <HighlightedText>{"Let's jam."}</HighlightedText>
             </motion.p>
@@ -235,7 +245,7 @@ const Home: NextPage = () => {
             <Link href='mailto:rengucci.gianmarco@gmail.com' passHref>
               <a>
                 <motion.p
-                  variants={scrollInVIew}
+                  variants={scrollInView}
                   className='underline-custom w-fit text-lg text-carbon-500 dark:text-zinc-300 md:text-3xl'
                 >
                   {'rengucci.gianmarco@gmail.com'}

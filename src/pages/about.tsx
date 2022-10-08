@@ -15,7 +15,7 @@ import CardStack from '@/components/animated/CardStack';
 const About: NextPage = () => {
   const container: Variants = {
     hidden: { opacity: 0 },
-    show: {
+    visible: {
       opacity: 1,
       transition: {
         staggerChildren: 0.5,
@@ -25,13 +25,13 @@ const About: NextPage = () => {
 
   const item: Variants = {
     hidden: { opacity: 0 },
-    show: { opacity: 1 },
+    visible: { opacity: 1 },
   };
 
   return (
     <LayoutBlock className='pt-[var(--navbar-height)]'>
       {/* Banner - Section */}
-      <motion.section initial='hidden' animate='show' variants={container} className='flex-center-column mb-20'>
+      <motion.section initial='hidden' animate='visible' variants={container} className='flex-center-column mb-20'>
         <motion.div variants={item} className='relative w-full'>
           <Image
             alt='p.alt'
@@ -49,8 +49,8 @@ const About: NextPage = () => {
         </motion.div>
       </motion.section>
       {/* Hero - Section */}
-      <motion.section className='flex-center-column mb-20'>
-        <motion.div className='mx-4 grid grid-cols-1 gap-8 md:mx-20 lg:grid-cols-2 lg:text-left'>
+      <motion.section className='flex-center-column mb-20' initial='hidden' animate='visible' variants={container}>
+        <motion.div variants={item} className='mx-4 grid grid-cols-1 gap-8 md:mx-20 lg:grid-cols-2 lg:text-left'>
           <motion.div className='lg:col-[1_/_2]'>
             <CardStack cardImages={[img1, img2, bannerpic, img4]} />
           </motion.div>

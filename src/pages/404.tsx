@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { motion, Variants } from 'framer-motion';
 import Image from 'next/future/image';
 import lol404 from '~/assets/lol404.gif';
+import Button from '@/components/Button';
 
 export default function Custom404() {
   const variants: Variants = {
@@ -42,17 +43,11 @@ export default function Custom404() {
       <p className='text-center text-lg text-carbon-800 dark:text-carbon-300 md:text-2xl'>
         {'Want to go back to the homepage?'}
       </p>
-      <button
-        type='button'
-        className='shadow-relaxed m-2 rounded bg-amber-800/70 px-4 py-2 text-white transition-colors 
-        duration-500 hover:bg-amber-900/70 dark:bg-amber-300/70 hover:dark:bg-amber-400/70'
-      >
-        <Link href='/' passHref scroll={false}>
-          <a>
-            <span className='select-none'>Go back!</span>
-          </a>
-        </Link>
-      </button>
+      <Link href='/' passHref scroll={false}>
+        <a>
+          <Button>Go back!</Button>
+        </a>
+      </Link>
     </motion.section>
   );
 }

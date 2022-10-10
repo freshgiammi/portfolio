@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 
-export default function Tag({ text, badge }: { text: string; badge: 'success' | 'error' | undefined }) {
+export default function Tag({ text, badge }: { text: string; badge?: 'success' | 'error' | undefined }) {
   return (
     <motion.div className={`flex w-full flex-row flex-wrap gap-2`}>
       <p

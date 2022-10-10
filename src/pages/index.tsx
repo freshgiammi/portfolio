@@ -18,6 +18,7 @@ import { HighlightedText } from '@/components/animated/HighlightedText';
 import ProjectStack, { ProjectStackData } from '@/components/animated/ProjectStack';
 import CardHover from '@/components/animated/CardHover';
 import Divider from '@/components/Divider';
+import Tag from '@/components/Tag';
 
 const projects: ProjectStackData[] = [
   {
@@ -170,15 +171,7 @@ const Home: NextPage = () => {
             className='space-y-4 self-center text-3xl font-medium
           text-carbon-800 dark:text-zinc-100 md:text-5xl md:font-bold'
           >
-            <motion.div className={`flex w-full flex-row flex-wrap gap-2`}>
-              <p
-                className='shadow-relaxed flex-center-row rounded bg-amber-600/30 py-1 
-            px-2 text-xs transition-colors duration-500 dark:bg-amber-300/30'
-              >
-                <motion.span className='mr-1 h-[0.5rem] w-[0.5rem] rounded-full bg-green-300/70'></motion.span>
-                {'Available for hire!'}
-              </p>
-            </motion.div>
+            <Tag text='Available for hire!' badge='success' />
             <motion.h1 className='w-full'>
               {'I develop digital products, create '}
               <HighlightedText>{'experiences'}</HighlightedText>
@@ -203,7 +196,7 @@ const Home: NextPage = () => {
                 },
               },
             }}
-            className='grid grid-cols-2 grid-rows-2 gap-8 text-center text-2xl font-bold text-white lg:text-4xl'
+            className='grid grid-cols-2 grid-rows-2 gap-8 text-center text-xl font-bold text-white lg:text-2xl'
           >
             <motion.div variants={scrollInView} className='col-[1_/_2] row-[1_/_3]'>
               <CardHover src={bannerpic}>

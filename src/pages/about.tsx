@@ -9,6 +9,7 @@ import pesaro from '~/img/about/pesaro.jpg';
 import familypic from '~/img/familypic.jpg';
 import bannerpic from '~/img/bannerpic.jpg';
 import Divider from '@/components/Divider';
+import Tag from '@/components/Tag';
 
 const About: NextPage = () => {
   const container: Variants = {
@@ -31,15 +32,7 @@ const About: NextPage = () => {
       {/* Hero - Section */}
       <motion.section className='section-common' initial='hidden' animate='visible' variants={container}>
         <motion.div variants={scrollInView} className='my-20 w-full space-y-4'>
-          <motion.div className={`flex w-full flex-row flex-wrap gap-2`}>
-            <p
-              className='shadow-relaxed flex-center-row rounded bg-amber-600/30 py-1 
-            px-2 text-xs transition-colors duration-500 dark:bg-amber-300/30'
-            >
-              <motion.span className='mr-1 h-[0.5rem] w-[0.5rem] rounded-full bg-green-300/70'></motion.span>
-              {'Available for hire!'}
-            </p>
-          </motion.div>
+          <Tag text='Available for hire!' badge='success' />
           <motion.p className='text-4xl font-bold md:w-5/6 md:text-6xl md:leading-[1.2]'>
             A fullstack developer who likes to adventure into everything.
           </motion.p>
@@ -202,7 +195,6 @@ const About: NextPage = () => {
         font-ibm-mono text-base font-semibold after:bg-amber-800/30 dark:after:bg-amber-300/30 md:mb-20 md:text-2xl
         '
             >
-              <h2 className='text-amber-800/60 dark:text-amber-300/60'>01.</h2>
               <h2 className='highlighted'>Education</h2>
             </motion.div>
             <motion.ul
@@ -248,7 +240,6 @@ const About: NextPage = () => {
         font-ibm-mono text-base font-semibold after:bg-amber-800/30 dark:after:bg-amber-300/30 md:mb-20 md:text-2xl
         '
             >
-              <h2 className='text-amber-800/60 dark:text-amber-300/60'>02.</h2>
               <h2 className='highlighted'>Work Experience</h2>
             </motion.div>
             <motion.ul

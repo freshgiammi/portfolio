@@ -26,7 +26,7 @@ const CardHover = ({ children, src, ...props }: CardHoverProps) => {
       </motion.div>
       <motion.div
         variants={textVariants}
-        className='flex-center-row absolute inset-0 h-full w-full rounded bg-amber-300/70 p-2'
+        className='flex-center-row absolute inset-0 h-full w-full rounded bg-amber-300/90 p-2'
       >
         {children}
       </motion.div>

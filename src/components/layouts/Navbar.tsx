@@ -75,21 +75,6 @@ export default function Navbar() {
           Projects
         </a>
       </Link>
-      <Link href='/contact' scroll={false}>
-        <a
-          onClick={() => {
-            if (burgerState) {
-              setBurgerState(false);
-              setLocked(false);
-            }
-          }}
-          className={`underline-custom tracking-wide text-carbon-800 dark:text-carbon-100 ${
-            router.asPath === '/contact' ? 'active font-bold' : 'font-medium'
-          }`}
-        >
-          Contact
-        </a>
-      </Link>
     </div>
   );
 
@@ -148,7 +133,7 @@ export default function Navbar() {
               }}
             >
               <h1 className='text-xl font-semibold text-carbon-800 dark:text-carbon-100'>freshgiammi</h1>
-              <p className='text-base font-light text-carbon-800 dark:text-carbon-100'>Fullstack developer</p>
+              <p className='text-base font-light text-carbon-800 dark:text-carbon-100'>Gianmarco Rengucci</p>
             </a>
           </Link>
         </div>

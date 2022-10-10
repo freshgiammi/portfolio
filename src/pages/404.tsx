@@ -34,7 +34,7 @@ export default function Custom404() {
       exit='exit'
       className='flex-center-column fixed h-full w-full space-y-4 bg-sepia-300 dark:bg-carbon-900'
     >
-      <Image alt='p.alt' src={lol404.src} sizes='100vw' width={400} height={400}></Image>
+      <Image alt='p.alt' src={lol404.src} sizes='100vw' width={400} height={400} placeholder='blur'></Image>
       <p className='px-2 text-center text-3xl font-bold text-carbon-800 dark:text-carbon-100 md:text-4xl'>
         {`Well, this is awkward. There's `}
         <span className='highlighted font-semibold text-amber-800/70 dark:text-amber-300/70'>nothing</span>

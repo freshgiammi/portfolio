@@ -48,7 +48,7 @@ export default function LayoutBlock({ children, customMeta, ...props }: Props) {
   const meta: IMeta = {
     title: 'freshgiammi',
     description: `Fullstack developer & web designer based in Milan, Italy. `,
-    image: '../../public/assets/logo.png',
+    image: '../../public/assets/logo.webp',
     type: 'website',
     ...customMeta,
   };

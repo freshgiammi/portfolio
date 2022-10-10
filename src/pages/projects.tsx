@@ -2,11 +2,11 @@ import LayoutBlock from '@/components/layouts/LayoutBlock';
 import { motion, Variants } from 'framer-motion';
 import type { NextPage } from 'next';
 
-import bannerpic from '~/img/projects/bannerpic.jpg';
-import workingon from '~/img/projects/workingon.png';
-import escamadul from '~/img/escamadul.png';
-import superchargednext from '~/img/superchargednext.png';
-import jecomm from '~/img/jecomm.png';
+import bannerpic from '~/img/projects/bannerpic.webp';
+import workingon from '~/img/projects/workingon.webp';
+import escamadul from '~/img/escamadul.webp';
+import superchargednext from '~/img/superchargednext.webp';
+import jecomm from '~/img/jecomm.webp';
 import CardHover from '@/components/animated/CardHover';
 import Link from 'next/link';
 import Tag from '@/components/Tag';

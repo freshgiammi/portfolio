@@ -66,6 +66,7 @@ export default function HeroProject({ orientation, tags = [], ...props }: HeroPr
               <Image
                 alt='p.alt'
                 src={props.src}
+                placeholder='blur'
                 className='img-squareshadow cursor-pointer brightness-75 hover:brightness-100'
               ></Image>
             </motion.div>

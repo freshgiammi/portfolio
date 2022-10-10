@@ -22,7 +22,13 @@ const CardHover = ({ children, src, ...props }: CardHoverProps) => {
       style={{ position: 'relative', userSelect: 'none', height: '100%' }}
     >
       <motion.div className='h-full'>
-        <Image alt='p.alt' src={src} sizes='100vw' className='img-squareshadow h-full rounded object-cover shadow' />
+        <Image
+          alt='p.alt'
+          src={src}
+          sizes='100vw'
+          className='img-squareshadow h-full rounded object-cover shadow'
+          placeholder='blur'
+        />
       </motion.div>
       <motion.div
         variants={textVariants}

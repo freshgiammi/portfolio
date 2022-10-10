@@ -5,8 +5,8 @@ import Image from 'next/future/image';
 import Link from 'next/link';
 import HandWave from '~/assets/handwave.svg';
 
-import me from '~/img/about/me.jpg';
-import familypic from '~/img/familypic.jpg';
+import me from '~/img/about/me.webp';
+import familypic from '~/img/familypic.webp';
 import Divider from '@/components/Divider';
 import Tag from '@/components/Tag';
 
@@ -56,7 +56,13 @@ const About: NextPage = () => {
             font-bold text-white lg:max-h-[30vw] lg:text-4xl '
         >
           <motion.div variants={scrollInView} className='col-[1_/_5] row-[1_/_2] lg:col-[1_/_3] lg:row-[1_/_3]'>
-            <Image alt='p.alt' src={me} sizes='100vw' className='img-squareshadow h-full rounded object-cover shadow' />
+            <Image
+              alt='p.alt'
+              src={me}
+              sizes='100vw'
+              placeholder='blur'
+              className='img-squareshadow h-full rounded object-cover shadow'
+            />
           </motion.div>
           <motion.div variants={scrollInView} className='col-[1_/_3] row-[2_/_3] lg:col-[3_/_4] lg:row-[1_/_2]'>
             <video
@@ -73,6 +79,7 @@ const About: NextPage = () => {
               alt='p.alt'
               src={familypic}
               sizes='100vw'
+              placeholder='blur'
               className='img-squareshadow h-full rounded object-cover shadow'
             />
           </motion.div>

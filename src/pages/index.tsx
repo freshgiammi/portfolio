@@ -1,17 +1,17 @@
 import LayoutBlock from '@/components/layouts/LayoutBlock';
 import { motion, useScroll, useSpring, useTransform, Variants } from 'framer-motion';
 import type { NextPage } from 'next';
-import Escamadulimg from '~/img/escamadul.png';
-import Jecommimg from '~/img/jecomm.png';
-import Superchargednextimg from '~/img/superchargednext.png';
+import Escamadulimg from '~/img/escamadul.webp';
+import Jecommimg from '~/img/jecomm.webp';
+import Superchargednextimg from '~/img/superchargednext.webp';
 
 import DownArrow from '@/components/animated/DownArrow';
 import useMousePosition from '@/hooks/animated/useMousePosition';
 import Image from 'next/future/image';
-import heroPropic from '~/img/hero_propic.jpg';
-import bannerpic from '~/img/bannerpic.jpg';
-import friendspic from '~/img/friendspic.jpg';
-import familypic from '~/img/familypic.jpg';
+import heroPropic from '~/img/hero_propic.webp';
+import bannerpic from '~/img/bannerpic.webp';
+import friendspic from '~/img/friendspic.webp';
+import familypic from '~/img/familypic.webp';
 import Button from '@/components/Button';
 import Link from 'next/link';
 import { HighlightedText } from '@/components/animated/HighlightedText';
@@ -134,6 +134,7 @@ const Home: NextPage = () => {
               alt='p.alt'
               src={heroPropic}
               sizes='100vw'
+              placeholder='blur'
               className='img-squareshadow mx-auto w-1/2 rounded object-cover opacity-10 shadow lg:w-5/6 lg:opacity-100'
             />
           </motion.div>

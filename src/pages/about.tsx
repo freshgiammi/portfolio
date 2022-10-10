@@ -1,4 +1,3 @@
-import AnimatedText from '@/components/animated/AnimatedText';
 import LayoutBlock from '@/components/layouts/LayoutBlock';
 import { motion, Variants } from 'framer-motion';
 import type { NextPage } from 'next';
@@ -6,13 +5,10 @@ import Image from 'next/future/image';
 import Link from 'next/link';
 import HandWave from '~/assets/handwave.svg';
 
-import friendspic from '~/img/friendspic.jpg';
+import pesaro from '~/img/about/pesaro.jpg';
 import familypic from '~/img/familypic.jpg';
 import bannerpic from '~/img/bannerpic.jpg';
-import CardHover from '@/components/animated/CardHover';
 import Divider from '@/components/Divider';
-
-// ! Ooooouh something ugly is going on in the dLayoutBlock props...
 
 const About: NextPage = () => {
   const container: Variants = {
@@ -25,11 +21,6 @@ const About: NextPage = () => {
     },
   };
 
-  const item: Variants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 },
-  };
-
   const scrollInView: Variants = {
     hidden: { opacity: 0, y: 100 },
     visible: { opacity: 1, y: 0, transition: { duration: 1, ease: 'easeInOut' } },
@@ -37,22 +28,75 @@ const About: NextPage = () => {
 
   return (
     <LayoutBlock className='pt-[var(--navbar-height)]'>
-      {/* Banner - Section */}
-      <motion.section initial='hidden' animate='visible' variants={container} className='flex-center-column'>
-        <motion.div variants={item} className='relative w-full'>
-          <Image
-            alt='p.alt'
-            src={bannerpic}
-            sizes='100vw'
-            className='mx-auto h-[150px] w-full object-cover object-[15%_50%] brightness-50 md:h-[200px]'
-          />
+      {/* Hero - Section */}
+      <motion.section className='section-common' initial='hidden' animate='visible' variants={container}>
+        <motion.div variants={scrollInView} className='my-20 w-full space-y-4'>
+          <motion.div className={`flex w-full flex-row flex-wrap gap-2`}>
+            <p
+              className='shadow-relaxed flex-center-row rounded bg-amber-600/30 py-1 
+            px-2 text-xs transition-colors duration-500 dark:bg-amber-300/30'
+            >
+              <motion.span className='mr-1 h-[0.5rem] w-[0.5rem] rounded-full bg-green-300/70'></motion.span>
+              {'Available for hire!'}
+            </p>
+          </motion.div>
+          <motion.p className='text-4xl font-bold md:w-5/6 md:text-6xl md:leading-[1.2]'>
+            A fullstack developer who likes to adventure into everything.
+          </motion.p>
+          <motion.p className='text-lg font-light md:text-xl'>
+            Based in <span className='highlighted'>Milan, Italy</span>, but working anywhere.
+          </motion.p>
         </motion.div>
-        <motion.div variants={item} className='absolute self-center'>
-          <AnimatedText
-            key='aboutme-hero'
-            text='About me'
-            className='text-center text-4xl font-bold text-carbon-100 dark:text-carbon-100 md:text-6xl'
-          />
+        <motion.div
+          initial='hidden'
+          whileInView='visible'
+          viewport={{ once: true }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: {
+                staggerChildren: 0.1,
+              },
+            },
+          }}
+          className='grid grid-cols-4 grid-rows-2 gap-8 text-center text-2xl 
+            font-bold text-white lg:max-h-[30vw] lg:text-4xl '
+        >
+          <motion.div variants={scrollInView} className='col-[1_/_5] row-[1_/_2] lg:col-[1_/_3] lg:row-[1_/_3]'>
+            <Image
+              alt='p.alt'
+              src={bannerpic}
+              sizes='100vw'
+              className='img-squareshadow h-full rounded object-cover shadow'
+            />
+          </motion.div>
+          <motion.div variants={scrollInView} className='col-[1_/_3] row-[2_/_3] lg:col-[3_/_4] lg:row-[1_/_2]'>
+            <Image
+              alt='p.alt'
+              src={pesaro}
+              sizes='100vw'
+              className='img-squareshadow h-full rounded object-cover object-[15%_50%] shadow'
+            />
+          </motion.div>
+          <motion.div variants={scrollInView} className='col-[3_/_5] row-[2_/_3] lg:col-[3_/_4] lg:row-[2_/_3]'>
+            <Image
+              alt='p.alt'
+              src={familypic}
+              sizes='100vw'
+              className='img-squareshadow h-full rounded object-cover shadow'
+            />
+          </motion.div>
+          <motion.div variants={scrollInView} className='col-[1_/_5] row-[3_/_4] lg:col-[4_/_5] lg:row-[1_/_3]'>
+            <video
+              src='/img/about/vid1.mp4'
+              className='img-squareshadow h-full w-full rounded object-cover shadow'
+              autoPlay
+              disableRemotePlayback
+              muted
+              loop
+            />
+          </motion.div>
         </motion.div>
       </motion.section>
       {/* Story - Section */}
@@ -69,13 +113,13 @@ const About: NextPage = () => {
               },
             },
           }}
-          className=' grid grid-cols-1 grid-rows-1 gap-8 lg:grid-cols-[3fr_2fr]'
+          className=''
         >
           <motion.div
             variants={scrollInView}
-            className='space-y-4 self-center text-lg text-carbon-800 dark:text-carbon-100'
+            className='space-y-4 self-center text-lg text-carbon-800 dark:text-carbon-100 lg:w-4/6 lg:text-xl'
           >
-            <motion.p className='flex text-4xl font-bold md:text-4xl'>
+            <motion.p className='flex text-4xl font-bold md:text-5xl'>
               {`Hello there!`} <HandWave className='wave ml-4' />
             </motion.p>
             <motion.p>
@@ -135,66 +179,25 @@ const About: NextPage = () => {
               })}
             </div>
           </motion.div>
-          <motion.div
-            initial='hidden'
-            whileInView='visible'
-            viewport={{ once: true }}
-            variants={{
-              hidden: { opacity: 0 },
-              visible: {
-                opacity: 1,
-                transition: {
-                  staggerChildren: 0.1,
-                },
-              },
-            }}
-            className='grid grid-cols-2 grid-rows-2 gap-8 text-center text-2xl font-bold text-white lg:text-4xl'
-          >
-            <motion.div variants={scrollInView} className='col-[1_/_2] row-[1_/_3]'>
-              <CardHover src={bannerpic}>
-                <motion.p>{"That's me!"}</motion.p>
-              </CardHover>
-            </motion.div>
-            <motion.div variants={scrollInView} className='col-[2_/_3] row-[1_/_2]'>
-              <CardHover src={friendspic}>
-                <motion.p>{'These are my friends.'}</motion.p>
-              </CardHover>
-            </motion.div>
-            <motion.div variants={scrollInView} className='col-[2_/_3] row-[2_/_3]'>
-              <CardHover src={familypic}>
-                <motion.p>{'And this is my family.'}</motion.p>
-              </CardHover>
-            </motion.div>
-          </motion.div>
         </motion.div>
       </motion.section>
       {/* Divider */}
       <Divider />
       {/* Skills - Section */}
       <motion.section className='section-common my-12 md:my-20' initial='hidden' animate='visible' variants={container}>
-        <motion.div
-          initial='hidden'
-          whileInView='visible'
-          viewport={{ once: true }}
-          variants={{
-            visible: {
-              opacity: 1,
-              transition: {
-                staggerChildren: 0.5,
-              },
-            },
-          }}
-          className=' grid grid-cols-1 grid-rows-1 gap-20 lg:grid-cols-[1fr_1fr]'
-        >
-          <motion.div variants={scrollInView} className='space-y-4 text-lg text-carbon-800 dark:text-carbon-100'>
+        <motion.div className=' grid grid-cols-1 grid-rows-1 gap-20 lg:grid-cols-[1fr_1fr]'>
+          <motion.div
+            initial='hidden'
+            whileInView='visible'
+            viewport={{ once: true }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { opacity: 1, transition: { duration: 2, ease: 'easeInOut' } },
+            }}
+            className='space-y-4 text-lg text-carbon-800 dark:text-carbon-100'
+          >
             <motion.div
-              initial='hidden'
-              whileInView='visible'
-              viewport={{ once: true }}
-              variants={{
-                hidden: { opacity: 0 },
-                visible: { opacity: 1, transition: { duration: 2, ease: 'easeInOut' } },
-              }}
+              variants={scrollInView}
               className='mb-10 flex flex-row items-center justify-start space-x-2 
         font-ibm-mono text-base font-semibold after:bg-amber-800/30 dark:after:bg-amber-300/30 md:mb-20 md:text-2xl
         '
@@ -229,15 +232,18 @@ const About: NextPage = () => {
               </motion.li>
             </motion.ul>
           </motion.div>
-          <motion.div variants={scrollInView} className='space-y-4 text-lg text-carbon-800 dark:text-carbon-100'>
+          <motion.div
+            initial='hidden'
+            whileInView='visible'
+            viewport={{ once: true }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { opacity: 1, transition: { duration: 2, ease: 'easeInOut' } },
+            }}
+            className='space-y-4 text-lg text-carbon-800 dark:text-carbon-100'
+          >
             <motion.div
-              initial='hidden'
-              whileInView='visible'
-              viewport={{ once: true }}
-              variants={{
-                hidden: { opacity: 0 },
-                visible: { opacity: 1, transition: { duration: 2, ease: 'easeInOut' } },
-              }}
+              variants={scrollInView}
               className='mb-10 flex flex-row items-center justify-start space-x-2 
         font-ibm-mono text-base font-semibold after:bg-amber-800/30 dark:after:bg-amber-300/30 md:mb-20 md:text-2xl
         '

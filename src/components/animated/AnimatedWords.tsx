@@ -30,7 +30,7 @@ const AnimatedWords = ({ text, ...props }: AnimatedWordsProps) => {
     hidden: {
       opacity: 0,
       y: 20,
-      x: -20,
+      x: 0,
       transition: {
         type: 'spring',
         damping: 12,

@@ -84,7 +84,7 @@ const Home: NextPage = () => {
           initial='hidden'
           animate='visible'
           variants={heroTopAnim}
-          className='grid h-full grid-cols-12 text-4xl
+          className='grid grid-cols-12 text-4xl
         text-carbon-800 dark:text-zinc-100 md:text-7xl md:leading-[5rem]'
         >
           <motion.div

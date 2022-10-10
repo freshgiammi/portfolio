@@ -40,15 +40,15 @@ const variants: Variants = {
 /**
  * This element takes care of the layout of the page.
  * visibles a Navbar, a Footer, and a children between them..
- * @param {IMeta}  - `title` - The title of the page.
+ * @param {IMeta} - `title` - The title of the page.
  */
 export default function LayoutBlock({ children, customMeta, ...props }: Props) {
   const router = useRouter();
 
   const meta: IMeta = {
-    title: 'freshgiammi - Fullstack developer',
-    description: `Freshgiammi's WIP website.`,
-    image: '../../public/assets/lightning.svg',
+    title: 'freshgiammi',
+    description: `Fullstack developer & web designer based in Milan, Italy. `,
+    image: '../../public/assets/logo.png',
     type: 'website',
     ...customMeta,
   };

@@ -7,7 +7,6 @@ module.exports = {
   theme: {
     fontFamily: {
       'ibm-mono': ['IBM Plex Mono', 'monospace'],
-      fraunces: ['Fraunces', 'serif'],
     },
     extend: {
       colors: {

@@ -28,7 +28,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <ParallaxProvider>
-      <ThemeProvider defaultTheme='system' attribute='class'>
+      <ThemeProvider defaultTheme='light' attribute='class'>
         <Head>
           <meta name='viewport' content='width=device-width, initial-scale=1' />
           {/* Chrome (Doesn't apply on dark-mode, see: https://caniuse.com/?search=theme-color */}

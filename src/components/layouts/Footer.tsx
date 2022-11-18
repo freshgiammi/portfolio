@@ -36,10 +36,12 @@ export default function Footer() {
           </motion.div>
           <motion.div className='overflow-hidden'>
             <motion.p variants={scrollInView} className='text-carbon-800 dark:text-zinc-100'>
-              <Link href='https://www.linkedin.com/in/gianmarco-rengucci' scroll={false}>
-                <a className='text-amber-800/70 dark:text-amber-300/70'>
-                  <HighlightedText>{'Hit me up.'}</HighlightedText>
-                </a>
+              <Link
+                href='https://www.linkedin.com/in/gianmarco-rengucci'
+                className='text-amber-800/70 dark:text-amber-300/70'
+                scroll={false}
+              >
+                <HighlightedText>{'Hit me up.'}</HighlightedText>
               </Link>
             </motion.p>
           </motion.div>
@@ -82,8 +84,12 @@ export default function Footer() {
         <motion.div className='overflow-hidden'>
           <motion.p variants={scrollInView} className='col-[1_/_3] text-sm'>
             © 2022 • Made with <span style={{ color: '#e25555' }}>♥</span> by{' '}
-            <Link href='https://freshgiammi.github.io' passHref scroll={false}>
-              <a className='text-amber-800/70 underline dark:text-amber-300/70'>freshgiammi</a>
+            <Link
+              href='https://freshgiammi.github.io'
+              className='text-amber-800/70 underline dark:text-amber-300/70'
+              scroll={false}
+            >
+              freshgiammi
             </Link>
           </motion.p>
         </motion.div>

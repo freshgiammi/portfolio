@@ -113,17 +113,23 @@ const Projects: NextPage = () => {
             <motion.p className='flex text-4xl font-bold'>{`I do a bunch of stuff.`}</motion.p>
             <motion.p>
               {`I'm currently working on a `}
-              <Link href='https://github.com/freshgiammi-lab/supercharged-next' scroll={false}>
-                <a className='highlighted font-semibold text-amber-800/70 dark:text-amber-300/70'>
-                  template for bootstrapping Next.js applications
-                </a>
+              <Link
+                href='https://github.com/freshgiammi-lab/supercharged-next'
+                className='highlighted font-semibold text-amber-800/70 dark:text-amber-300/70'
+                scroll={false}
+              >
+                template for bootstrapping Next.js applications
               </Link>
               {` with Tailwind CSS, TypeScript, and a lot of utilities like husky, commitlint and more.`}
             </motion.p>
             <motion.p>
               {`I maintain `}
-              <Link href='https://github.com/freshgiammi-lab/connect-typeorm' scroll={false}>
-                <a className='highlighted font-semibold text-amber-800/70 dark:text-amber-300/70'>connect-typeorm</a>
+              <Link
+                href='https://github.com/freshgiammi-lab/connect-typeorm'
+                className='highlighted font-semibold text-amber-800/70 dark:text-amber-300/70'
+                scroll={false}
+              >
+                connect-typeorm
               </Link>
               {`, a TypeORM-based session store that integrates nicely with express-session.`}
             </motion.p>
@@ -139,10 +145,12 @@ const Projects: NextPage = () => {
             </motion.p>
             <motion.p>
               {`Now that I've mentioned, `}
-              <Link href='https://github.com/freshgiammi/raspi-milan' scroll={false}>
-                <a className='highlighted font-semibold text-amber-800/70 dark:text-amber-300/70'>
-                  {"want to check out what I've done at home with a Raspberry Pi?"}
-                </a>
+              <Link
+                href='https://github.com/freshgiammi/raspi-milan'
+                className='highlighted font-semibold text-amber-800/70 dark:text-amber-300/70'
+                scroll={false}
+              >
+                {"want to check out what I've done at home with a Raspberry Pi?"}
               </Link>
             </motion.p>
           </motion.div>

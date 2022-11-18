@@ -1,6 +1,6 @@
 import React from 'react';
 import { HTMLMotionProps, motion } from 'framer-motion';
-import Image, { StaticImageData } from 'next/future/image';
+import Image, { StaticImageData } from 'next/image';
 
 interface CardHoverProps extends HTMLMotionProps<'div'> {
   src: StaticImageData;

@@ -1,7 +1,7 @@
 import LayoutBlock from '@/components/layouts/LayoutBlock';
 import { motion, Variants } from 'framer-motion';
 import type { NextPage } from 'next';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import Link from 'next/link';
 import HandWave from '~/assets/handwave.svg';
 
@@ -126,20 +126,28 @@ const About: NextPage = () => {
             </motion.p>
             <motion.p>
               {`Born in `}
-              <Link href='https://en.wikipedia.org/wiki/Pesaro' scroll={false}>
-                <a className='highlighted font-semibold text-amber-800/70 dark:text-amber-300/70'>Pesaro</a>
+              <Link
+                href='https://en.wikipedia.org/wiki/Pesaro'
+                className='highlighted font-semibold text-amber-800/70 dark:text-amber-300/70'
+                scroll={false}
+              >
+                Pesaro
               </Link>
               {` but (self) made in Milan. I graduated with 102/110 in `}
-              <Link href='https://www.unimi.it/en/education/computer-science-new-media-communications' scroll={false}>
-                <a className='highlighted font-semibold text-amber-800/70 dark:text-amber-300/70'>
-                  Computer Science for New Media Communications
-                </a>
+              <Link
+                href='https://www.unimi.it/en/education/computer-science-new-media-communications'
+                className='highlighted font-semibold text-amber-800/70 dark:text-amber-300/70'
+                scroll={false}
+              >
+                Computer Science for New Media Communications
               </Link>
               {` at Università Degli Studi di Milano, with a thesis on `}
-              <Link href='https://github.com/freshgiammi/tesi' scroll={false}>
-                <a className='highlighted font-semibold text-amber-800/70 dark:text-amber-300/70'>
-                  an Agent-based Epidemic Model based on Multilayer Networks
-                </a>
+              <Link
+                href='https://github.com/freshgiammi/tesi'
+                className='highlighted font-semibold text-amber-800/70 dark:text-amber-300/70'
+                scroll={false}
+              >
+                an Agent-based Epidemic Model based on Multilayer Networks
               </Link>
               {`.`}
             </motion.p>
@@ -262,8 +270,12 @@ const About: NextPage = () => {
                 <p className='text-2xl font-semibold'>
                   {' '}
                   Fullstack developer (Consultant) /{' '}
-                  <Link href='https://www2.deloitte.com/it/it/services/risk.html?icid=top_risk' scroll={false}>
-                    <a className='highlighted text-amber-800/70 dark:text-amber-300/70'>Deloitte Risk Advisory</a>
+                  <Link
+                    href='https://www2.deloitte.com/it/it/services/risk.html?icid=top_risk'
+                    className='highlighted font-semibold text-amber-800/70 dark:text-amber-300/70'
+                    scroll={false}
+                  >
+                    Deloitte Risk Advisory
                   </Link>
                 </p>
               </motion.li>
@@ -276,8 +288,12 @@ const About: NextPage = () => {
                 <h2 className='text-lg font-light'>May 2019 - March 2021</h2>
                 <p className='text-2xl font-semibold'>
                   Associate (Communication team) /{' '}
-                  <Link href='https://jecomm.it/' scroll={false}>
-                    <a className='highlighted text-amber-800/70 dark:text-amber-300/70'>JECoMM</a>
+                  <Link
+                    href='https://jecomm.it/'
+                    className='highlighted text-amber-800/70 dark:text-amber-300/70'
+                    scroll={false}
+                  >
+                    JECoMM
                   </Link>
                 </p>
               </motion.li>

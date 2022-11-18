@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { motion, Variants } from 'framer-motion';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import lol404 from '~/assets/lol404.gif';
 import Button from '@/components/Button';
 
@@ -34,7 +34,7 @@ export default function Custom404() {
       exit='exit'
       className='flex-center-column fixed h-full w-full space-y-4 bg-sepia-300 dark:bg-carbon-900'
     >
-      <Image alt='p.alt' src={lol404.src} sizes='100vw' width={400} height={400} placeholder='blur'></Image>
+      <Image alt='p.alt' src={lol404.src} sizes='100vw' width={400} height={400}></Image>
       <p className='px-2 text-center text-3xl font-bold text-carbon-800 dark:text-carbon-100 md:text-4xl'>
         {`Well, this is awkward. There's `}
         <span className='highlighted font-semibold text-amber-800/70 dark:text-amber-300/70'>nothing</span>
@@ -43,10 +43,8 @@ export default function Custom404() {
       <p className='text-center text-lg text-carbon-800 dark:text-carbon-300 md:text-2xl'>
         {'Want to go back to the homepage?'}
       </p>
-      <Link href='/' passHref scroll={false}>
-        <a>
-          <Button>Go back!</Button>
-        </a>
+      <Link href='/' scroll={false}>
+        <Button>Go back!</Button>
       </Link>
     </motion.section>
   );

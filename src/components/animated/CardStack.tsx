@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { HTMLMotionProps, motion } from 'framer-motion';
-import Image, { StaticImageData } from 'next/future/image';
+import Image, { StaticImageData } from 'next/image';
 
 interface CardStackProps extends HTMLMotionProps<'ul'> {
   cardImages: StaticImageData[];

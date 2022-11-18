@@ -7,7 +7,7 @@ import Superchargednextimg from '~/img/superchargednext.webp';
 
 import DownArrow from '@/components/animated/DownArrow';
 import useMousePosition from '@/hooks/animated/useMousePosition';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import heroPropic from '~/img/hero_propic.webp';
 import bannerpic from '~/img/bannerpic.webp';
 import friendspic from '~/img/friendspic.webp';
@@ -178,10 +178,8 @@ const Home: NextPage = () => {
               <HighlightedText>{'experiences'}</HighlightedText>
               {' and I have a thing for intuitively implemented UX.'}
             </motion.h1>
-            <Link href='/about' passHref scroll={false}>
-              <a>
-                <Button>About me</Button>
-              </a>
+            <Link href='/about' scroll={false}>
+              <Button>About me</Button>
             </Link>
           </motion.div>
           <motion.div

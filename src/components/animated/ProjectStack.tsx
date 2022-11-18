@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { AnimatePresence, HTMLMotionProps, motion, MotionProps, Variants } from 'framer-motion';
-import Image, { StaticImageData } from 'next/future/image';
+import Image, { StaticImageData } from 'next/image';
 import AnimatedText from './AnimatedText';
 
 export interface ProjectStackData {

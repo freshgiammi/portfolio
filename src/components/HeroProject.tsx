@@ -1,5 +1,5 @@
 import { motion, MotionProps, useScroll, useTransform, Variants } from 'framer-motion';
-import Image, { StaticImageData } from 'next/future/image';
+import Image, { StaticImageData } from 'next/image';
 import Link from 'next/link';
 
 import { useParallax } from 'react-scroll-parallax';
@@ -61,7 +61,7 @@ export default function HeroProject({ orientation, tags = [], ...props }: HeroPr
       >
         <Tilt reset={false} tiltMaxAngleX={15} tiltMaxAngleY={15} transitionSpeed={2000} gyroscope={true}>
           {/* An anchor element is needed to pass href to Link element. */}
-          <Link href={props.url} passHref scroll={false}>
+          <Link href={props.url} scroll={false}>
             <motion.div>
               <Image
                 alt='p.alt'

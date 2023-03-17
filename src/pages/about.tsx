@@ -122,7 +122,7 @@ const About: NextPage = () => {
               {`I'm `}
               <strong>Gianmarco Rengucci</strong>
               {`, but I usually go 
-              by "Freshgiammi" pretty much anywhere.`}
+              by "freshgiammi" pretty much anywhere.`}
             </motion.p>
             <motion.p>
               {`Born in `}
@@ -266,7 +266,26 @@ const About: NextPage = () => {
                   visible: { opacity: 1, transition: { duration: 2, ease: 'easeInOut' } },
                 }}
               >
-                <h2 className='text-lg font-light'>April 2021 - Current</h2>
+                <h2 className='text-lg font-light'>March 2023 - Current</h2>
+                <p className='text-2xl font-semibold'>
+                  {' '}
+                  Software Engineer /{' '}
+                  <Link
+                    href='https://arduino.cc'
+                    className='highlighted font-semibold text-amber-800/70 dark:text-amber-300/70'
+                    scroll={false}
+                  >
+                    Arduino
+                  </Link>
+                </p>
+              </motion.li>
+              <motion.li
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: { opacity: 1, transition: { duration: 2, ease: 'easeInOut' } },
+                }}
+              >
+                <h2 className='text-lg font-light'>April 2021 - March 2023</h2>
                 <p className='text-2xl font-semibold'>
                   {' '}
                   Fullstack developer (Consultant) /{' '}

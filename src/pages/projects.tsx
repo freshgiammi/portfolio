@@ -146,7 +146,7 @@ const Projects: NextPage = () => {
             <motion.p>
               {`Now that I've mentioned, `}
               <Link
-                href='https://github.com/freshgiammi/raspi-milan'
+                href='https://github.com/freshgiammi/raspi_milan'
                 className='highlighted font-semibold text-amber-800/70 dark:text-amber-300/70'
                 scroll={false}
               >

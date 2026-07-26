@@ -1,25 +1,28 @@
 {
+  "extends": "./config/typescript/react-library",
+  "include": ["src", "config", "*.js", "*.mjs", "*.ts", ".content-collections"],
+
   "compilerOptions": {
-    "target": "es6",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
+    "target": "ESNext",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "types": ["node", "vite/client", "./config/vite-plugins/buildinfo/types.d.ts"],
+    "module": "ESNext",
+    "noUncheckedIndexedAccess": true,
+    "strictNullChecks": true,
+
+    /* Bundler mode */
+    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "baseUrl": ".",
+    "noEmit": true,
+
+    "allowJs": true,
+
+    /* Linting */
+    "noFallthroughCasesInSwitch": true,
+
     "paths": {
       "@/*": ["./src/*"],
-      "~/*": ["./public/*"]
+      "content-collections": ["./.content-collections/generated"]
     }
-  },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  }
 }

@@ -1,0 +1,275 @@
+.Home {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-2xl) var(--spacing-lg) var(--spacing-lg);
+  flex: 1;
+  max-width: 80rem;
+  margin: 0 auto;
+  width: 100%;
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3xl);
+    flex: 1;
+  }
+
+  &__hero {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing-2xl);
+    align-items: flex-start;
+  }
+
+  &__heroText {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    flex: 1;
+    padding-top: var(--spacing-xs);
+  }
+
+  &__photoFrame {
+    width: 320px;
+    flex-shrink: 0;
+  }
+
+  &__heroTitle {
+    margin-bottom: var(--spacing-xs);
+  }
+
+  &__heroTitleAccent {
+    color: var(--accent);
+    font-style: italic;
+  }
+
+  &__wave {
+    display: inline-block;
+    transform-origin: 70% 70%;
+    animation: wave 2.4s ease-in-out 1;
+  }
+
+  @keyframes wave {
+    0%,
+    60%,
+    100% {
+      transform: rotate(0deg);
+    }
+    10% {
+      transform: rotate(14deg);
+    }
+    20% {
+      transform: rotate(-8deg);
+    }
+    30% {
+      transform: rotate(14deg);
+    }
+    40% {
+      transform: rotate(-4deg);
+    }
+    50% {
+      transform: rotate(10deg);
+    }
+  }
+
+  &__heroBio {
+    color: var(--text-subtle);
+    max-width: 34rem;
+    line-height: 1.7;
+
+    strong {
+      color: var(--text-default);
+    }
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  &__sectionHeader {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+  }
+
+  &__sectionLabel {
+    color: var(--accent);
+  }
+
+  &__sectionLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--text-subtle);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--accent);
+      text-decoration: none;
+    }
+  }
+
+  // Prose and socials side by side. The socials column is sized so its rows are all one width,
+  // which is what makes the handles line up.
+  &__sayHello {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-2xl);
+  }
+
+  // Takes whatever the prose leaves, which is the rest of the row given the prose stops at its
+  // own 36rem cap.
+  &__socials {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  // The middle column takes the slack, so the icon sits left and the handle right no matter how
+  // long the label is.
+  &__socialLink {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs) 0;
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-default);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+
+    &:hover {
+      color: var(--accent);
+      text-decoration: none;
+
+      .Home__socialHandle {
+        color: inherit;
+      }
+    }
+  }
+
+  &__socialIcon {
+    flex-shrink: 0;
+  }
+
+  &__socialHandle {
+    color: var(--text-subtle);
+    transition: color var(--transition-fast);
+  }
+
+  &__bodyText {
+    color: var(--text-subtle);
+    line-height: 1.7;
+    max-width: 36rem;
+  }
+
+  &__inlineLink {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+
+    &:hover {
+      color: var(--accent-alt);
+    }
+  }
+}
+
+@media (max-width: 48rem) {
+  // `stretch` rather than the row's `flex-start`, so the stacked list still spans the full width.
+  .Home__sayHello {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-md);
+  }
+
+  .Home__hero {
+    flex-direction: column;
+  }
+
+  // The stack stays at its full portrait size by letting the hero text overlap its bottom
+  // edge, with a mask fading the overlap out so the text stays readable. A mask rather than
+  // a scrim of the background colour, because the page background is a gradient and one fade
+  // colour only matches it at a single scroll offset.
+  //
+  // A mask governs alpha only inside its own box and clips the element's rendering to it, so
+  // the box is padded asymmetrically: above and to the sides to give a dragged card room to
+  // stay whole and fade out softly, unpadded at the bottom where the clip is what stops a
+  // card dragged down from reappearing below the fade. `mask-clip: no-clip` is no help here,
+  // as Chrome leaves everything outside the box fully unmasked.
+  .Home__photoFrame {
+    --photo-frame-side-pad: 2rem;
+    --photo-frame-top-pad: 10rem;
+
+    // Offsets are measured up from the bottom edge, the only edge whose position does not
+    // depend on the padding above or on the aspect-ratio-derived stack height.
+    --photo-frame-fade-start: 12.25rem;
+    --photo-frame-fade-end: 4.5rem;
+    // Softens the clip at the other three edges. The side ramps cannot exceed the side
+    // padding without fading cards that are sitting at rest.
+    --photo-frame-top-fade: 3rem;
+    --photo-frame-side-fade: var(--photo-frame-side-pad);
+
+    --photo-frame-mask-vertical: linear-gradient(
+      to bottom,
+      transparent 0,
+      black var(--photo-frame-top-fade),
+      black calc(100% - var(--photo-frame-fade-start)),
+      transparent calc(100% - var(--photo-frame-fade-end))
+    );
+    --photo-frame-mask-horizontal: linear-gradient(
+      to right,
+      transparent 0,
+      black var(--photo-frame-side-fade),
+      black calc(100% - var(--photo-frame-side-fade)),
+      transparent 100%
+    );
+
+    // The padding is added on top of the 78%/260px the stack is sized against, leaving the
+    // content box unchanged. `min(…, 100%)` keeps narrow viewports from gaining horizontal
+    // scroll, where 78% plus the padding would exceed the available width.
+    width: calc(78% + 2 * var(--photo-frame-side-pad));
+    max-width: min(calc(260px + 2 * var(--photo-frame-side-pad)), 100%);
+    padding: var(--photo-frame-top-pad) var(--photo-frame-side-pad) 0;
+    // Cancels the top padding so the stack sits where it would without it. calc() because
+    // `-var(…)` is invalid.
+    margin: calc(-1 * var(--photo-frame-top-pad)) auto -12rem;
+    position: relative;
+    z-index: 0;
+    // The top padding reaches over the header, and would otherwise swallow taps meant for it.
+    pointer-events: none;
+
+    > * {
+      pointer-events: auto;
+    }
+
+    -webkit-mask-image: var(--photo-frame-mask-vertical);
+    mask-image: var(--photo-frame-mask-vertical);
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+
+    // Guarded because layers composite as `add` by default, which unions them: the horizontal
+    // layer is opaque across the whole bottom strip and would cancel the bottom fade. Falling
+    // back to the single vertical layer still leaves the top and bottom ramps intact.
+    @supports (mask-composite: intersect) {
+      mask-image: var(--photo-frame-mask-vertical), var(--photo-frame-mask-horizontal);
+      mask-size:
+        100% 100%,
+        100% 100%;
+      mask-composite: intersect;
+    }
+  }
+
+  .Home__heroText {
+    position: relative;
+    z-index: 1;
+    padding-top: 3rem;
+  }
+}

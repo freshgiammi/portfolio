@@ -1,0 +1,5 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": ["content-collections.ts", "src/utils/seo/og.tsx"],
+  "ignoreDependencies": ["cloudflare"]
+}

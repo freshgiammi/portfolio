@@ -1,0 +1,53 @@
+.Share {
+  --share-action-size: 32px;
+
+  display: flex;
+  // Consumers flip the whole thing to a row by setting these; the actions follow via `inherit`.
+  flex-direction: var(--share-direction, column);
+  align-items: var(--share-align, flex-start);
+  gap: var(--spacing-xs);
+
+  &__label {
+    color: var(--text-subtle);
+    text-transform: uppercase;
+  }
+
+  // Direction is inherited from the wrapper, so the same markup reads as a rail beside the article
+  // and as a row underneath it.
+  &__actions {
+    display: flex;
+    flex-direction: inherit;
+    gap: 0.375rem;
+  }
+
+  &__action {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--share-action-size);
+    height: var(--share-action-size);
+    flex-shrink: 0;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--text-subtle);
+    cursor: pointer;
+    text-decoration: none;
+    transition:
+      color var(--transition-fast),
+      border-color var(--transition-fast);
+
+    &:hover {
+      color: var(--accent);
+      border-color: var(--border-accent);
+      text-decoration: none;
+    }
+
+    // Copy confirmation: the icon has already swapped to a check, this holds the colour with it.
+    &[data-done] {
+      color: var(--accent);
+      border-color: var(--border-accent);
+    }
+  }
+}

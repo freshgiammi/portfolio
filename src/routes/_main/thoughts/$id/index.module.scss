@@ -1,0 +1,112 @@
+.Thought {
+  padding: var(--spacing-2xl) var(--spacing-lg);
+  max-width: 80rem;
+  margin: 0 auto;
+  width: 100%;
+
+  // A note is one column of prose, so it is set to a reading measure and centred rather than
+  // spanning the page the way the feed does.
+  &__article {
+    max-width: 42rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  &__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    align-self: flex-start;
+    color: var(--text-subtle);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+
+    &:hover {
+      color: var(--accent);
+      text-decoration: none;
+    }
+  }
+
+  &__body {
+    // Authored with blank lines between paragraphs, which `pre-line` keeps without needing markup.
+    white-space: pre-line;
+    line-height: 1.75;
+  }
+
+  &__neighbours {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  // Each side keeps its own column so a lone neighbour still sits on the side its label implies.
+  &__neighbour {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    color: var(--text-default);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+
+    &:hover {
+      color: var(--accent);
+      text-decoration: none;
+
+      .Thought__neighbourLabel {
+        color: inherit;
+      }
+    }
+
+    &--older {
+      grid-column: 1;
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    &--newer {
+      grid-column: 2;
+      align-items: flex-end;
+      text-align: right;
+    }
+  }
+
+  &__neighbourLabel {
+    color: var(--text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    transition: color var(--transition-fast);
+  }
+}
+
+@media (max-width: 48rem) {
+  .Thought {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+
+  .Thought__neighbours {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--spacing-sm);
+  }
+
+  .Thought__neighbour {
+    &--older,
+    &--newer {
+      grid-column: 1;
+      align-items: flex-start;
+      text-align: left;
+    }
+  }
+}

@@ -1,0 +1,98 @@
+.Page {
+  padding: var(--spacing-2xl) var(--spacing-lg);
+  max-width: 80rem;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.Header {
+  &__subtitle {
+    color: var(--text-subtle);
+    margin-top: 0.25rem;
+  }
+}
+
+.Empty {
+  color: var(--text-subtle);
+}
+
+.List {
+  display: flex;
+  flex-direction: column;
+  max-width: 48rem;
+}
+
+.Project {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-md) 0;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  &__heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+  }
+
+  &__period {
+    color: var(--text-subtle);
+    white-space: nowrap;
+  }
+
+  &__description {
+    color: var(--text-subtle);
+    line-height: 1.7;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs) var(--spacing-md);
+    margin-top: var(--spacing-xs);
+  }
+
+  &__stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  &__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--accent);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--accent-alt);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+  }
+}
+
+.Tag {
+  padding: 0.125rem 0.375rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xs);
+  color: var(--text-subtle);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "freshgiammi-portfolio",
+  "compatibility_date": "2025-09-02",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "@tanstack/react-start/server-entry",
+  "observability": { "enabled": true },
+  // The custom domain below is the only public hostname: no second copy of the site answering on
+  // `<name>.<subdomain>.workers.dev`.
+  "workers_dev": false,
+  // Attaching this replaces the apex DNS record, so the first deploy that carries it is what moves
+  // the domain off its current host.
+  "routes": [{ "pattern": "freshgiammi.dev", "custom_domain": true }],
+  "d1_databases": [
+    {
+      "binding": "freshgiammi_reads",
+      "database_name": "freshgiammi-reads",
+      "database_id": "35f63144-32eb-4d1f-8ef7-a468f4b1a599",
+      "migrations_dir": "migrations"
+    }
+  ]
+}

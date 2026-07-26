@@ -1,0 +1,40 @@
+import { createContext, useContext } from "react"
+
+import type { ResolvedTheme, ThemeKey } from "@/theme"
+
+export type ThemeContextValue = {
+  /** What the reader chose, including "system". */
+  theme: ThemeKey
+  /** What that resolves to, and what `data-theme` carries. `undefined` until "system" can be read. */
+  resolved: ResolvedTheme | undefined
+  setTheme: (key: ThemeKey) => void
+}
+
+export const ThemeContext = createContext<ThemeContextValue | null>(null)
+
+export function useTheme(): ThemeContextValue {
+  const ctx = useContext(ThemeContext)
+  if (!ctx) throw new Error("useTheme must be used inside <ThemeProvider>")
+  return ctx
+}
+
+/**
+ * The theme of the nearest `ThemeScope`, or `undefined` when none is active and the document's own
+ * theme applies.
+ *
+ * React context crosses portals where the DOM does not, so a popup mounted on `document.body` can
+ * still read the scope it was opened from and tag its own root with it.
+ */
+export const ThemeScopeContext = createContext<ResolvedTheme | undefined>(undefined)
+
+/**
+ * The theme to put on a portalled element, so it matches the scope it was opened from rather than the
+ * document. `undefined` means "inherit", which is the right answer outside any scope.
+ *
+ * @example
+ * const scopedTheme = useScopedTheme()
+ * return <DropdownMenu.Positioner data-theme={scopedTheme} />
+ */
+export function useScopedTheme(): ResolvedTheme | undefined {
+  return useContext(ThemeScopeContext)
+}

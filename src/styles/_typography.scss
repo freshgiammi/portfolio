@@ -1,0 +1,166 @@
+@use "sass:map";
+@use "sass:meta";
+
+// ====================================================================================
+// Typography
+// ====================================================================================
+//
+// Type styles belong on the element: `<Typography size="small">`, a `render` prop when the tag
+// has to be something else, or `getTypographyAttributes()` spread onto anything that isn't a
+// Typography. Reach for this partial only for the one thing an attribute cannot express: a style
+// that depends on a condition, because the condition lives in the stylesheet and only its author
+// knows what it is.
+//
+// A static size in a stylesheet is a sign the element should have carried the attribute instead.
+//
+// Comments here are `//` rather than `/* */` so nothing is emitted, and any number of modules can
+// `@use` it without duplicating output.
+//
+//   @use "typography" as type;
+//
+//   .Title {
+//     @media (min-width: 61.25rem) {
+//       @include type.size("x-large");
+//       @include type.weight("bold");
+//     }
+//
+//     @container card (min-width: 30rem) {
+//       @include type.size("large");
+//       @include type.family("serif");
+//     }
+//   }
+//
+// Any at-rule works, since the mixins only write the same custom properties the attributes write.
+// Nothing in here decides *when* a style applies.
+//
+// Every mixin emits `!important`, because `[data-font][data-font-*="…"]` is two attribute selectors
+// and would otherwise outrank any single class. Importance is not inherited, so a descendant
+// carrying its own attribute still wins for itself: only elements that were already inheriting
+// follow along.
+
+// These maps are the single source of truth for the type scale. `fonts.scss` builds its
+// `[data-font-*]` blocks from them, and the mixins below restate a token under a condition, so a
+// value can only ever be defined once.
+//
+// `adjusted` is the `ratio` resolved to a whole pixel, used where `round()` is unsupported. Its
+// effective ratio is noted where it differs from the nominal one.
+
+$sizes: (
+  "xxx-small": (size: 0.625rem, adjusted: 1rem, ratio: 160%),
+  // 158.33%
+  "xx-small": (size: 0.75rem, adjusted: 1.1875rem, ratio: 160%),
+  // 157.14%
+  "x-small": (size: 0.875rem, adjusted: 1.375rem, ratio: 160%),
+  // 162.5%
+  "small": (size: 1rem, adjusted: 1.625rem, ratio: 160%),
+  "medium": (size: 1.25rem, adjusted: 1.75rem, ratio: 140%),
+  // 139.29%
+  "large": (size: 1.75rem, adjusted: 2.4375rem, ratio: 140%),
+  // 138.89%
+  "x-large": (size: 2.25rem, adjusted: 3.125rem, ratio: 140%),
+  // 139.58%
+  "xx-large": (size: 3rem, adjusted: 4.1875rem, ratio: 140%)
+);
+
+$families: (
+  "sans": ("Inter Variable", "Inter", sans-serif),
+  "serif": ("Instrument Serif", serif),
+  "mono": ("Departure Mono", monospace)
+);
+
+$weights: (
+  "light": 300,
+  "regular": 400,
+  "medium": 500,
+  "semibold": 600,
+  "bold": 700
+);
+
+// `$enforce: true` writes the real CSS property instead of the token the `[data-font]` rule reads.
+// It exists for elements this codebase does not render, meaning markdown output, which can carry
+// no attribute. Everything we do render should be given the attribute instead.
+//
+// The two flags move together by default: a token needs `!important` to outrank
+// `[data-font][data-font-*="…"]`, while a real property on an element without the attribute has
+// nothing to outrank. `fonts.scss` passes `$important: false` for the baseline rules, which are
+// what everything else overrides.
+@function _flag($important) {
+  @if $important {
+    @return " !important";
+  }
+
+  @return "";
+}
+
+/// Sets one step of the size scale on the current selector.
+///
+/// Enforced, it writes `font-size` alone and leaves `line-height` to the caller: prose headings
+/// and code blocks set their own leading, which the token's ratio would overrule.
+@mixin size($name, $enforce: false, $important: not $enforce) {
+  $step: map.get($sizes, $name);
+
+  @if not $step {
+    @error "Unknown font size '#{$name}'. Expected one of: #{map.keys($sizes)}.";
+  }
+
+  @if $enforce {
+    font-size: #{map.get($step, size)}#{_flag($important)};
+  } @else {
+    --font-size: #{map.get($step, size)}#{_flag($important)};
+    --line-height-adjusted: #{map.get($step, adjusted)}#{_flag($important)};
+    --line-height: #{map.get($step, ratio)}#{_flag($important)};
+  }
+}
+
+/// Sets one font family on the current selector.
+@mixin family($name, $enforce: false, $important: not $enforce) {
+  $stack: map.get($families, $name);
+
+  @if not $stack {
+    @error "Unknown font family '#{$name}'. Expected one of: #{map.keys($families)}.";
+  }
+
+  @if $enforce {
+    font-family: #{meta.inspect($stack)}#{_flag($important)};
+  } @else {
+    // `meta.inspect` rather than plain interpolation, which strips the quotes off the family names
+    // and would emit `Inter Variable` where a font stack wants `"Inter Variable"`.
+    --font-family: #{meta.inspect($stack)}#{_flag($important)};
+  }
+}
+
+/// Sets one font weight on the current selector.
+@mixin weight($name, $enforce: false, $important: not $enforce) {
+  $value: map.get($weights, $name);
+
+  @if not $value {
+    @error "Unknown font weight '#{$name}'. Expected one of: #{map.keys($weights)}.";
+  }
+
+  @if $enforce {
+    font-weight: #{$value}#{_flag($important)};
+  } @else {
+    --font-weight: #{$value}#{_flag($important)};
+  }
+}
+
+/// Emits every token as its own `[data-font-*="…"]` rule. Called once, by `fonts.scss`.
+@mixin attribute-rules {
+  @each $name in map.keys($sizes) {
+    &[data-font-size="#{$name}"] {
+      @include size($name, $important: false);
+    }
+  }
+
+  @each $name in map.keys($weights) {
+    &[data-font-weight="#{$name}"] {
+      @include weight($name, $important: false);
+    }
+  }
+
+  @each $name in map.keys($families) {
+    &[data-font-family="#{$name}"] {
+      @include family($name, $important: false);
+    }
+  }
+}

@@ -1,0 +1,23 @@
+.BuildInfoFooter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-top: 1px solid var(--border-subtle);
+
+  &__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--text-subtle);
+
+    a {
+      color: var(--accent);
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+.ThemeSwitcher__trigger {
+  background-color: transparent;
+  border: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-xs);
+  color: var(--text-subtle);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  &:hover {
+    color: var(--accent);
+    background: var(--surface);
+  }
+}

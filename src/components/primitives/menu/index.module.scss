@@ -1,0 +1,102 @@
+.Menu {
+  &__popup {
+    background-color: var(--background);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    padding: var(--spacing-xs);
+    min-width: 180px;
+    outline: none;
+
+    transition:
+      opacity var(--transition-fast),
+      scale var(--transition-fast),
+      filter var(--transition-fast);
+
+    transform-origin: var(--transform-origin);
+
+    &[data-ending-style],
+    &[data-starting-style] {
+      opacity: 0;
+      scale: 0.95;
+      filter: blur(2px);
+    }
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    width: 100%;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    cursor: pointer;
+    box-sizing: border-box;
+
+    // only first and last get border radius, respectively on top and bottom
+    &:first-child {
+      border-top-left-radius: var(--radius-xs);
+      border-top-right-radius: var(--radius-xs);
+    }
+    &:last-child {
+      border-bottom-left-radius: var(--radius-xs);
+      border-bottom-right-radius: var(--radius-xs);
+    }
+
+    &:hover:not(:disabled) {
+      background: var(--surface);
+    }
+    &[data-highlighted] {
+      background: var(--surface);
+      outline: none;
+    }
+
+    &[aria-checked="true"] {
+      background: var(--surface);
+    }
+  }
+
+  &__itemIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    color: var(--text-subtle);
+
+    svg {
+      font-size: 16px;
+    }
+  }
+
+  &__itemLabel {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__itemIndicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    margin-left: auto;
+
+    svg {
+      font-size: 16px;
+    }
+  }
+
+  &__groupLabel {
+    text-transform: uppercase;
+    color: var(--text-subtle);
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+  &__separator {
+    height: 1px;
+    background: var(--border-subtle);
+    margin: var(--spacing-xs) 0;
+  }
+}

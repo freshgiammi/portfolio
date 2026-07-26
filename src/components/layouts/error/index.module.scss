@@ -1,0 +1,70 @@
+.ErrorPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-2xl) var(--spacing-lg);
+  flex: 1;
+
+  &__subtitle {
+    color: var(--text-subtle);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  &__message {
+    color: var(--text-subtle);
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
+
+  &__image {
+    height: 35dvh;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-lg);
+    max-width: 100%;
+    object-fit: cover;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+  }
+
+  &__retryButton {
+    background-color: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    cursor: pointer;
+    color: var(--accent);
+    transition: color var(--transition-fast);
+
+    &:hover {
+      color: var(--accent-alt);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+  }
+
+  &__homeLink {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    color: var(--accent);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+
+    &:hover {
+      color: var(--accent-alt);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+  }
+}

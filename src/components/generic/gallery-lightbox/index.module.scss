@@ -1,0 +1,159 @@
+/* ---------- Backdrop ---------- */
+
+.Backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  transition: opacity 200ms ease-out;
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    opacity: 0;
+  }
+}
+
+/* ---------- Popup ---------- */
+
+.Popup {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-2xl) var(--spacing-lg) 6.5rem;
+
+  transition:
+    opacity 0.25s ease-in-out,
+    translate 0.25s ease-in-out;
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    opacity: 0;
+    translate: 0 10px;
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+/* ---------- Image ---------- */
+
+.ImageWrap {
+  touch-action: pan-y;
+}
+
+.Image {
+  max-width: min(78vw, 60rem);
+  max-height: calc(100vh - 14rem);
+  object-fit: contain;
+  border-radius: var(--radius-xs);
+  pointer-events: none;
+}
+
+/* ---------- Nav ---------- */
+
+.Nav {
+  border: none;
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-ivory);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  &[data-side="left"] {
+    left: var(--spacing-lg);
+  }
+
+  &[data-side="right"] {
+    right: var(--spacing-lg);
+  }
+}
+
+@media (max-width: 40rem) {
+  .Popup {
+    padding: var(--spacing-xl) var(--spacing-md) 7.5rem;
+  }
+
+  .Nav {
+    top: auto;
+    bottom: var(--spacing-lg);
+    transform: none;
+  }
+
+  .Image {
+    max-width: min(92vw, 28rem);
+    max-height: calc(92vh - 20rem);
+  }
+}
+
+/* ---------- Close ---------- */
+
+.Close {
+  border: none;
+  position: fixed;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-ivory);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* ---------- Dots ---------- */
+
+.Dots {
+  position: fixed;
+  bottom: var(--spacing-md);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.375rem;
+}
+
+.Description {
+  color: var(--color-ivory);
+  text-align: center;
+  width: min(90vw, 44rem);
+  text-wrap: balance;
+  margin-top: var(--spacing-xs);
+}
+
+.Dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  transition: background var(--transition-fast);
+
+  &[data-active] {
+    background: var(--color-ivory);
+  }
+}

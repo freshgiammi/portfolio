@@ -1,0 +1,190 @@
+/* Base color palette */
+@layer palette {
+  :root {
+    --color-ivory: #fafaf8;
+    --color-sand: #1a7a7a;
+    --color-black: #000000;
+    --color-charcoal: #1b1b18;
+    --color-cement: #5c5c5c;
+    --color-cream: #f0efea;
+    --color-mist: #d4d3cc;
+    --color-amber: #4db4ad;
+    --color-terracotta: #146362;
+
+    // dark palette
+    --color-midnight: #0d0d0d;
+    --color-twilight: #141414;
+    --color-dusk: #1c1c1c;
+    --color-starlight: #dedede;
+    --color-stardim: #7a7a7a;
+    --color-aurora: #bd8838;
+    --color-aurora-glow: #cd9a48;
+    --color-eclipse: #262626;
+  }
+}
+
+// Theme selectors are keyed on the attribute rather than on `:root`, so `data-theme` works on any
+// element: the block re-declares the whole set on the matching node, and the subtree inherits it.
+// `:root` is listed alongside the light selector because the document carries no attribute until the
+// theme is resolved.
+@layer accents {
+  :root,
+  [data-theme="light"] {
+    --accent-primary: var(--color-sand);
+    --accent-secondary: var(--color-amber);
+  }
+
+  [data-theme="dark"] {
+    --accent-primary: var(--color-aurora);
+    --accent-secondary: var(--color-aurora-glow);
+  }
+}
+
+/* Semantic color assignments */
+@layer semantic {
+  // Theme-independent, and the same in every scope.
+  :root {
+    --header-height: 3.25rem;
+  }
+
+  // Derived tokens, re-declared on every themed node. Without this a nested scope would inherit the
+  // ancestor's already-computed value instead of resolving `var(--accent-primary)` against its own.
+  :root,
+  [data-theme] {
+    --accent: var(--accent-primary);
+    --accent-alt: var(--accent-secondary);
+    --accent-default: var(--accent-primary);
+    --color-accent: var(--accent-primary);
+    --border-accent: var(--accent-primary);
+  }
+
+  :root,
+  [data-theme="light"] {
+    color-scheme: light;
+
+    --background: var(--color-ivory);
+    --surface: var(--color-cream);
+    --surface-raised: var(--color-ivory);
+
+    --accent-hover: var(--color-terracotta);
+
+    --text-default: var(--color-charcoal);
+    --text-subtle: var(--color-cement);
+    --text-on-accent: var(--color-ivory);
+
+    --border-default: var(--color-charcoal);
+    --border-subtle: var(--color-mist);
+  }
+
+  [data-theme="dark"] {
+    color-scheme: dark;
+
+    --background: var(--color-midnight);
+    --surface: var(--color-twilight);
+    --surface-raised: var(--color-dusk);
+
+    --accent-hover: var(--color-aurora-glow);
+
+    --text-default: var(--color-starlight);
+    --text-subtle: var(--color-stardim);
+    --text-on-accent: var(--color-midnight);
+
+    --border-default: var(--color-starlight);
+    --border-subtle: var(--color-eclipse);
+
+    // Force Shiki dark theme.
+    //
+    // The one rule here that is not scope-aware: it matches on ancestry, so a code block inside a
+    // light `ThemeScope` still resolves against a dark document. Selectors cannot express "nearest
+    // themed ancestor", and the alternative (rewriting these through an intermediate custom property)
+    // would have to blank Shiki's own inline colours to work. Harmless while both Shiki themes are
+    // `vesper` and the two values are identical; revisit if they ever diverge.
+    pre.shiki,
+    pre.shiki code {
+      background-color: var(--shiki-dark-bg) !important;
+      color: var(--shiki-dark) !important;
+    }
+    pre.shiki .line span {
+      color: var(--shiki-dark) !important;
+    }
+  }
+}
+
+/* Spacing scale */
+@layer spacing {
+  :root {
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    --spacing-2xl: 4rem;
+    --spacing-3xl: 6rem;
+  }
+}
+
+/* Border radius values */
+@layer radius {
+  :root {
+    --radius-xs: 0.125rem;
+    --radius-sm: 0.25rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 1rem;
+  }
+}
+
+/* Transition and animation values */
+@layer transitions {
+  :root {
+    --transition-fast: 150ms ease;
+    --transition-base: 250ms ease;
+    --transition-slow: 350ms ease;
+  }
+}
+
+/* Shadow elevations */
+@layer shadows {
+  :root,
+  [data-theme="light"] {
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.08);
+    --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
+    --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.12);
+    --shadow-code: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+    --shadow-elevation: 0 1px 3px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.04);
+    --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+    --shadow-none: none;
+  }
+
+  [data-theme="dark"] {
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.35);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+    --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.45);
+    --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.5);
+    --shadow-code: 0 1px 3px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-elevation: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.35);
+    --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    --shadow-none: none;
+  }
+}
+
+/* Gradients */
+@layer gradients {
+  :root,
+  [data-theme="light"] {
+    --gradient-subtle: linear-gradient(180deg, var(--color-ivory) 0%, var(--color-cream) 100%);
+    --gradient-surface: linear-gradient(135deg, var(--color-ivory) 0%, var(--color-cream) 50%, var(--color-ivory) 100%);
+  }
+
+  [data-theme="dark"] {
+    --gradient-subtle: linear-gradient(180deg, var(--color-midnight) 0%, var(--color-twilight) 100%);
+    --gradient-surface: linear-gradient(
+      135deg,
+      var(--color-midnight) 0%,
+      var(--color-twilight) 50%,
+      var(--color-midnight) 100%
+    );
+  }
+}

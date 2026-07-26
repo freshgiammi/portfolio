@@ -1,0 +1,81 @@
+/* Import Fontsource Fonts */
+@use "@fontsource-variable/inter";
+@use "@fontsource/instrument-serif";
+@use "typography" as type;
+
+@font-face {
+  font-family: "Departure Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  // Root-absolute: the file is served from `public/`, and a relative url would resolve against the
+  // stylesheet's own location in `assets/` instead.
+  src: url("/fonts/departuremono/DepartureMono-Regular.woff2") format("woff2");
+}
+
+[data-font] {
+  font-size: var(--font-size, 1rem);
+  letter-spacing: 0.01em;
+  font-family: var(--font-family, "Inter Variable", "Inter", sans-serif);
+  font-weight: var(--font-weight, 400);
+  font-style: var(--font-style, normal);
+  line-height: var(--line-height-adjusted, 1.625rem); /* 160% (adjusted 162.5%) */
+
+  // If css round() is supported, then use the non adjusted value.
+  @supports (line-height: round(99.9px, 1px)) {
+    line-height: round(nearest, var(--line-height, 160%), 1px); /* 160% */
+  }
+}
+/*
+  * ====================
+  * Font Size, Weight, Family
+  *
+  * One rule per token, generated from the maps in `_typography.scss` so the values exist in
+  * exactly one place. The same maps back the mixins a stylesheet uses to restate a token under a
+  * media or container query.
+  * ====================
+  */
+[data-font] {
+  @include type.attribute-rules;
+}
+
+/*
+  * ====================
+  * Truncate 
+  *
+  * See: https://css-tricks.com/line-clampin
+  * ====================
+  */
+[data-font] {
+  // Single-line truncation when data-truncate="true"
+  &[data-truncate="true"] {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-wrap: break-word;
+    white-space: nowrap;
+  }
+
+  // Multi-line truncation when data-truncate is a number (default behavior)
+  &[data-truncate]:not([data-truncate="true"]) {
+    display: -webkit-box;
+    -webkit-line-clamp: var(--line-clamp, 1);
+    line-clamp: var(--line-clamp, 1);
+    -webkit-box-orient: vertical;
+    word-break: var(--word-break, "none");
+    overflow: hidden;
+    hyphens: auto;
+    text-align: var(--align, left);
+
+    // Automatically use "word-break: break-all" for single-lines
+    // (https://css-tricks.com/css-switch-case-conditions)
+    --is-single-line: 1 - Clamp(0, Calc(var(--line-clamp) - 1), var(--line-clamp));
+    --delay: Calc(-1s * (var(--is-single-line, 1) - 1));
+    animation: states 1s var(--delay) paused;
+
+    @keyframes states {
+      0% {
+        word-break: break-all;
+      }
+    }
+  }
+}

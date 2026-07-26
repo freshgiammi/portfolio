@@ -1,0 +1,334 @@
+$mobile-breakpoint: 48rem;
+
+/* ---------- Layout ---------- */
+
+.Layout {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex: 1 1;
+  isolation: isolate;
+
+  margin-top: var(--header-height);
+  min-height: calc(100dvh - var(--header-height));
+  width: 100vw;
+}
+
+.Layout__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* ---------- Header ---------- */
+
+.Header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  height: var(--header-height);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: 0 var(--spacing-sm);
+
+  background: var(--background);
+  border-bottom: solid 1px var(--border-subtle);
+}
+
+.Header__nav {
+  --nav-gap: var(--spacing-xs);
+
+  display: flex;
+  align-items: center;
+  gap: var(--nav-gap);
+  margin-right: auto;
+}
+
+// NavigationMenu.List is the row itself, so the gap and alignment live here rather than on the
+// nav, which is now only the menu root.
+.Header__navList {
+  display: flex;
+  align-items: center;
+  gap: var(--nav-gap);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+// Wide viewports navigate from the header, narrow ones from the panel. `display: none` takes the
+// hidden one out of the tab order and the accessibility tree, so only one is ever reachable.
+.Header__nav--wide {
+  @media (max-width: $mobile-breakpoint) {
+    display: none;
+  }
+}
+
+// The emoji and the label are both text on one line, so they align on the baseline. Centring
+// their boxes instead leaves the label sitting high, because its box carries descender space the
+// emoji's does not.
+.Header__identity {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-xs);
+  flex-shrink: 0;
+  min-width: 0;
+
+  // Stands in for the nav here, so it is what absorbs the free space and pushes the menu button
+  // over. It also yields first, ellipsising a long label rather than shoving the button off-edge.
+  @media (max-width: $mobile-breakpoint) {
+    margin-right: auto;
+    flex-shrink: 1;
+  }
+}
+
+.Header__current {
+  display: none;
+  color: var(--text-default);
+
+  @media (max-width: $mobile-breakpoint) {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.Header__theme {
+  display: flex;
+  align-items: center;
+  margin-left: var(--spacing-sm);
+  flex-shrink: 0;
+
+  @media (max-width: $mobile-breakpoint) {
+    display: none;
+  }
+}
+
+/* ---------- Brand ---------- */
+
+.Brand {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  flex-shrink: 0;
+}
+
+.BrandIcon {
+  display: block;
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+/* ---------- Header link ---------- */
+
+.Link {
+  text-decoration: none;
+  color: var(--text-subtle);
+  white-space: nowrap;
+
+  &:hover,
+  &[data-status="active"] {
+    color: var(--text-default);
+    text-decoration: none;
+  }
+}
+
+/* ---------- Nav separator ---------- */
+
+// A sibling of the links rather than a pseudo-element on them, so the slash sits outside every
+// anchor and dropdown trigger: it is not clickable, not part of the link text, and not announced.
+.NavSeparator {
+  color: var(--text-subtle);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ---------- Dropdown trigger ---------- */
+
+.DropdownTrigger {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--text-subtle);
+  transition: color var(--transition-fast);
+  white-space: nowrap;
+
+  &:hover {
+    color: var(--text-default);
+  }
+
+  &[data-popup-open] {
+    color: var(--text-default);
+
+    .DropdownTrigger__caret {
+      transform: rotate(180deg);
+    }
+  }
+
+  &--active {
+    color: var(--text-default);
+  }
+}
+
+.DropdownTrigger__caret {
+  flex-shrink: 0;
+  transition: transform var(--transition-fast);
+}
+
+// One popup serves every group, so it is the positioner that moves. `z-index` above the header,
+// which is the only fixed thing it can pass under.
+.NavPositioner {
+  z-index: 200;
+}
+
+// The popup is shared between groups, so the viewport is what clips one set of links while the
+// next moves in. Sizing stays with the content, which is what keeps this looking like the menu it
+// replaced rather than a box that resizes.
+.NavViewport {
+  position: relative;
+  overflow: hidden;
+}
+
+// The links a group holds. The popup is shared, so this is what the viewport sizes itself to.
+.NavContent {
+  display: flex;
+  flex-direction: column;
+  min-width: 180px;
+}
+
+/* ---------- Menu button ---------- */
+
+.MenuButton {
+  background-color: transparent;
+  border: none;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  flex-shrink: 0;
+
+  // No `margin-left: auto` here: the identity group already absorbs the free space, and a second
+  // auto margin would split it rather than pushing this flush right.
+  @media (max-width: $mobile-breakpoint) {
+    display: flex;
+  }
+}
+
+.MenuButton__bar {
+  display: block;
+  width: 18px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--text-subtle);
+  transition:
+    transform var(--transition-fast),
+    opacity var(--transition-fast);
+  transform-origin: center;
+}
+
+.MenuButton--open {
+  .MenuButton__bar:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  .MenuButton__bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .MenuButton__bar:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+}
+
+/* ---------- Menu panel ---------- */
+
+// Dialog only mounts these while open, so no permanent full-viewport layer is left behind for the
+// compositor to deal with on scroll.
+.Backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  transition: opacity var(--transition-fast);
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    opacity: 0;
+  }
+}
+
+.Panel {
+  position: fixed;
+  top: var(--header-height);
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  width: min(17rem, 85vw);
+  height: calc(100dvh - var(--header-height));
+  padding: var(--spacing-md);
+  background: var(--background);
+  border-left: 1px solid var(--border-subtle);
+  overflow-y: auto;
+  transition: transform var(--transition-fast);
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    transform: translateX(100%);
+  }
+
+  // The panel is the narrow-viewport nav; nothing should be able to open it wide, where the
+  // header nav is the one in use.
+  @media (min-width: ($mobile-breakpoint + 0.0625rem)) {
+    display: none;
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  // Group labels are printed rather than tappable, so every destination below one is a single tap
+  // away instead of hiding behind an accordion.
+  &__group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  &__groupLabel {
+    color: var(--text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding-bottom: var(--spacing-xs);
+    margin-bottom: var(--spacing-xs);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  &__link {
+    // Comfortable touch target without needing a fixed height per row.
+    padding: var(--spacing-xs) 0;
+
+    &--standalone {
+      padding-bottom: var(--spacing-sm);
+    }
+  }
+
+  &__footer {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--border-subtle);
+  }
+}

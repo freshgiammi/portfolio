@@ -1,0 +1,19 @@
+.ProseSkeleton {
+  &__line {
+    display: block;
+    height: 1em;
+    margin-bottom: 0.7em;
+    border-radius: 0;
+  }
+
+  // Reads as a paragraph's last line, not a rectangle: every third line is shorter and leaves more
+  // room after it, the way a wrapped sentence actually ends short of the margin.
+  &__line:nth-child(3n) {
+    width: 55%;
+    margin-bottom: 1.6em;
+  }
+
+  &__line:last-child {
+    margin-bottom: 0;
+  }
+}

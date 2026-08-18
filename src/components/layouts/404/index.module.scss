@@ -6,18 +6,23 @@
   gap: var(--spacing-md);
   padding: var(--spacing-2xl) var(--spacing-lg);
   flex: 1;
+  text-align: center;
+  min-height: 0;
 
   &__subtitle {
     color: var(--text-subtle);
     margin-bottom: var(--spacing-sm);
+    text-align: center;
   }
 
   &__image {
-    height: 35dvh;
-    border-radius: var(--radius-sm);
-    box-shadow: var(--shadow-lg);
-    max-width: 100%;
+    height: clamp(12rem, 28dvh, 22rem);
+    width: auto;
+    max-width: min(100%, 28rem);
+    max-height: 28dvh;
     object-fit: cover;
+    border-radius: 0;
+    box-shadow: var(--shadow-lg);
   }
 
   &__homeLink {
@@ -34,5 +39,4 @@
       text-underline-offset: 2px;
     }
   }
-
 }

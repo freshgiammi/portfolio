@@ -1,0 +1,41 @@
+.Demo {
+  display: grid;
+  justify-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-lg) 0;
+  width: 100%;
+
+  // Overrides the shared component's own `width: stretch`: the list reads as a list, not as a
+  // full-width panel with a narrow column floating inside it.
+  &__box {
+    width: min(16rem, 100%);
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.25rem 0;
+  }
+
+  &__day {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0;
+    background-color: var(--surface);
+    color: var(--text-subtle);
+
+    &[data-today] {
+      background-color: color-mix(in srgb, var(--accent) 12%, var(--surface));
+      color: var(--text);
+    }
+  }
+
+  &__todayLabel {
+    color: var(--accent);
+  }
+}

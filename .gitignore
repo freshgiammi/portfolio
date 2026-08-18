@@ -26,6 +26,7 @@ dist-ssr
 
 build/
 .content-collections/
+.tanstack/
 
 # Local secrets for `wrangler dev`.
 .dev.vars
@@ -33,3 +34,5 @@ build/
 
 # Wrangler's local state: the miniflare simulation of D1, KV and the asset cache.
 .wrangler/
+*storybook.log
+storybook-static

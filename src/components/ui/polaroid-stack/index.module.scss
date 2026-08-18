@@ -1,0 +1,61 @@
+.Stack {
+  position: relative;
+  isolation: isolate;
+  width: calc(100% - 2 * var(--spacing-md));
+  aspect-ratio: 3 / 4.3;
+  // Keep horizontal breathing room for rotated cards without biasing the stack to the right.
+  margin: var(--spacing-sm) auto var(--spacing-lg);
+
+  &[data-orientation="horizontal"] {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+.Polaroid {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  // A press-and-hold here is the start of a drag, so keep the browser from reading it as a
+  // selection or a save-image long-press.
+  user-select: none;
+  -webkit-touch-callout: none;
+  margin: 0;
+  padding: 0.75rem 0.75rem 1.25rem;
+  background-color: var(--neutral-fixed-light);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  box-shadow: var(--shadow-elevation);
+  touch-action: none;
+  will-change: transform;
+
+  &[data-top] {
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+  }
+
+  &__image {
+    flex: 1;
+    width: 100%;
+    min-height: 0;
+    pointer-events: none;
+  }
+
+  &__caption {
+    display: block;
+    text-align: center;
+    margin-top: var(--spacing-xs);
+    color: var(--neutral-fixed-medium);
+    font-style: italic;
+    pointer-events: none;
+  }
+}

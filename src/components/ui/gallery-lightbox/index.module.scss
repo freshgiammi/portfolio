@@ -1,0 +1,179 @@
+@use "breakpoints" as bp;
+
+/* ---------- Backdrop ---------- */
+
+.Backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  transition: opacity 200ms ease-out;
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    opacity: 0;
+  }
+}
+
+/* ---------- Popup ---------- */
+
+.Popup {
+  --control-size: 40px;
+  --close-size: 36px;
+  --edge-gap: var(--spacing-lg);
+  --side-safe: calc(var(--edge-gap) + var(--control-size) + var(--spacing-sm));
+  --top-safe: calc(var(--spacing-md) + var(--close-size) + var(--spacing-sm));
+  --bottom-safe: 9.5rem;
+
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-2xl) var(--spacing-lg) 6.5rem;
+
+  transition:
+    opacity 0.25s ease-in-out,
+    translate 0.25s ease-in-out;
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    opacity: 0;
+    translate: 0 10px;
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+/* ---------- Image ---------- */
+
+.ImageWrap {
+  touch-action: pan-y;
+}
+
+.Image {
+  width: min(60rem, calc(100vw - 2 * var(--side-safe)));
+  height: min(52rem, calc(100vh - var(--top-safe) - var(--bottom-safe)));
+  background-color: transparent;
+  // The whole picture, not a crop of it: this is the view a reader opened deliberately.
+  --image-fit: contain;
+
+  border-radius: 0;
+  pointer-events: none;
+}
+
+/* ---------- Nav ---------- */
+
+.Nav {
+  border: none;
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--neutral-fixed-light);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  &[data-side="left"] {
+    left: var(--spacing-lg);
+  }
+
+  &[data-side="right"] {
+    right: var(--spacing-lg);
+  }
+}
+
+@include bp.down("md") {
+  .Popup {
+    --edge-gap: var(--spacing-md);
+    --side-safe: calc(var(--edge-gap) + 0.25rem);
+    --top-safe: calc(var(--spacing-md) + var(--close-size) + var(--spacing-sm));
+    --bottom-safe: 12rem;
+
+    padding: var(--spacing-xl) var(--spacing-md) 7.5rem;
+  }
+
+  .Nav {
+    top: auto;
+    bottom: var(--spacing-lg);
+    transform: none;
+  }
+
+  .Image {
+    width: min(28rem, calc(100vw - 2 * var(--side-safe)));
+    height: min(32rem, calc(100vh - var(--top-safe) - var(--bottom-safe)));
+  }
+}
+
+/* ---------- Close ---------- */
+
+.Close {
+  border: none;
+  position: fixed;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--neutral-fixed-light);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* ---------- Dots ---------- */
+
+.Dots {
+  position: fixed;
+  bottom: var(--spacing-md);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.375rem;
+  width: min(92vw, 34rem);
+}
+
+.Description {
+  color: var(--neutral-fixed-light);
+  text-align: center;
+  width: min(90vw, 44rem);
+  text-wrap: balance;
+  margin-top: var(--spacing-xs);
+}
+
+.Dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.35);
+  transition: background-color var(--transition-fast);
+
+  &[data-active] {
+    background-color: var(--neutral-fixed-light);
+  }
+}

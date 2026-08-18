@@ -1,0 +1,89 @@
+@use "breakpoints" as bp;
+
+.LatestActivity {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+
+  @include bp.up("lg") {
+    height: 0;
+  }
+
+  @include bp.down("lg") {
+    height: 12rem;
+  }
+
+  &__scrollable {
+    flex: 1;
+    min-height: 0;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+    padding: 0.625rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-default);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover {
+      color: var(--accent);
+      text-decoration: none;
+
+      .LatestActivity__right {
+        color: var(--text-default);
+      }
+    }
+  }
+
+  &__left {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--text-subtle);
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    color: var(--text-default);
+  }
+
+  &__repo {
+    color: var(--text-default);
+
+    .LatestActivity__row:hover & {
+      color: var(--accent);
+    }
+  }
+
+  // Quieter than the repository it hangs off, so the row still reads as a sentence about a
+  // repository rather than as a reference number.
+  &__number {
+    color: var(--text-subtle);
+    font-weight: 400;
+  }
+
+  &__right {
+    color: var(--text-subtle);
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: color var(--transition-fast);
+  }
+}

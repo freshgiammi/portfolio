@@ -1,0 +1,147 @@
+.Scrollable {
+  position: relative;
+  border-radius: inherit;
+  width: stretch;
+  isolation: isolate;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 0; // Allows for proper scrolling inside flex containers
+  min-width: 0;
+
+  &:has(&-viewport:empty) {
+    display: none;
+  }
+
+  &-viewport {
+    // How far the fade reaches in from each edge. A mask reveals whatever's actually behind the
+    // content — the real background, however it's rendered — instead of a painted-on tint that has
+    // to guess at a matching colour and looks like a flat highlight the moment it guesses wrong.
+    --scrollable-fade-size: 2rem;
+
+    flex-grow: 1;
+    border-radius: inherit;
+    min-height: 0;
+    min-width: 0;
+
+    // Base UI measures the real overflow (and so the mask) in its own effect, a beat after this
+    // first paints with nothing yet to go on. `@starting-style` doesn't help here: it only fires for
+    // an element genuinely new to the page (inserted later, or unhidden), not one already sitting in
+    // the very first server-rendered HTML — confirmed by tracing this in a real load, where opacity
+    // was already 1 on the first sampled frame. `data-measured` is set by the component itself (see
+    // `index.tsx`) the moment Base UI's own write actually lands, so this fades in from genuinely
+    // nothing to the real, already-correct mask — never a wrong one being corrected in view.
+    opacity: 0;
+    transition: opacity 260ms ease-out;
+
+    &[data-measured] {
+      opacity: 1;
+    }
+
+    // The viewport already clips its own overflow by scrolling, so the mask needs nothing beyond
+    // itself to keep the fade from spilling past the box. `--scroll-area-overflow-*-start/end` are
+    // pixel distances Base UI keeps up to date on this same element as it scrolls: 0 right at an
+    // edge (nothing to hide there), growing as there's more to scroll past it — this is Base UI's
+    // own documented hook for building an edge fade, straight off their scroll-area docs. `min()`
+    // against the fade's own reach is what makes the fade saturate once there's a fade's worth of
+    // content hidden, rather than requiring the whole axis to be scrolled through first;
+    // `--scrollable-max-fade` then scales how far that reach gets, so it never fully commits to
+    // hiding the edge.
+    //
+    // One gradient per axis, each already covering both of that axis's edges, so only two layers are
+    // needed rather than four. The default `mask-composite` (`add`) would union them into a single
+    // opaque shape instead of letting each axis fade independently; `intersect` is what keeps them
+    // independent, and the unguarded declaration below is deliberately the single top layer: without
+    // `@supports`, a browser lacking `intersect` would union both into a box with no fade at all
+    // rather than degrading to one axis (see the geometric background for the same trick).
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0,
+      black
+        calc(min(var(--scroll-area-overflow-y-start, 0px), var(--scrollable-fade-size)) * var(--scrollable-max-fade))
+    );
+
+    @supports (mask-composite: intersect) {
+      mask-image:
+        linear-gradient(
+          to bottom,
+          transparent 0,
+          black
+            calc(
+              min(var(--scroll-area-overflow-y-start, 0px), var(--scrollable-fade-size)) * var(--scrollable-max-fade)
+            ),
+          black
+            calc(
+              100% - min(var(--scroll-area-overflow-y-end, 0px), var(--scrollable-fade-size)) *
+                var(--scrollable-max-fade)
+            ),
+          transparent 100%
+        ),
+        linear-gradient(
+          to right,
+          transparent 0,
+          black
+            calc(
+              min(var(--scroll-area-overflow-x-start, 0px), var(--scrollable-fade-size)) * var(--scrollable-max-fade)
+            ),
+          black
+            calc(
+              100% - min(var(--scroll-area-overflow-x-end, 0px), var(--scrollable-fade-size)) *
+                var(--scrollable-max-fade)
+            ),
+          transparent 100%
+        );
+      mask-composite: intersect;
+    }
+  }
+
+  // Track and thumb are the same element: the unfilled part of the axis is simply background
+  // showing through. Positioned by Base UI itself (inset, and the main-axis thumb size as a CSS
+  // var); this only supplies the cross-axis thickness and the look.
+  &-scrollbar {
+    &[data-orientation="vertical"] {
+      width: 6px;
+    }
+
+    &[data-orientation="horizontal"] {
+      height: 6px;
+    }
+  }
+
+  &-thumb {
+    background-color: var(--border-subtle);
+    border-radius: 999px;
+    opacity: 0.5;
+    transition: opacity var(--transition-fast);
+
+    &:hover,
+    &[data-scrolling] {
+      opacity: 0.8;
+    }
+
+    [data-orientation="vertical"] & {
+      width: 100%;
+    }
+
+    [data-orientation="horizontal"] & {
+      height: 100%;
+    }
+  }
+
+  // Same thumb, invisible until there's a reason to look at it: hovering the box (dim, matching
+  // the "always" resting opacity) or the thumb itself/actively dragging it (brighter, matching
+  // "always"'s own hover state) — in that order, so the brighter rule wins the tie where both
+  // conditions hold at once, which is any time the pointer is actually over the thumb.
+  &[data-scrollbar="hover"] &-thumb {
+    opacity: 0;
+  }
+
+  &[data-scrollbar="hover"]:hover &-thumb,
+  &[data-scrollbar="hover"] &-thumb[data-scrolling] {
+    opacity: 0.5;
+  }
+
+  &[data-scrollbar="hover"] &-thumb:hover {
+    opacity: 0.8;
+  }
+}

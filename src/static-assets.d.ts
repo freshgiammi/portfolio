@@ -13,6 +13,7 @@ declare module 'virtual:static-assets' {
     "images/about/photo-08.jpg" |
     "images/about/photo-10.jpg" |
     "images/about/photo-12.jpg" |
+    "images/arduino-logo.svg" |
     "images/avatar.jpg" |
     "images/me.jpg";
 

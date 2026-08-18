@@ -1,104 +1,89 @@
-import { createFileRoute } from "@tanstack/react-router"
-import { Image } from "@unpic/react"
-import type { FilesInFolder } from "virtual:static-assets"
+import { createFileRoute, Link } from "@tanstack/react-router"
 import { staticAssets } from "virtual:static-assets"
 
-import { Typography } from "@/components/ui/typography"
+import { Page } from "@/components/primitives/page"
+import { Tag } from "@/components/primitives/tag"
+import { Typography } from "@/components/primitives/typography"
+import { PolaroidStack } from "@/components/ui/polaroid-stack"
 import type { PageSeo } from "@/utils/seo"
-import { createSeoMeta } from "@/utils/seo"
+import { createSeoMeta, pageTitleFromSeo } from "@/utils/seo"
 
+import { EquipmentSection } from "./-components/equipment-section"
 import styles from "./index.module.scss"
 
 const SEO = {
-  title: "Personal — freshgiammi",
-  description: "About Gianmarco Rengucci: background, interests, and the path behind freshgiammi."
+  title: "About — freshgiammi",
+  description: "Who I am and what I get up to away from the keyboard.",
+  emoji: "🙋🏻‍♂️"
 } satisfies PageSeo
 
 export const Route = createFileRoute("/_main/about/")({
   staticData: { seo: SEO },
   head: () => createSeoMeta({ ...SEO, path: "/about" }),
-  component: PersonalPage
+  component: AboutPage
 })
 
 const HOBBIES = [
   { icon: "🐧", label: "Linux" },
   { icon: "🔌", label: "Hardware Tinkering" },
-  { icon: "☕", label: "Coffee" },
+  { icon: "☕️", label: "Coffee" },
   { icon: "🌐", label: "Open Source" },
-  { icon: "📷", label: "Photography" },
-  { icon: "🏃", label: "Running" }
+  { icon: "📷", label: "Photography" }
 ]
 
-const ABOUT_IMAGES: Array<FilesInFolder<"images/about/">> = [
-  "images/about/photo-01.jpg",
-  "images/about/photo-02.jpg",
-  "images/about/photo-03.jpg",
-  "images/about/photo-04.jpg",
-  "images/about/photo-05.jpg",
-  "images/about/photo-06.jpg",
-  "images/about/photo-08.jpg",
-  "images/about/photo-10.jpg"
+const ABOUT_PHOTOS: Array<PolaroidStack.Photo> = [
+  { src: staticAssets("images/about/photo-01.jpg"), caption: "Somewhere underground, ears ringing" },
+  { src: staticAssets("images/about/photo-03.jpg"), caption: "The usual crowd, film edition" },
+  { src: staticAssets("images/about/photo-04.jpg"), caption: "Poolside, enjoying company provided drinks" },
+  { src: staticAssets("images/about/photo-05.jpg"), caption: "Somewhere the signal didn't reach" },
+  { src: staticAssets("images/about/photo-06.jpg"), caption: "Weekend escape to the beer factory" },
+  { src: staticAssets("images/about/photo-08.jpg"), caption: "Proof we do leave the house" },
+  { src: staticAssets("images/about/photo-10.jpg"), caption: "Last minute costume party dress up" }
 ]
 
-/*
- * ==========================================
- * Internal components
- * ==========================================
- */
-
-function PersonalPage() {
+function AboutPage() {
   return (
-    <div className={styles.Page}>
-      <div className={styles.Intro}>
-        <div className={styles.Heading}>
-          <Typography size="x-large" family="serif">
-            Hello there!
-          </Typography>
-          <Typography size="small" weight="regular" className={styles.IntroText}>
-            I&apos;m <strong>Gianmarco Rengucci</strong> — but I usually go by <strong>freshgiammi</strong> pretty much
-            anywhere.
-          </Typography>
-        </div>
+    <Page.Root gap="2xl">
+      <Page.Header emoji={SEO.emoji} title={pageTitleFromSeo(SEO.title)} subtitle={SEO.description} />
 
-        <Typography size="small" weight="regular" className={styles.IntroText}>
-          I studied{" "}
-          <a
-            href="https://www.unimi.it/en/education/bachelor/computer-science-new-media-communications"
-            target="_blank"
-            rel="noopener noreferrer">
-            Computer Science for New Media Communications
-          </a>{" "}
-          at Università Degli Studi di Milano, where my thesis focused on an <b>agent-based epidemic model</b> built on
-          multilayer networks.
-        </Typography>
-        <Typography size="small" weight="regular" className={styles.IntroText}>
-          Most machines at home run <b>GNU/Linux</b>, including a few that never volunteered. Away from the screen,
-          I&apos;m usually out with a camera, tinkering with electronics, or dialing in espresso.
-        </Typography>
-        <Typography size="small" weight="regular" className={styles.IntroText}>
-          I care about <b>building things that matter</b>, whether it&apos;s software, communities, or a really good cup
-          of coffee.
-        </Typography>
-
-        <div className={styles.HobbyStrip}>
-          {HOBBIES.map(h => (
-            <Typography key={h.label} size="x-small" className={styles.HobbyPill} render={<span />}>
-              <Typography size="small" render={<span />}>
-                {h.icon}
-              </Typography>
-              {h.label}
+      <Page.Content>
+        <div className={styles.IntroLayout}>
+          <div className={styles.Intro}>
+            <Typography size="small" weight="regular" className={styles.IntroText}>
+              I&apos;m <strong>Gianmarco Rengucci</strong>, though most people know me as <strong>freshgiammi</strong>.
+              Frontend engineer by day, open source tinkerer by night.
             </Typography>
-          ))}
-        </div>
-      </div>
+            <Typography size="small" weight="regular" className={styles.IntroText}>
+              Most machines at home run <b>GNU/Linux</b>, including a few that never volunteered for it. I&apos;ve been
+              down the ricing rabbit hole for years and probably spend too much time configuring things that already
+              work just fine.
+            </Typography>
+            <Typography size="small" weight="regular" className={styles.IntroText}>
+              When I&apos;m not staring at a terminal, you&apos;ll find me out on a run untangling whatever refused to
+              make sense at my desk that day, spinning records on a receiver older than half my gadgets, or looking
+              after a slowly growing jungle of houseplants that are doing <s>great</s> fine despite me.
+            </Typography>
+            <Typography size="small" weight="regular" className={styles.IntroText}>
+              This little site is home to my <Link to="/blog">blog</Link>, my <Link to="/finds">finds</Link>, and
+              anything else I feel like putting out into the world.
+            </Typography>
 
-      <div className={styles.PhotoGrid}>
-        {ABOUT_IMAGES.map((path, i) => (
-          <div key={path} className={styles.GridCell}>
-            <Image src={staticAssets(path)} alt={`Photo ${i + 1}`} layout="fullWidth" className={styles.GridImg} />
+            <div className={styles.HobbyStrip}>
+              {HOBBIES.map(h => (
+                <Tag key={h.label} size="medium" icon={h.icon}>
+                  {h.label}
+                </Tag>
+              ))}
+            </div>
           </div>
-        ))}
-      </div>
-    </div>
+
+          <div className={styles.IntroStack}>
+            <PolaroidStack photos={ABOUT_PHOTOS} orientation="horizontal" />
+          </div>
+        </div>
+
+        <EquipmentSection />
+      </Page.Content>
+    </Page.Root>
   )
 }

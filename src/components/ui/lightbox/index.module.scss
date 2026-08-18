@@ -1,0 +1,79 @@
+.Trigger {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: zoom-in;
+  display: contents;
+
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 0;
+  }
+}
+
+/* ---------- Backdrop ---------- */
+
+.Backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  transition: opacity 200ms ease-out;
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    opacity: 0;
+  }
+}
+
+/* ---------- Popup ---------- */
+
+.Popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transform: translate(-50%, -50%);
+  translate: 0 calc(0px + 1.25rem);
+
+  transition:
+    opacity 0.25s ease-in-out,
+    translate 0.25s ease-in-out,
+    transform 0.25s ease-in-out;
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 10px));
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+/* ---------- Image ---------- */
+
+.Image {
+  max-width: 80vw;
+  max-height: 80vh;
+  // The whole picture, not a crop of it: this is the view a reader opened deliberately.
+  --image-fit: contain;
+
+  width: auto;
+  border-radius: 0;
+
+  // The caps have to reach the picture, not just its frame: a frame clamped on its own crops a tall
+  // photo against its own `overflow: hidden` rather than scaling it down to fit.
+  img {
+    width: auto;
+    height: auto;
+    max-width: 80vw;
+    max-height: 80vh;
+  }
+}

@@ -1,0 +1,43 @@
+@use "sass:map";
+
+// ====================================================================================
+// Breakpoints
+// ====================================================================================
+//
+//   @use "breakpoints" as bp;
+//
+//   .Thing {
+//     @include bp.down("md") { … }   // max-width: 48rem
+//     @include bp.up("md") { … }     // min-width: 48rem + 0.01rem, so the two never overlap
+//   }
+//
+// `up`/`down` also accept a raw length if a one-off width is ever truly needed: `bp.down(40rem)`.
+// Non-layout conditions (`prefers-reduced-motion`, `(hover: none)`) stay as plain `@media`.
+//
+$breakpoints: (
+  "sm": 30rem,
+  "md": 48rem,
+  "lg": 56rem,
+  "xl": 75rem,
+  "2xl": 90rem
+);
+
+@function width($bp) {
+  @if map.has-key($breakpoints, $bp) {
+    @return map.get($breakpoints, $bp);
+  }
+
+  @return $bp;
+}
+
+@mixin up($bp) {
+  @media (min-width: #{width($bp) + 0.01rem}) {
+    @content;
+  }
+}
+
+@mixin down($bp) {
+  @media (max-width: #{width($bp)}) {
+    @content;
+  }
+}

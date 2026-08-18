@@ -1,0 +1,58 @@
+.Tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
+  // In `em`, not `rem`: the two sizes render at different type sizes, so proportional padding
+  // keeps the same breathing room around the label instead of one size inheriting the other's.
+  padding: 0.3em 0.75em;
+  border: 1px solid var(--border-subtle);
+  border-radius: 0;
+  background-color: var(--surface);
+  color: var(--text-subtle);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+
+  svg {
+    display: block;
+  }
+
+  // The icon rides in its own span so a text glyph (an emoji) escapes the label's uppercase,
+  // tracking and — most importantly — its type size: at xxx-small an unwrapped emoji is nearly
+  // invisible. Sized in `em` so it scales with the tag; an svg with explicit dimensions is
+  // untouched by the font-size and only loses the inherited letter-spacing.
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  &[data-tone="info"] {
+    color: var(--feedback-info-default);
+    border-color: var(--feedback-info-border);
+    background-color: var(--feedback-info-subtle);
+  }
+
+  &[data-tone="success"] {
+    color: var(--feedback-success-default);
+    border-color: var(--feedback-success-border);
+    background-color: var(--feedback-success-subtle);
+  }
+
+  &[data-tone="important"] {
+    color: var(--feedback-important-default);
+    border-color: var(--feedback-important-border);
+    background-color: var(--feedback-important-subtle);
+  }
+
+  &[data-tone="warning"] {
+    color: var(--feedback-warning-default);
+    border-color: var(--feedback-warning-border);
+    background-color: var(--feedback-warning-subtle);
+  }
+
+  &[data-tone="danger"] {
+    color: var(--feedback-danger-default);
+    border-color: var(--feedback-danger-border);
+    background-color: var(--feedback-danger-subtle);
+  }
+}

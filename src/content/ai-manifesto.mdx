@@ -1,0 +1,96 @@
+## The relationship
+
+AI is a tool: like any tool, it can be used well or poorly.
+For a tool to be useful, it must first be understood. Different harnesses, models and prompts have different
+strengths and weaknesses.
+
+LLMs are nothing more than _copilots_ _(pun intended)_.
+
+- They can generate ideas, but cannot _choose_ between them.
+- They can write code, but cannot _decide_ what code should do.
+- They can suggest improvements, but cannot _judge_ whether they are improvements.
+- They can surface patterns, but cannot _know_ which patterns are relevant.
+
+This is a deliberate division of labor. It might often be inconvenient, but it is also the only way to use these tools responsibly.
+
+## The job
+
+So, we've established that AI is a user-driven tool, and that it is not a replacement for human judgment. What does that mean in practice? How do I use AI in my work?
+
+- **The boring parts.** LLMs shine at repetitive, mechanical work that doesn't require judgment: route shells, CSS module skeletons, bulk mechanical changes,
+  renames, refactors, PR descriptions, commit messages. Necessary work that teaches nobody anything.
+  Delegating this work to a model frees me to focus on the parts of the job that require ==judgment, taste, and experience==.
+
+- **Prototyping.** Sometimes an idea is better in your mind rather than in reality.
+  To know if it is worth building, the fastest path is a throwaway version: the model scaffolds the experiment, I poke at it in the browser,
+  and decide if it's worth developing further.
+  Most prototypes die there, but an LLM lets you explore more ideas in the same amount of time, and the ones that survive are usually of higher quality.
+
+- **Performance investigations.** Sometimes you run into a weird performance problem that you can't explain.
+  The work around it is simple, but sometimes tedious: measure, form a theory, test it, repeat.
+  AI writes the measurement harnesses and performs sanity checks over re-renders, bundle sizes, and layout thrashing.
+  A model _can_ lie, but cold, hard data and a profiler don't.
+
+- **Analysis.** AI is incredibly good at holding large amounts of
+  code in view and surfacing the structure in it. Reading unfamiliar code from third-party libraries, tracing where a bug stems from and mapping
+  the flow of data through a system are all tasks an LLM can accelerate.
+
+  When I hit a bug that I can't immediately understand, I usually ask the model to explain the logic involved.
+  Once I have a grasp of the problem, I can pick one of two paths:
+  - Investigate the bug myself, using the model as a sounding board for my reasoning.
+  - Let the model do that, and then verify its reasoning and conclusions.
+
+  Models can still end up with a plausible-sounding answer that is wrong, so nothing acts on my behalf before I've read it myself.
+  The model is a tool for _understanding_, not a replacement for it.
+
+- **Challenging the agent.** There are two things that I hate to hear from a model:
+  - "You're absolutely right!" even when I'm not
+  - "No, you're wrong!" even when I am right
+
+  Not all models are trained to be agreeable, ==but that doesn't mean that they're right when they disagree==.
+  The most useful sentence in my vocabulary when working with
+  AI is some version of **"are you sure?"**
+
+  Most of the time they'll be correct (even if only _partially_) and "not always right" is reason enough to keep my guard up.
+  I make a habit of arguing both sides, asking for the strongest case against whatever was
+  just proposed (including against my own idea), and demanding alternatives before
+  accepting one.
+
+  Sometimes the model defends its answer well and teaches me something.
+  Sometimes it caves and reveals the first answer was luck or a wrong assumption.
+
+  You're always right to push back, _ever so slightly_.
+
+- **Offering insights and second opinions.** Explaining a design decision out loud to
+  something that asks annoying questions catches half the bad ones before they land in
+  git. "Why not just...?" from an LLM is worth as much as "why not just...?" from a
+  colleague, and it's available at 2am.
+
+- **Proofreading.** English is not my first language. While my understanding of the language is good enough, I may still
+  fail to convey my ideas clearly, especially when the argument is technically complex, and not easily expressed in a single sentence.
+  LLMs are good at proofreading and can help by drawing parallels, finding better ways to express ideas, and spotting inconsistencies in the text.
+
+## The line drawn
+
+- **Vibecoding.** Models can be prompted in a way that makes them self-sufficient on tasks, from start to finish.  
+  Vibecoding is a seductive trap that forces you to trust the model's judgement even for calls that haven't been made yet:
+  ==a codebase you haven't written is a codebase you can't maintain, debug, or improve: you simply don't own it anymore, the model does==.
+
+- **Decisions.** What to build, what to cut, what "good" looks like. I make those calls, and I own the consequences when
+  those decisions are wrong. A model can help me explore the options, but it should not make the call.
+
+- **Unreviewed output.** Nothing merges because a model wrote it confidently.
+  _Confidence_ is not _correctness_, and models have plenty of the former to spare.
+
+## The deal
+
+If you find something clever here, _I_ chose it. If you find a bug, it probably had
+help being brought to life.
+
+I use these tools aggressively for _leverage_ and conservatively for _authorship_, and I feel
+like this is the right balance to use them responsibly. But still, YMMV, and so might mine one day.
+
+---
+
+_drafted at: 23/09/2026_<br />
+_version: 1.0.0_

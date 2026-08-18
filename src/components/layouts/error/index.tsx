@@ -1,46 +1,44 @@
 import { Link } from "@tanstack/react-router"
-import { Image } from "@unpic/react"
+import { cx } from "cva"
+import type { ComponentProps } from "react"
 import { staticAssets } from "virtual:static-assets"
 
-import { Icon } from "@/components/ui/icons"
-import { Typography } from "@/components/ui/typography"
+import { Button } from "@/components/primitives/button"
+import { Icon } from "@/components/primitives/icons"
+import { Image } from "@/components/primitives/image"
+import { Typography } from "@/components/primitives/typography"
 import { env } from "@/env"
 
 import styles from "./index.module.scss"
 
-type ErrorPageProps = {
+type ErrorPageProps = ComponentProps<"div"> & {
   error: Error
   reset: () => void
 }
 
-export function ErrorPage({ error, reset }: ErrorPageProps) {
+export function ErrorPage({ error, reset, className, ...rest }: ErrorPageProps) {
   return (
-    <div className={styles.ErrorPage}>
+    <div {...rest} className={cx(styles.ErrorPage, className)}>
       <Typography size="large" family="serif">
         Oops
       </Typography>
       <Typography size="x-small" weight="regular" className={styles.ErrorPage__subtitle}>
-        Something went wrong.
+        Something went wrong on my end — sorry about that.
       </Typography>
       {env.NODE_ENV === "development" && (
         <Typography size="xxx-small" family="mono" className={styles.ErrorPage__message}>
           {error.message}
         </Typography>
       )}
-      <Image src={staticAssets("images/404.jpg")} alt="" layout="fullWidth" className={styles.ErrorPage__image} />
+      <Image src={staticAssets("images/404.jpg")} alt="" className={styles.ErrorPage__image} />
 
       <div className={styles.ErrorPage__actions}>
-        <Typography
-          size="x-small"
-          className={styles.ErrorPage__retryButton}
-          render={<button type="button" onClick={reset} />}>
-          <Icon.ArrowClockwiseIcon size={14} />
+        <Button variant="tertiary" icon={<Icon.ArrowClockwiseIcon />} onClick={reset}>
           Try again
-        </Typography>
-        <Typography size="x-small" className={styles.ErrorPage__homeLink} render={<Link to="/" />}>
-          <Icon.ArrowLeftIcon size={14} />
+        </Button>
+        <Button variant="tertiary" icon={<Icon.ArrowLeftIcon />} render={<Link to="/" />}>
           Go home
-        </Typography>
+        </Button>
       </div>
     </div>
   )

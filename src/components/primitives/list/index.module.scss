@@ -1,0 +1,101 @@
+.List {
+  display: flex;
+  flex-direction: column;
+}
+
+.Item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm);
+  color: var(--text-default);
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+  }
+
+  &__description {
+    color: var(--text-subtle);
+    line-height: 1.6;
+  }
+
+  &__footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.75rem;
+    margin-top: 0.125rem;
+    color: var(--text-subtle);
+    transition: color var(--transition-fast);
+  }
+
+  &__metaItem {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    white-space: nowrap;
+
+    & + &::before {
+      content: "/";
+      color: var(--border-default);
+      margin-right: 0.25rem;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    &[data-tone="danger"] {
+      color: var(--feedback-danger-default);
+    }
+
+    &[data-tone="accent"] {
+      color: var(--accent);
+    }
+  }
+
+  // Its own column rather than something inserted on hover, so nothing in the row shifts.
+  &__arrow {
+    color: var(--accent);
+    opacity: 0;
+    transform: translateX(-0.25rem);
+    transition:
+      opacity var(--transition-fast),
+      transform var(--transition-fast);
+  }
+
+  &--interactive {
+    grid-template-columns: minmax(0, 1fr) auto;
+    border-radius: 0;
+    text-decoration: none;
+    transition: background-color var(--transition-fast);
+
+    &:hover,
+    &:focus-visible {
+      background-color: color-mix(in srgb, var(--surface) 45%, transparent);
+      backdrop-filter: blur(6px);
+      text-decoration: none;
+
+      .Item__arrow {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    &:focus-visible {
+      outline: 1px solid var(--border-accent);
+      outline-offset: 0.25rem;
+    }
+
+    // Touch never hovers, so the arrow can't earn its column there.
+    @media (hover: none) {
+      grid-template-columns: minmax(0, 1fr);
+
+      .Item__arrow {
+        display: none;
+      }
+    }
+  }
+}

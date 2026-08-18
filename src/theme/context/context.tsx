@@ -12,6 +12,13 @@ export type ThemeContextValue = {
 
 export const ThemeContext = createContext<ThemeContextValue | null>(null)
 
+/**
+ * The theme, resolved.
+ *
+ * The choice itself is a preference like any other and is stored with them; this is the half that
+ * only the theme has, which is that "system" is a question and everything reading the theme wants
+ * the answer.
+ */
 export function useTheme(): ThemeContextValue {
   const ctx = useContext(ThemeContext)
   if (!ctx) throw new Error("useTheme must be used inside <ThemeProvider>")

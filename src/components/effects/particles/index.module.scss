@@ -1,0 +1,39 @@
+// Positioned in page coordinates, set inline per particle, in the colour the throwing box was
+// using (also set inline per particle). Above everything but the toasts.
+.Particle {
+  position: absolute;
+  z-index: 150;
+  color: var(--hue);
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0;
+  animation: Particle-fly 750ms cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes Particle-fly {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.6);
+  }
+  15% {
+    transform: translate(calc(-50% + var(--x) * 0.3), calc(-50% + var(--y) * 0.3)) scale(1.1)
+      rotate(calc(var(--rot) * 0.3));
+  }
+  65% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0.9) rotate(var(--rot));
+  }
+}
+
+// Cut short rather than removed: the animation's end is what clears the particle from state, so
+// taking it away would leave every one of them in the list for good.
+@media (prefers-reduced-motion: reduce) {
+  .Particle {
+    animation-duration: 1ms;
+  }
+}

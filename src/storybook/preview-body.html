@@ -1,0 +1,11 @@
+<!--
+  Injected into the preview iframe's <body>. Carries the page-level styles stories need, without
+  the app's element rules (global table styling, heading margins, resets), which leaked into
+  Storybook's own docs chrome — prop tables rendered with the site's table skin.
+-->
+<style>
+  /* Doubled class beats the docs theme's single emotion class, which paints this white. */
+  .sbdocs.sbdocs-preview {
+    background-color: var(--background);
+  }
+</style>

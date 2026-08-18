@@ -1,0 +1,20 @@
+// Roomy on purpose: the space around the buttons is itself something to click, and a burst thrown
+// at a corner of it should have somewhere to go.
+.Demo {
+  display: grid;
+  justify-items: center;
+  gap: var(--spacing-lg);
+  align-content: center;
+  // Wide and tall enough to be worth clicking at: the empty space is half the demo.
+  width: min(34rem, 100%);
+  min-height: 16rem;
+  margin-inline: auto;
+  padding: var(--spacing-xl) var(--spacing-md);
+  cursor: crosshair;
+
+  // The one thing a reader cannot find by pressing the obvious thing.
+  &__hint {
+    color: var(--text-subtle);
+    text-align: center;
+  }
+}

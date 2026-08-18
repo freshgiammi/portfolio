@@ -1,0 +1,68 @@
+// The counted actions as pills, then a quieter line holding share, ruled off from them. Each pill
+// caps its own width (see `ReactionButton`), so the rows below the article keep their shape while
+// the rules still span the content edge to edge.
+//
+// Everything the buttons themselves look like lives in `ReactionButton`; this file only places them.
+.PostRail {
+  display: flex;
+  flex-direction: column;
+
+  // Equal columns rather than content-sized pills, so two counts of different lengths cannot give
+  // two different widths.
+  &__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    gap: 0.5rem;
+
+    // Fill the column up to the pill's own cap, centred within it.
+    > * {
+      width: stretch;
+    }
+  }
+
+  // Matched to the padding the page puts above the rail, so the rule sits on the same rhythm as the
+  // one framing the whole block rather than hugging the pills.
+  &__meta {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--border-subtle);
+    color: var(--text-subtle);
+  }
+
+  &__shareLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-width: 0;
+    padding: 0.4rem 0.6rem;
+    background: none;
+    border: 0;
+    color: var(--text-subtle);
+    cursor: pointer;
+    border-radius: 0;
+    border-style: solid;
+    border-width: 1px;
+    border-color: transparent;
+
+    transition:
+      color var(--transition-fast),
+      background-color var(--transition-fast),
+      border-color var(--transition-fast),
+      transform var(--transition-fast);
+
+    &[data-active],
+    &:hover:not(:disabled),
+    &:focus-visible {
+      background-color: color-mix(in srgb, var(--accent) 8%, transparent);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    &:active {
+      transform: scale(0.96);
+    }
+  }
+}

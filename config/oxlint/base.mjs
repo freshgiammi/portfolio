@@ -151,8 +151,11 @@ export default defineConfig({
      * ==========================================
      */
 
+    "portfolio/button-type-required": "warn",
+    "portfolio/no-nested-children-in-render-prop": "warn",
     "portfolio/no-private-folder-import": "warn",
     "portfolio/no-unwrapped-text-in-fragment": "warn",
+    "portfolio/ref-prop-last": "warn",
     "portfolio/require-form-id": "warn",
 
     /*

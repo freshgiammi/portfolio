@@ -1,0 +1,77 @@
+// Zero specificity on purpose: every one of these is a default a caller is expected to talk over,
+// and `:where` is what makes "the caller's class wins" true whichever stylesheet the bundler
+// happened to emit first. The placeholders are absolute inside it, which is what keeps the box the
+// same size in all three states.
+:where(.Image) {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: transparent;
+
+  // The picture's own proportions decide the height, so the box shrink-wraps it rather than the
+  // other way around. Nothing is cropped here, so there is no tint to show through either.
+  &[data-layout="intrinsic"] {
+    height: auto;
+    background-color: transparent;
+  }
+}
+
+.Image {
+  &[data-status="loading"],
+  &[data-status="missing"] {
+    background-color: color-mix(in srgb, var(--surface) 80%, black 20%);
+  }
+
+  // The box the skeleton is painted over, and the box the image fills.
+  &__frame {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    // The one thing left to the image rather than to its box, and so the one thing a caller sets
+    // from the outside: whether a picture that does not match the box is cropped or letterboxed.
+    object-fit: var(--image-fit, cover);
+    display: block;
+  }
+
+  &[data-layout="intrinsic"] &__img {
+    height: auto;
+  }
+
+  // An intrinsic box is only as tall as the picture inside it, which is nothing at all when there
+  // is no picture: without this the fallback has no room to be seen in.
+  &[data-layout="intrinsic"][data-status="missing"] {
+    min-height: 8rem;
+    background-color: color-mix(in srgb, var(--surface) 80%, black 20%);
+  }
+
+  // What the picture was going to say, which is the one description of it we are guaranteed to have.
+  // The two-line limit is `truncate` on the element itself; this is only how wide it may run.
+  &__fallbackText {
+    max-width: 40ch;
+    color: var(--text-subtle);
+  }
+
+  // The fallback, whether a caller's node or the default icon, is centred in the box for them: it is
+  // by definition rendered where an image was expected, and every caller would otherwise repeat the
+  // same four lines.
+  & > :not(&__frame) {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.4rem;
+    padding: var(--spacing-xs);
+    color: var(--text-subtle);
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+}

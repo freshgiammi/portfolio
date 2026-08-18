@@ -1,0 +1,15 @@
+// One emitter, since what it throws is now something to set rather than something to pick between.
+// Even padding, so the demo box keeps it centred: the particles fly up into the space the box
+// already has rather than into padding bought for them.
+.Demo {
+  display: grid;
+  justify-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-lg) 0;
+
+  // The one thing a reader cannot find by tapping: that a press does something a tap does not.
+  &__hint {
+    color: var(--text-subtle);
+    text-align: center;
+  }
+}

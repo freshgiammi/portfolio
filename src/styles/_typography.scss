@@ -46,26 +46,68 @@
 // effective ratio is noted where it differs from the nominal one.
 
 $sizes: (
-  "xxx-small": (size: 0.625rem, adjusted: 1rem, ratio: 160%),
+  "xxx-small": (
+    size: 0.625rem,
+    adjusted: 1rem,
+    ratio: 160%
+  ),
   // 158.33%
-  "xx-small": (size: 0.75rem, adjusted: 1.1875rem, ratio: 160%),
+  "xx-small": (
+      size: 0.75rem,
+      adjusted: 1.1875rem,
+      ratio: 160%
+    ),
   // 157.14%
-  "x-small": (size: 0.875rem, adjusted: 1.375rem, ratio: 160%),
+  "x-small": (
+      size: 0.875rem,
+      adjusted: 1.375rem,
+      ratio: 160%
+    ),
   // 162.5%
-  "small": (size: 1rem, adjusted: 1.625rem, ratio: 160%),
-  "medium": (size: 1.25rem, adjusted: 1.75rem, ratio: 140%),
+  "small": (
+      size: 1rem,
+      adjusted: 1.625rem,
+      ratio: 160%
+    ),
+  "medium": (
+    size: 1.25rem,
+    adjusted: 1.75rem,
+    ratio: 140%
+  ),
   // 139.29%
-  "large": (size: 1.75rem, adjusted: 2.4375rem, ratio: 140%),
+  "large": (
+      size: 1.75rem,
+      adjusted: 2.4375rem,
+      ratio: 140%
+    ),
   // 138.89%
-  "x-large": (size: 2.25rem, adjusted: 3.125rem, ratio: 140%),
+  "x-large": (
+      size: 2.25rem,
+      adjusted: 3.125rem,
+      ratio: 140%
+    ),
   // 139.58%
-  "xx-large": (size: 3rem, adjusted: 4.1875rem, ratio: 140%)
+  "xx-large": (
+      size: 3rem,
+      adjusted: 4.1875rem,
+      ratio: 140%
+    )
 );
 
 $families: (
-  "sans": ("Inter Variable", "Inter", sans-serif),
-  "serif": ("Instrument Serif", serif),
-  "mono": ("Departure Mono", monospace)
+  "sans": (
+    "Inter Variable",
+    "Inter",
+    sans-serif
+  ),
+  "serif": (
+    "Instrument Serif",
+    serif
+  ),
+  "mono": (
+    "Departure Mono",
+    monospace
+  )
 );
 
 $weights: (

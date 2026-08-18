@@ -1,0 +1,20 @@
+// The box the burst is fired from and the surface you point at, filling the frame it was given so
+// its middle is the frame's middle. It sits above the mark on purpose: the mark takes a stacking
+// context of its own the moment it scales, and would otherwise steal the pointer back mid-hover,
+// firing a second burst on the way out.
+.Stage {
+  isolation: isolate;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+// The one thing in the frame at rest: a mark saying what happens if you point at it. Centred by the
+// frame around it rather than by a box of its own.
+.Mark {
+  :global(a:hover) &,
+  :global(a:focus-visible) & {
+    border-color: var(--border-accent);
+    scale: 1.06;
+  }
+}

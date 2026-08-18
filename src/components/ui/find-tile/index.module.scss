@@ -1,0 +1,134 @@
+.Tile {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  height: auto;
+  min-width: 0;
+  border-radius: 0;
+  overflow: hidden;
+  background-color: var(--component);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: box-shadow var(--transition-fast);
+  isolation: isolate;
+
+  // Nothing inside is selectable: the whole tile is one link, and a caption you can drag-select
+  // reads as text you could have clicked separately.
+  user-select: none;
+
+  // The image steps back and the caption steps in. Both directions are one gesture, so they share a
+  // duration and the image is never blurred without something legible arriving over it. The tile
+  // itself holds its size — only the preview inside it zooms, so the grid never shifts.
+  &:hover,
+  &:focus-visible {
+    box-shadow: var(--shadow-lg);
+
+    .Tile__image {
+      // Lighter than it was: the scrim below owns the contrast now, so this only has to push the
+      // preview out of focus rather than black it out.
+      filter: blur(6px) saturate(0.6) brightness(0.7);
+      transform: scale(1.06);
+    }
+
+    .Tile__detail {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  // The same caption, arriving because the tile is what the reader is looking at rather than because
+  // a pointer is on it. The preview is left sharp here, where hovering blurs it: hover is one tile
+  // answering a question, and this is a feed scrolling past, which should not be a column of pictures
+  // pulling in and out of focus as it goes. The scrim carries the text on its own either way.
+  &[data-revealed] .Tile__detail {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  // Above the caption rather than under it, so it survives the hover it is not part of.
+  //
+  // It carries its own opaque ground and fixed tones for the same reason the caption does, only more
+  // so: it is over the picture at rest, and the picture is someone else's. A translucent pill or a
+  // themed colour would be legible over the previews that happen to be dark today and gone the first
+  // time a pale one is saved.
+  &__tag {
+    position: absolute;
+    top: var(--spacing-xs);
+    left: var(--spacing-xs);
+    z-index: 2;
+    padding: 0.1rem 0.35rem;
+    border-radius: 0;
+    background-color: rgb(0 0 0 / 88%);
+    color: var(--neutral-fixed-light);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    filter: saturate(0.75) brightness(0.88);
+    transition:
+      filter 0.35s ease,
+      transform 0.35s ease;
+  }
+
+  // In the cell, over the image it describes. Held just below its resting place so the arrival has
+  // somewhere to come from, and out of the accessibility tree because the link already carries the
+  // same words in its label.
+  &__detail {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 0.15rem;
+    padding: var(--spacing-xs);
+    text-align: left;
+
+    // The caption carries its own ground rather than trusting the image to be dark. Dimming alone
+    // only holds for a dark preview: a light one (a cream OG card) dims to mid-gray and takes the
+    // text with it. Solid to the halfway mark, so every line of text sits on black rather than on
+    // whatever the gradient happened to be at that height, and only the top half fades.
+    background-image: linear-gradient(to top, rgb(0 0 0 / 95%) 25%, transparent 100%);
+    opacity: 0;
+    transform: translateY(0.5rem);
+    transition:
+      opacity 0.25s ease,
+      transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  // Fixed tones, not the themed text roles: the ground here is the scrim above, which is near-black
+  // in both themes, so `--text-default` would resolve to dark ink on dark in light mode.
+  &__title {
+    color: var(--neutral-fixed-light);
+    line-height: 1.25;
+  }
+
+  &__host {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    // `--accent-alt` for the same reason: light's `--accent` is the deep end of the ramp, chosen to
+    // be read against a light background.
+    color: var(--accent-alt);
+  }
+
+  &__description {
+    color: color-mix(in srgb, var(--neutral-fixed-light) 78%, transparent);
+    line-height: 1.35;
+
+    // Two lines of the description at this size; the rest is what opening it is for.
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+}

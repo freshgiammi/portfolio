@@ -1,0 +1,93 @@
+// Positioned in page coordinates, set inline per burst. Above everything but the toasts.
+.Confetti {
+  isolation: isolate;
+  position: absolute;
+  z-index: 150;
+  pointer-events: none;
+  user-select: none;
+
+  span {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background-color: var(--accent);
+    opacity: 0;
+    // Linear: the flight's easing is already baked into the keyframe stops below.
+    animation: Confetti-fly 1250ms linear var(--delay, 0ms) forwards;
+  }
+
+  span:nth-child(7n + 2) {
+    background-color: var(--feedback-danger-default);
+  }
+  span:nth-child(7n + 3) {
+    background-color: var(--feedback-warning-default);
+  }
+  span:nth-child(7n + 4) {
+    background-color: var(--feedback-success-default);
+  }
+  span:nth-child(7n + 5) {
+    background-color: var(--feedback-important-default);
+  }
+  span:nth-child(7n + 6) {
+    background-color: var(--feedback-info-default);
+  }
+  span:nth-child(7n) {
+    background-color: var(--accent-alt);
+  }
+
+  span:nth-child(2n) {
+    border-radius: 50%;
+  }
+  span:nth-child(3n) {
+    height: 10px;
+  }
+}
+
+// Throw and fall stay separate motions: the throw runs along the piece's own angle and decays like
+// drag, the fall is straight down and reaches terminal speed almost at once (hence gravity acting
+// from frame one, and the last three fall stops being evenly spaced). Sampled by hand rather than a
+// single easing curve, since nothing here comes to a stop and then drops like a thrown stone would.
+@keyframes Confetti-fly {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(0) rotate(var(--angle)) translateX(0) rotate(0deg) scale(0);
+  }
+  6% {
+    opacity: 1;
+  }
+  10% {
+    transform: translate(-50%, -50%) translateY(calc(var(--fall) * 0.03)) rotate(var(--angle))
+      translateX(calc(var(--distance) * 0.37)) rotate(calc(var(--spin) * 0.37)) scale(1.1);
+  }
+  22% {
+    transform: translate(-50%, -50%) translateY(calc(var(--fall) * 0.11)) rotate(var(--angle))
+      translateX(calc(var(--distance) * 0.64)) rotate(calc(var(--spin) * 0.64)) scale(1);
+  }
+  36% {
+    transform: translate(-50%, -50%) translateY(calc(var(--fall) * 0.25)) rotate(var(--angle))
+      translateX(calc(var(--distance) * 0.81)) rotate(calc(var(--spin) * 0.81)) scale(1);
+  }
+  52% {
+    transform: translate(-50%, -50%) translateY(calc(var(--fall) * 0.43)) rotate(var(--angle))
+      translateX(calc(var(--distance) * 0.92)) rotate(calc(var(--spin) * 0.92)) scale(1);
+  }
+  70% {
+    transform: translate(-50%, -50%) translateY(calc(var(--fall) * 0.64)) rotate(var(--angle))
+      translateX(calc(var(--distance) * 0.97)) rotate(calc(var(--spin) * 0.97)) scale(1);
+  }
+  85% {
+    transform: translate(-50%, -50%) translateY(calc(var(--fall) * 0.82)) rotate(var(--angle))
+      translateX(calc(var(--distance) * 0.99)) rotate(calc(var(--spin) * 0.99)) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(var(--fall)) rotate(var(--angle)) translateX(var(--distance))
+      rotate(var(--spin)) scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .Confetti span {
+    animation-duration: 1ms;
+  }
+}

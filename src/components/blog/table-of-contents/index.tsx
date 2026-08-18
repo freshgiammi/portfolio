@@ -1,63 +1,75 @@
-import { Collapsible } from "@base-ui/react/collapsible"
+import { cx } from "cva"
+import type { ComponentProps } from "react"
 import { useEffect, useRef, useState } from "react"
 
-import { Icon } from "@/components/ui/icons"
-import { Typography } from "@/components/ui/typography"
+import { Scrollable } from "@/components/primitives/scrollable"
+import { Typography } from "@/components/primitives/typography"
+import { useScrollToHeading } from "@/hooks/useScrollToHeading"
 import type { MarkdownHeading } from "@/utils/markdown"
+import { scrollBehavior } from "@/utils/scroll"
 
 import styles from "./index.module.scss"
 
-type TableOfContentsProps = {
+type TableOfContentsProps = ComponentProps<"nav"> & {
   headings: Array<MarkdownHeading>
 }
 
-export function TableOfContents({ headings }: TableOfContentsProps) {
-  const activeId = useActiveHeading(headings)
-  const listRef = useRef<HTMLUListElement>(null)
+/** Shorter than the `Scrollable` default: the post rail sits under this in the same sticky column. */
+const MAX_HEIGHT = 340
 
-  useKeepActiveInView(listRef, activeId)
+export function TableOfContents({ headings, className, ...rest }: TableOfContentsProps) {
+  const { activeId, handleLinkClick } = useActiveHeading(headings)
+  const activeIndex = headings.findIndex(heading => heading.id === activeId)
+  const scrollRef = useRef<HTMLDivElement>(null)
+
+  useKeepActiveInView(scrollRef, activeId)
 
   if (headings.length === 0) return null
 
   return (
-    <nav className={styles.Toc} aria-label="On this page">
-      <Collapsible.Root defaultOpen>
-        <Collapsible.Trigger className={styles.Toc__trigger}>
-          <Typography size="xx-small" weight="semibold" render={<span />} className={styles.Toc__label}>
-            On this page
-          </Typography>
-          <Icon.CaretDownIcon size={14} weight="bold" className={styles.Toc__caret} />
-        </Collapsible.Trigger>
+    <nav aria-label="On this page" {...rest} className={cx(styles.Toc, className)}>
+      <Typography size="xx-small" weight="semibold" render={<span />} className={styles.Toc__label}>
+        On this page
+      </Typography>
 
-        <Collapsible.Panel className={styles.Toc__panel}>
-          {/* One continuous rail with a single accent thumb, rather than a border per item: a rule
-              on every heading was what made the sidebar read as a ladder. */}
-          <ul className={styles.Toc__list} ref={listRef}>
-            {headings.map(heading => (
+      <Scrollable
+        scrollbar="hover"
+        maxHeight={MAX_HEIGHT}
+        contentClassName={styles.Toc__scrollContent}
+        contentRef={scrollRef}>
+        <ul className={styles.Toc__list}>
+          {headings.map((heading, index) => {
+            const isActive = heading.id === activeId
+            const isPast = activeIndex >= 0 && index < activeIndex
+
+            let state: "active" | "past" | undefined
+            if (isActive) state = "active"
+            else if (isPast) state = "past"
+
+            return (
               <li key={heading.id}>
                 <Typography
-                  size="x-small"
+                  size="xx-small"
                   className={styles.Toc__link}
                   render={
                     <a
                       href={`#${heading.id}`}
-                      style={{ paddingLeft: `${0.75 + (heading.level - 1) * 0.75}rem` }}
-                      data-active={heading.id === activeId || undefined}
+                      style={{ paddingLeft: `${(heading.level - 1) * 0.75}rem` }}
+                      data-state={state}
                       onClick={event => {
                         event.preventDefault()
-                        // Smoothness comes from the global CSS `scroll-behavior`; the JS option
-                        // silently no-ops on iOS Safari.
-                        document.getElementById(heading.id)?.scrollIntoView()
+                        handleLinkClick(heading.id)
                       }}
                     />
                   }>
-                  {heading.text}
+                  <span className={styles.Toc__index}>{String(index + 1).padStart(2, "0")}.</span>
+                  <span className={styles.Toc__text}>{heading.text}</span>
                 </Typography>
               </li>
-            ))}
-          </ul>
-        </Collapsible.Panel>
-      </Collapsible.Root>
+            )
+          })}
+        </ul>
+      </Scrollable>
     </nav>
   )
 }
@@ -72,67 +84,107 @@ export declare namespace TableOfContents {
  * ==========================================
  */
 
-/** Scrolls the list, not the page: the list is the scroll container the active link sits in. */
-function useKeepActiveInView(listRef: React.RefObject<HTMLUListElement | null>, activeId: string) {
+/** Scrolls the list, not the page: `scrollRef` is `Scrollable`'s own scrolling element, handed
+ *  back via its `contentRef` prop rather than found by walking the DOM from the `ul`. */
+function useKeepActiveInView(scrollRef: React.RefObject<HTMLDivElement | null>, activeId: string) {
   useEffect(() => {
     if (!activeId) return
-    const list = listRef.current
+    const list = scrollRef.current
     if (!list) return
 
     const link = list.querySelector(`a[href="#${activeId}"]`)
     if (!link) return
 
-    list.classList.add("toc-hide-scrollbar")
-    list.style.scrollbarWidth = "none"
-    link.scrollIntoView({ block: "nearest" })
-    requestAnimationFrame(() => {
-      list.classList.remove("toc-hide-scrollbar")
-      list.style.scrollbarWidth = ""
-    })
-  }, [listRef, activeId])
+    // scrollIntoView would walk up to the page as a scrollable ancestor when the link can't be fully
+    // centred within the list alone. scrollBy also avoids a react-compiler immutability warning that
+    // a direct scrollTop write on this ref-derived list would trip.
+    const listRect = list.getBoundingClientRect()
+    const linkRect = link.getBoundingClientRect()
+    const offset = linkRect.top + linkRect.height / 2 - (listRect.top + listRect.height / 2)
+    list.scrollBy({ top: offset, behavior: scrollBehavior() })
+  }, [scrollRef, activeId])
 }
 
-function useActiveHeading(headings: Array<MarkdownHeading>): string {
+/** Where a heading has to cross to count as "current" — close enough to the fixed header that a
+    reader would call this the section they're in, not "the next one, coming up." Feeds the
+    observer's `rootMargin` as the top edge of the activation band. */
+const ACTIVE_THRESHOLD = 100
+
+/** The last heading, in document order, marked as having crossed the threshold. Headings can sit
+    more than a viewport apart, so there's never a gap where none of them match: unset falls back to
+    the first heading. */
+function pickActiveId(headings: Array<MarkdownHeading>, passed: Map<string, boolean>): string {
+  let current: string | undefined
+  for (const heading of headings) {
+    if (passed.get(heading.id)) current = heading.id
+  }
+  return current ?? headings[0]?.id ?? ""
+}
+
+function useActiveHeading(headings: Array<MarkdownHeading>) {
+  // "" here, not a position/hash read: doing that during render would make the first client render
+  // disagree with the server's, and hydration doesn't reliably patch a `data-state` mismatch that
+  // causes. Corrected for real by the observer's own initial report below instead.
   const [activeId, setActiveId] = useState<string>("")
-  const visibleRef = useRef(new Set<string>())
+  const isClickScrollingRef = useRef(false)
+  const scrollToHeading = useScrollToHeading()
 
   useEffect(() => {
-    const visible = visibleRef.current
-    visible.clear()
+    if (headings.length === 0) return undefined
 
+    const passed = new Map<string, boolean>()
+
+    // A thin band around ACTIVE_THRESHOLD would miss a heading that crosses it entirely between two
+    // scroll ticks, leaving that heading's last-known state stale. Growing the root far upward
+    // instead means "intersecting" directly means "top <= ACTIVE_THRESHOLD, however long ago it got
+    // there" — a heading can't cross that huge a margin unnoticed, so there's nothing left to go stale.
     const observer = new IntersectionObserver(
       entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            visible.add(entry.target.id)
-          } else {
-            visible.delete(entry.target.id)
-          }
-        })
+        // Ignore, don't just skip the setState: a click-scroll is already mid-flight to its target,
+        // and applying whatever transient state the browser reports on the way there would fight it.
+        if (isClickScrollingRef.current) return
 
-        const firstVisible = headings.find(h => visible.has(h.id))
-        if (firstVisible) {
-          setActiveId(firstVisible.id)
-        }
+        for (const entry of entries) passed.set(entry.target.id, entry.isIntersecting)
+
+        setActiveId(pickActiveId(headings, passed))
       },
-      {
-        rootMargin: "-80px 0px -65% 0px"
-      }
+      { rootMargin: `100000px 0px -${window.innerHeight - ACTIVE_THRESHOLD}px 0px` }
     )
 
-    const elements: Array<HTMLElement> = []
-    headings.forEach(h => {
-      const el = document.getElementById(h.id)
-      if (el) {
-        elements.push(el)
-        observer.observe(el)
-      }
-    })
-
-    return () => {
-      elements.forEach(el => observer.unobserve(el))
+    for (const heading of headings) {
+      const el = document.getElementById(heading.id)
+      if (el) observer.observe(el)
     }
+
+    return () => observer.disconnect()
   }, [headings])
 
-  return activeId
+  const handleLinkClick = (id: string) => {
+    setActiveId(id)
+    scrollToHeading(id)
+    suppressAutoActiveFor(value => {
+      isClickScrollingRef.current = value
+    }, 1000)
+  }
+
+  return { activeId, handleLinkClick }
+}
+
+/** Holds off the observer's own guess at the active heading, for whichever comes first: the
+    scroll this suppression was covering for finishing, or the timeout as a fallback in case it
+    never fires (nothing to scroll, or the browser's own jump doesn't emit one). Takes a setter
+    rather than the ref itself, so it never has to mutate a parameter's own property directly. */
+function suppressAutoActiveFor(setSuppressed: (value: boolean) => void, ms: number) {
+  setSuppressed(true)
+
+  let timeoutId: ReturnType<typeof setTimeout> | undefined = undefined
+
+  const cleanup = () => {
+    setSuppressed(false)
+    window.removeEventListener("scrollend", cleanup)
+    if (timeoutId !== undefined) clearTimeout(timeoutId)
+  }
+
+  timeoutId = setTimeout(cleanup, ms)
+  window.addEventListener("scrollend", cleanup, { once: true })
 }

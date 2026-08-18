@@ -1,0 +1,316 @@
+.Tweet {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  margin: var(--spacing-lg) 0;
+  padding: var(--spacing-sm);
+  background-color: var(--component);
+  border: 1px solid var(--border-subtle);
+  border-radius: 0;
+
+  // Two shadows rather than one: a tight, nearly opaque one for the contact edge and a wide, faint
+  // one for the cast. That pair is what the eye reads as height, so the card can rise without
+  // moving — nothing shifts, and the paragraph beside it never has to reflow.
+  box-shadow: 0 0 0 rgb(0 0 0 / 0%);
+  transition: box-shadow var(--transition-base);
+
+  &:hover {
+    box-shadow: var(--shadow-lg);
+  }
+
+  // Holds the space the tweet will take, so the paragraph after it does not jump when the fetch
+  // lands. Approximate by nature: an unread tweet has no length to measure.
+  &[data-state="loading"] {
+    min-height: 11rem;
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--text-subtle) 8%, transparent),
+      transparent 60%
+    );
+  }
+
+  &[data-state="unavailable"] {
+    border-style: dashed;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  // Name over handle, the way an author is written everywhere else: two facts about one person,
+  // rather than a row of equal-weight fragments.
+  &__names {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  // Both lines carry the type scale's 160% leading, which is right for a paragraph and far too airy
+  // for two stacked labels. The scale writes `--line-height` with `!important`, so the way to tighten
+  // it is the real property, at enough weight to outrank `[data-font]`.
+  //
+  // The anchors need it as much as the text inside them: an inline box is at least as tall as its
+  // own strut, so a link whose line-height is still inherited from the prose column stays 28px tall
+  // however short the label it wraps.
+  & &__names,
+  & &__names a,
+  & &__names [data-font] {
+    line-height: 1.35;
+  }
+
+  &__avatarLink {
+    flex: none;
+    line-height: 0;
+  }
+
+  &__replyTo {
+    line-height: 1.2;
+  }
+
+  // The card renders inside the prose stylesheet, which gives every anchor it contains an accent
+  // colour and an underline (`.Prose a`, one class and one type). Opting out takes two classes to
+  // outweigh it, which is what nesting under the block gives: a bare `&__name` would lose and
+  // quietly keep both. Only the body's own links stay accent — a card whose every element is a link
+  // cannot use colour to say so.
+  & &__avatarLink,
+  & &__name,
+  & &__handle,
+  & &__date,
+  & &__replyTo,
+  & &__quote,
+  & &__mediaLink,
+  & &__action,
+  & &__view {
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  & &__name {
+    color: var(--text-default);
+  }
+
+  & &__handle,
+  & &__date,
+  & &__replyTo,
+  & &__action,
+  & &__view {
+    color: var(--text-subtle);
+  }
+
+  & &__name:hover,
+  & &__handle:hover,
+  & &__date:hover,
+  & &__replyTo:hover,
+  & &__view:hover {
+    color: var(--text-default);
+  }
+
+  // Each action lights in the feedback tone that matches what it does, which is the one place colour
+  // earns its place here: three actions that are genuinely three different kinds of thing.
+  & &__action[data-tone="reply"]:hover {
+    color: var(--feedback-info-default);
+  }
+
+  & &__action[data-tone="repost"]:hover {
+    color: var(--feedback-success-default);
+  }
+
+  & &__action[data-tone="like"]:hover {
+    color: var(--feedback-danger-default);
+  }
+
+  & &__body a {
+    color: var(--accent);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__avatar {
+    width: 2.75rem;
+    height: 2.75rem;
+    flex: none;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  &__name {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    min-width: 0;
+  }
+
+  // The one badge, kept quiet: it is a fact about the account, not something to look at.
+  &__verified {
+    color: var(--text-subtle);
+  }
+
+  &__action,
+  &__view {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  // Pushed to the far end, where a card's "open the original" always is.
+  &__view {
+    margin-left: auto;
+  }
+
+  // The prose stylesheet spaces paragraphs for a column of text; inside the card the body is the
+  // only paragraph there is.
+  &__body {
+    margin: 0;
+    color: var(--text-default);
+    white-space: pre-wrap;
+  }
+
+  &__mediaLink {
+    display: block;
+    border: 1px solid var(--border-subtle);
+    border-radius: 0;
+    overflow: hidden;
+    background-color: var(--background);
+    transition: border-color var(--transition-fast);
+
+    &:hover {
+      border-color: var(--text-subtle);
+    }
+  }
+
+  // A caption bar rather than a play button floating over the frame: it says what the click does,
+  // and it cannot land on top of anything in the image.
+  &__mediaLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.4rem 0.6rem;
+    border-top: 1px solid var(--border-subtle);
+    color: var(--text-subtle);
+    transition: color var(--transition-fast);
+
+    .Tweet__mediaLink:hover & {
+      color: var(--text-default);
+    }
+  }
+
+  &__media {
+    display: grid;
+    gap: 2px;
+
+    &[data-count="2"],
+    &[data-count="4"] {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    &[data-count="3"] {
+      grid-template-columns: 1fr 1fr;
+
+      // The odd one out spans the row it would otherwise leave half empty.
+      :first-child {
+        grid-row: span 2;
+        height: 100%;
+      }
+    }
+  }
+
+  &__photo {
+    width: 100%;
+    max-height: 24rem;
+    object-fit: cover;
+    display: block;
+  }
+
+  // The quoted tweet, framed inside the quoting one: nested, quieter, and a single link rather than a
+  // second tweet with links of its own to get lost in.
+  &__quote {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: var(--spacing-xs);
+    border: 1px solid var(--border-subtle);
+    border-radius: 0;
+
+    &:hover {
+      border-color: var(--text-subtle);
+    }
+  }
+
+  &__quoteHeader {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem;
+    min-width: 0;
+    line-height: 1.2;
+    color: var(--text-subtle);
+  }
+
+  &__quoteAvatar {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex: none;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  &__quoteName {
+    color: var(--text-default);
+  }
+
+  &__quoteBody {
+    margin: 0;
+    color: var(--text-subtle);
+    white-space: pre-wrap;
+
+    // A pointer to the original, not a second post to read in full here.
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+  }
+
+  &__quoteMedia {
+    position: relative;
+    display: block;
+    border-radius: 0;
+    overflow: hidden;
+
+    img {
+      display: block;
+      width: 100%;
+      max-height: 12rem;
+      object-fit: cover;
+    }
+  }
+
+  // Centred over the poster, because a quoted video is the one piece of media here that is not
+  // showing what it actually is.
+  &__quoteMediaBadge {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: var(--neutral-fixed-light);
+    background-color: rgb(0 0 0 / 25%);
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-top: 0.15rem;
+    color: var(--text-subtle);
+  }
+
+  // Held against the top of the card, opposite the avatar.
+  &__date {
+    margin-left: auto;
+    align-self: flex-start;
+  }
+}

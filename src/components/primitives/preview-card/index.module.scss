@@ -1,0 +1,90 @@
+.PreviewCard {
+  &__popup {
+    width: 16rem;
+    background-color: var(--component);
+    border: 1px solid var(--border-subtle);
+    border-radius: 0;
+    box-shadow: var(--shadow-xl);
+    overflow: hidden;
+    outline: none;
+    z-index: 100;
+
+    transition:
+      opacity var(--transition-fast),
+      scale var(--transition-fast),
+      filter var(--transition-fast);
+
+    transform-origin: var(--transform-origin);
+
+    &[data-ending-style],
+    &[data-starting-style] {
+      opacity: 0;
+      scale: 0.95;
+      filter: blur(2px);
+    }
+  }
+
+  // Only present with `Viewport` in the tree, morphing the popup between two triggers' content
+  // instead of jump-cutting: `[data-current]`/`[data-previous]` are Base UI's own wrapper divs
+  // around whatever this part is given as children, one per side of the swap.
+  &__viewport {
+    position: relative;
+
+    [data-current],
+    [data-previous] {
+      transition:
+        opacity var(--transition-fast),
+        transform var(--transition-fast);
+    }
+
+    [data-previous] {
+      position: absolute;
+      inset: 0;
+    }
+
+    // The entering side starts here and settles at rest; the exiting side starts at rest and ends
+    // here — same two states, read in opposite directions depending on which one currently holds it.
+    [data-starting-style],
+    [data-ending-style] {
+      opacity: 0;
+    }
+
+    // Reads as motion continuing the pointer's own travel: content already moving down the list
+    // keeps sliding down as it swaps, rather than the popup flipping against the hand causing it.
+    &[data-activation-direction~="down"] {
+      [data-starting-style] {
+        transform: translateY(-10px);
+      }
+      [data-ending-style] {
+        transform: translateY(10px);
+      }
+    }
+
+    &[data-activation-direction~="up"] {
+      [data-starting-style] {
+        transform: translateY(10px);
+      }
+      [data-ending-style] {
+        transform: translateY(-10px);
+      }
+    }
+
+    &[data-activation-direction~="right"] {
+      [data-starting-style] {
+        transform: translateX(-10px);
+      }
+      [data-ending-style] {
+        transform: translateX(10px);
+      }
+    }
+
+    &[data-activation-direction~="left"] {
+      [data-starting-style] {
+        transform: translateX(10px);
+      }
+      [data-ending-style] {
+        transform: translateX(-10px);
+      }
+    }
+  }
+}

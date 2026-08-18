@@ -1,0 +1,49 @@
+@use "sass:math";
+@use "sass:string";
+
+// ====================================================================================
+// Gradients
+// ====================================================================================
+//
+// Comments here are `//` rather than `/* */` so nothing is emitted, and any number of modules can
+// `@use` it without duplicating output.
+//
+//   @use "gradients" as grad;
+//
+//   .Overlay {
+//     mask-image: grad.fade(black);
+//   }
+
+// A two-stop `linear-gradient(black, transparent)` ramps alpha linearly, so its slope changes
+// abruptly at either end and the eye reads those corners as bands. Sampling a raised cosine
+// instead lands the curve flat at both 0% and 100%, which is what makes the fade read as smooth.
+@function _alpha($t) {
+  @return math.div(1 + math.cos(math.$pi * $t), 2);
+}
+
+@function _round($number, $decimals: 2) {
+  $factor: math.pow(10, $decimals);
+  @return math.div(math.round($number * $factor), $factor);
+}
+
+// `color-mix` rather than Sass' own alpha handling, so `$color` may be a `var()` the compiler
+// cannot see the channels of. `$direction` flips which end starts opaque (the footer fade mirrors
+// the header's with `to top`).
+@function fade($color, $steps: 8, $direction: to bottom) {
+  $stops: "";
+
+  @for $i from 0 through $steps {
+    $position: math.div($i, $steps);
+    $alpha: _round(math.percentage(_alpha($position)));
+    $offset: _round(math.percentage($position));
+    $stop: "color-mix(in srgb, #{$color} #{$alpha}, transparent) #{$offset}";
+
+    @if $i == 0 {
+      $stops: $stop;
+    } @else {
+      $stops: "#{$stops}, #{$stop}";
+    }
+  }
+
+  @return string.unquote("linear-gradient(#{$direction}, #{$stops})");
+}

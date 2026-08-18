@@ -1,0 +1,67 @@
+// `--skeleton-base` and `--skeleton-sheen` are mixed from `--text-subtle` rather than taken from a
+// surface token: the pair has to read as "waiting" against whatever it covers, and a fixed surface
+// colour only does that on the one surface it was picked for. Mixing from the text ramp inverts with
+// the theme for free, and a caller can still override either one on the element it wraps.
+.Skeleton {
+  --skeleton-base: color-mix(in srgb, var(--text-subtle) 12%, transparent);
+  --skeleton-sheen: color-mix(in srgb, var(--text-subtle) 26%, transparent);
+
+  position: relative;
+  overflow: hidden;
+  pointer-events: none;
+  color: transparent;
+  user-select: none;
+
+  &[data-direct="true"] {
+    box-decoration-break: clone;
+    content: "";
+
+    // Text has no shape of its own to keep, so the bar standing in for it gets a soft corner.
+    border-radius: 0;
+
+    // Override content with a gradient and hide text
+    background: unset;
+    background-image: linear-gradient(
+      -45deg,
+      var(--skeleton-base) 33%,
+      var(--skeleton-sheen),
+      var(--skeleton-base) 66%
+    );
+    background-size: 500%;
+    border-color: var(--skeleton-base);
+    color: transparent !important;
+
+    &::after {
+      content: unset;
+    }
+  }
+
+  // The overlay is translucent by design — it has to sit convincingly on any surface — so it hides
+  // nothing on its own. Anything that sets its own colour (a tag, a nested card, an icon) would
+  // otherwise read straight through the sheen, which is what makes a covered component look merely
+  // dimmed rather than pending. `visibility` rather than `display`, so every box it is standing in
+  // for keeps its size.
+  > * {
+    visibility: hidden;
+  }
+
+  // Never a radius of its own: it takes the covered element's, so a circular avatar is covered by a
+  // circle and a card by its own rounded rectangle. Declaring one on `.Skeleton` instead would put
+  // it in a same-specificity fight with the class the element already had.
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: inherit;
+    background: linear-gradient(-45deg, var(--skeleton-base) 33%, var(--skeleton-sheen), var(--skeleton-base) 66%);
+    background-size: 500%;
+  }
+
+  // Hide images, to ensure they don't leak through the skeleton
+  img {
+    visibility: hidden;
+  }
+}

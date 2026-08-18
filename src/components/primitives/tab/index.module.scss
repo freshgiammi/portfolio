@@ -1,0 +1,58 @@
+.Tab {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.125rem;
+  padding: 0.125rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 0;
+  flex-shrink: 0;
+
+  // Above the indicator, which is the ground they sit on rather than something drawn over them.
+  &__item {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.6rem;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+    color: var(--text-subtle);
+    cursor: pointer;
+    transition: color var(--transition-fast);
+
+    &:hover:not([data-active]) {
+      color: var(--text-default);
+    }
+
+    &[data-active] {
+      color: var(--accent);
+    }
+  }
+
+  // Sized and placed from the active tab's own box, which Base UI measures and hands over as these
+  // custom properties. Moving it is therefore one transform rather than four edges.
+  &__indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    width: var(--active-tab-width);
+    height: var(--active-tab-height);
+    translate: var(--active-tab-left) var(--active-tab-top);
+    background-color: var(--surface);
+    border-radius: 0;
+    transition:
+      translate var(--transition-base),
+      width var(--transition-base);
+  }
+
+  &__panel {
+    display: flex;
+    flex-direction: column;
+  }
+}

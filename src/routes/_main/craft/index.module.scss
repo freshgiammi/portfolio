@@ -1,0 +1,83 @@
+.Grid {
+  display: grid;
+  // Wider than before: each card now opens with a picture, and a picture in a fifteen-rem column is
+  // a stamp rather than a preview.
+  grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+  gap: var(--spacing-md);
+}
+
+.Card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  // None: the preview runs to the edges, and the words below bring their own.
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  border-radius: 0;
+  color: var(--text-default);
+  background-color: var(--component-elevated);
+  text-decoration: none;
+  transition:
+    background-color var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+  // Every card is a link now, so the hover affordance and the arrow are unconditional.
+  &:hover,
+  &:focus-visible {
+    background-color: color-mix(in srgb, var(--component-elevated) 98%, var(--accent) 2%);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+
+    .Card__arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .Card__title {
+      color: var(--accent);
+    }
+  }
+
+  &:focus-visible {
+    outline: 1px solid var(--border-accent);
+    outline-offset: 0.25rem;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-md);
+  }
+
+  &__title {
+    padding-right: var(--spacing-lg);
+  }
+
+  &__description {
+    color: var(--text-subtle);
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin: 0;
+  }
+
+  &__arrow {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    color: var(--accent);
+    opacity: 0;
+    transform: translateX(-0.25rem);
+    transition:
+      opacity var(--transition-fast),
+      transform var(--transition-fast);
+  }
+}

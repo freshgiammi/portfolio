@@ -1,0 +1,139 @@
+.Masonry {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xl);
+
+  // Absolutely positioned children, so the canvas has no height of its own: the virtualizer sets it
+  // to the full run of the feed and the page scrolls against that. A named container, so
+  // `&__staticRow` below can size itself off the same box the virtualizer measures with
+  // `clientWidth` — without a name, an ancestor `container-type` set for some other reason could be
+  // the one a query here matches instead.
+  &__canvas {
+    position: relative;
+    width: 100%;
+    container: masonry / inline-size;
+  }
+
+  &__item {
+    --column-width: calc((100% - (var(--columns) - 1) * var(--gap)) / var(--columns));
+
+    position: absolute;
+    top: 0;
+    left: calc(var(--lane) * (var(--column-width) + var(--gap)));
+    width: var(--column-width);
+  }
+
+  // Pre-measurement fallback: a fixed-aspect tile lays out from CSS alone, so this needs no JS to
+  // land at the same column count and width the virtualizer will settle on once it measures.
+  // `repeat(var(--columns), 1fr)` with the same `--gap` computes exactly the same per-column width
+  // `&__item` does above, so switching `--columns` at the breakpoints below (rather than an
+  // independent `auto-fill` + `max-width`, which sized this against a capped box instead of the
+  // container's real width) keeps every tile pixel-identical before and after measurement, at any
+  // container width — not just below the old cap.
+  //
+  // The breakpoints are `COLUMN_MIN_WIDTH`/`GAP`/`MAX_COLUMNS` from `finds-masonry/index.tsx`, run
+  // through the same `floor((width + gap) / (minWidth + gap))` arithmetic the JS measurement uses —
+  // a `@container` condition can't reference those constants directly, so if they ever change here
+  // has to change with them.
+  &__staticRow {
+    --columns: 1;
+
+    display: grid;
+    grid-template-columns: repeat(var(--columns), 1fr);
+    gap: var(--gap);
+
+    @container masonry (min-width: 664px) {
+      --columns: 2;
+    }
+
+    @container masonry (min-width: 1008px) {
+      --columns: 3;
+    }
+  }
+}
+
+.Edge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding-block: var(--spacing-lg);
+  text-align: center;
+
+  // Everything starts held back and arrives together, so the sweep is not playing over text that was
+  // already sitting there.
+  &__icon,
+  &__title,
+  &__note {
+    opacity: 0;
+    transition:
+      opacity var(--transition-slow),
+      translate var(--transition-slow);
+    translate: 0 0.5rem;
+  }
+
+  // Duotone, so the glyph carries the accent at two strengths rather than as one flat silhouette.
+  &__icon {
+    color: var(--accent);
+  }
+
+  &__title {
+    color: var(--accent);
+    transition-delay: 120ms;
+  }
+
+  &__note {
+    color: var(--text-subtle);
+    max-width: 28rem;
+    transition-delay: 200ms;
+  }
+
+  &[data-reached] {
+    .Edge__icon,
+    .Edge__title,
+    .Edge__note {
+      opacity: 1;
+      translate: 0 0;
+    }
+
+    .Edge__icon {
+      animation: sweep 1.9s ease-in-out 200ms forwards;
+    }
+  }
+}
+
+// One look left, one look right, then back to level: a scan of the horizon that turns up nothing.
+@keyframes sweep {
+  0%,
+  100% {
+    rotate: 0deg;
+  }
+
+  25% {
+    rotate: -11deg;
+  }
+
+  60% {
+    rotate: 9deg;
+  }
+
+  85% {
+    rotate: -3deg;
+  }
+}
+
+// The arrival still happens, it just happens in place.
+@media (prefers-reduced-motion: reduce) {
+  .Edge {
+    &__icon,
+    &__title,
+    &__note {
+      translate: none;
+      transition-duration: 1ms;
+    }
+
+    &[data-reached] .Edge__icon {
+      animation: none;
+    }
+  }
+}

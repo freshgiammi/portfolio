@@ -1,0 +1,371 @@
+@use "breakpoints" as bp;
+
+// The hidden state of a face: out of the tab order and the accessibility tree, shifted toward the
+// trigger it slides out from. Shared by the open-menu flip and home's resting state.
+@mixin face-hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(0.5em);
+  pointer-events: none;
+}
+
+// One trigger, two visualizations, chosen purely by viewport — no JS branching:
+//
+// md and up: hovering the list icon swaps the trail's slot to a flat row of links, then back.
+// Below md: there is no hover, so the same icon taps the header into a deeper element — an
+// absolutely positioned sheet of wrapping link rows that overlays the content (never pushes it)
+// while the trail stays visible above it. The sheet is the row, re-laid-out; not a second widget.
+//
+// The resting face is `visibility: hidden`, not merely transparent: it has to leave the tab order
+// and the accessibility tree, or keyboard users would land on links they cannot see.
+.Trail {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 0;
+
+  &__reveal {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 1.75rem;
+    height: 1.75rem;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+    color: var(--text-subtle);
+    cursor: pointer;
+    transition:
+      color var(--transition-fast),
+      background-color var(--transition-fast),
+      opacity var(--transition-fast),
+      width var(--transition-fast),
+      visibility var(--transition-fast);
+
+    &:hover,
+    &:focus-visible {
+      color: var(--text-default);
+      background-color: var(--background);
+    }
+
+    &[aria-expanded="true"] {
+      color: var(--text-default);
+    }
+  }
+
+  // The two glyphs share one slot and crossfade through a quarter turn, so the trigger never
+  // hard-swaps between its open and closed personalities.
+  &__revealIcon {
+    position: relative;
+    display: inline-flex;
+    width: 12px;
+    height: 12px;
+
+    svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      transition:
+        opacity var(--transition-fast),
+        transform var(--transition-fast);
+    }
+
+    // Rest: the list glyph. Open: it rotates out while the close glyph rotates in.
+    svg:last-child {
+      opacity: 0;
+      transform: rotate(-90deg);
+    }
+
+    .Trail__reveal[aria-expanded="true"] & {
+      svg:first-child {
+        opacity: 0;
+        transform: rotate(90deg);
+      }
+
+      svg:last-child {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  }
+
+  &__faces {
+    display: grid;
+    align-items: center;
+    min-width: 0;
+    width: max-content;
+  }
+
+  &__crumbs,
+  &__pages {
+    grid-area: 1 / 1;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    min-width: 0;
+    transition:
+      opacity var(--transition-fast),
+      transform var(--transition-fast),
+      visibility var(--transition-fast);
+  }
+
+  &__pages {
+    // Closed, the face is visibility-gated rather than faded: the rows own their opacity and
+    // stagger out themselves, so the exit reads per-link instead of as one block fade (a container
+    // fade would multiply over the rows' delays and mask them completely). The visibility flip is
+    // delayed past the last row's exit so nothing is cut off mid-fade.
+    visibility: hidden;
+    transform: none;
+    transition: visibility 0s linear 300ms;
+    pointer-events: none;
+
+    li {
+      opacity: 0;
+      transform: translateX(-0.35em);
+      transition:
+        opacity var(--transition-fast),
+        transform var(--transition-fast);
+
+      @for $index from 1 through 7 {
+        &:nth-child(#{$index}) {
+          transition-delay: calc(($index - 1) * 30ms);
+        }
+      }
+    }
+  }
+
+  &[data-links] &__pages {
+    visibility: visible;
+    transform: none;
+    transition-delay: 0ms;
+    pointer-events: auto;
+
+    li {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  &__crumbs {
+    opacity: 1;
+    visibility: visible;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      min-width: 0;
+      // Fixed by default so the path never gives up space; only the current crumb (below) shrinks.
+      flex-shrink: 0;
+      // Going deeper appends a crumb — a brand-new element — so a plain mount animation is all the
+      // entrance needs: it plays for the fresh li and never for its settled siblings. Same motion
+      // language as the pages' fan-in: fade in, sliding right into place.
+      @media (prefers-reduced-motion: no-preference) {
+        animation: crumb-in 200ms ease-out;
+      }
+
+      &:last-child {
+        flex-shrink: 1;
+      }
+    }
+
+    // Dropped crumbs linger as inert ghosts for one staggered exit (delays come inline, in
+    // document order), sliding out toward the right — the mirror of `crumb-in`: same duration,
+    // but easing *in* so the crumb accelerates away as it entered decelerating. Each ghost
+    // unmounts on its own `animationend` (see `usePostponedUnmount`). They render after the new
+    // trail, so survivors and arrivals hold their positions throughout.
+    li[data-exiting] {
+      pointer-events: none;
+      animation: crumb-out 200ms ease-in both;
+    }
+  }
+
+  &[data-links] &__crumbs {
+    @include face-hidden;
+  }
+
+  &__link {
+    color: var(--text-subtle);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color var(--transition-fast);
+
+    &:hover,
+    &[data-active] {
+      color: var(--text-default);
+    }
+  }
+
+  &__current {
+    display: block;
+    min-width: 0;
+    color: var(--text-default);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__slash {
+    color: var(--text-subtle);
+    user-select: none;
+    pointer-events: none;
+  }
+
+  @include bp.up("md") {
+    &__pages {
+      gap: var(--spacing-sm);
+    }
+
+    // Home, with room to spare: the flat list is the header's resting state — no trigger (it
+    // collapses to nothing, fading as it goes, and the list slides into its place), no trail.
+    // Pure breakpoint, no measurement: server and client render identically.
+    //
+    // The trail hides with opacity/visibility, never display: a transition cannot start from
+    // `display: none`, and leaving home is exactly when its staggered entrance must play.
+    &[data-root] {
+      .Trail__reveal {
+        opacity: 0;
+        width: 0;
+        margin-right: -0.25rem;
+        visibility: hidden;
+        pointer-events: none;
+        // Visibility waits out the fade so the collapse reads as one motion; the reveal direction
+        // (leaving home) uses the base rule's zero delays and plays immediately.
+        transition-delay: 0ms, 0ms, 0ms, 0ms, 150ms;
+      }
+
+      .Trail__crumbs {
+        @include face-hidden;
+      }
+
+      .Trail__pages,
+      .Trail__pages li {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        pointer-events: auto;
+        transition-delay: 0ms;
+      }
+    }
+  }
+
+  // Phone: opening does not attach anything to the trail — the whole fixed header is replaced.
+  // The pages face anchors to `.Header` itself (the trail drops its own positioning so the
+  // absolute box resolves there), spans it from the very top, and carries the bar's skin: same
+  // tint, same blur, fade at its bottom edge (see `.HeaderBlur`). The trail yields its place to
+  // the list, whose rows begin under the trigger and align with it; `z-index: -1` slots the
+  // surface behind every part of the header while staying above the page, because the header is
+  // its own stacking context. Nothing below the header ever moves.
+  @include bp.down("md") {
+    position: static;
+
+    &__faces {
+      width: auto;
+    }
+
+    &__pages,
+    &[data-links] &__pages {
+      position: absolute;
+      top: calc(-1 * var(--spacing-sm));
+      left: 0;
+      right: 0;
+      z-index: -1;
+      width: auto;
+      // Unlike the desktop row, the sheet's skin (tint, blur, mask) lives on the container, so the
+      // whole surface fades as one — per-row exits would leave the skin hanging in place. The
+      // visibility flip still waits out the fade before cutting the sheet away.
+      opacity: 0;
+      transform: translateY(-0.5em);
+      transition:
+        opacity var(--transition-fast),
+        transform var(--transition-fast),
+        visibility 0s linear 300ms;
+      // One link per line, full-width rows; the rows space themselves, the list just stacks.
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      // The bottom padding is pure fade runway: the mask only ramps over its last stretch, so the
+      // rows themselves always sit on fully opaque skin and the surface melts away below them.
+      padding: calc(var(--spacing-sm) + 2.75rem) 0 4.5rem;
+      background: color-mix(in srgb, var(--background) 92%, transparent);
+      backdrop-filter: blur(24px);
+      mask-image: linear-gradient(to bottom, black calc(100% - 3rem), transparent);
+      transform-origin: top;
+
+      li {
+        border-bottom: 1px solid color-mix(in srgb, var(--border-subtle) 55%, transparent);
+
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+
+    &[data-links] &__pages {
+      opacity: 1;
+      transform: none;
+      transition-delay: 0ms, 0ms, 0ms;
+    }
+
+    // Menu rows, not breadcrumb links: full-width tap targets at menu scale, text optically
+    // aligned with the trigger's glyph above (its icon sits 0.5rem into its own button), and the
+    // current page marked by a dot in the gutter, the one thing a menu must always answer.
+    &__pages &__link {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.8rem var(--spacing-sm) 0.8rem calc(var(--spacing-sm) + 0.5rem);
+      color: var(--text-default);
+
+      &[data-active] {
+        &::before {
+          content: "";
+          width: 5px;
+          height: 5px;
+          border-radius: 50%;
+          background: var(--accent);
+        }
+
+        // The dot lives in the gutter, so the active row's text keeps the column of the others.
+        margin-left: calc(-1 * (0.6rem + 5px));
+      }
+
+      &:hover {
+        color: var(--accent);
+      }
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .Trail__reveal,
+  .Trail__revealIcon svg,
+  .Trail__crumbs,
+  .Trail__crumbs li,
+  .Trail__pages,
+  .Trail__pages li {
+    transition-duration: 0.01ms;
+    animation: none;
+  }
+}
+
+@keyframes crumb-in {
+  from {
+    opacity: 0;
+    transform: translateX(-0.35em);
+  }
+}
+
+@keyframes crumb-out {
+  to {
+    opacity: 0;
+    transform: translateX(0.35em);
+  }
+}

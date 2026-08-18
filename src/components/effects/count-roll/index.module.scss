@@ -1,0 +1,74 @@
+// Tabular figures so a rolling count keeps its width: without them every digit is a different
+// width, and a column would change size as it rolls rather than only its contents moving.
+.CountRoll {
+  display: inline-flex;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+
+  // One column per character, clipping its own roll: the digit leaving and the digit arriving are
+  // only ever visible inside the line they share.
+  &__digit {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+  }
+
+  &__digitIn[data-direction] {
+    display: block;
+    animation: CountRoll-digit-in 260ms ease-out;
+  }
+
+  &__digitOut {
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: CountRoll-digit-out 260ms ease-out forwards;
+  }
+
+  &__digitIn,
+  &__digitOut {
+    // Up means the count rose: the new digit climbs in from below and the old one leaves upward.
+    &[data-direction="up"] {
+      --roll: 1;
+    }
+
+    &[data-direction="down"] {
+      --roll: -1;
+    }
+  }
+}
+
+@keyframes CountRoll-digit-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--roll, 1) * 1lh));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes CountRoll-digit-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(calc(var(--roll, 1) * -1lh));
+  }
+}
+
+// The roll can be dropped outright, since nothing waits on it: the count simply swaps, and the
+// number it replaced is taken off the layout rather than animated away.
+@media (prefers-reduced-motion: reduce) {
+  .CountRoll__digitIn {
+    animation: none;
+  }
+
+  .CountRoll__digitOut {
+    display: none;
+  }
+}

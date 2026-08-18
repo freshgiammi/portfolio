@@ -3,7 +3,7 @@ import { useRender } from "@base-ui/react"
 import { cx } from "cva"
 import type { ReactNode } from "react"
 
-import { Typography } from "@/components/ui/typography"
+import { Typography } from "@/components/primitives/typography"
 
 import styles from "./index.module.scss"
 
@@ -19,25 +19,19 @@ import styles from "./index.module.scss"
  * Nothing here is exported to a page. Compose it into a component that owns the behaviour.
  */
 
-type RenderProp = useRender.ComponentProps<"div">["render"]
-
 /*
  * ====================================================================================
  * Popup
  * ====================================================================================
  */
 
-type PopupProps = {
-  render?: RenderProp
-  children?: ReactNode
-  className?: string
-}
+type PopupProps = useRender.ComponentProps<"div">
 
-function Popup({ render, children, className }: PopupProps) {
+function Popup({ render, children, className, ...rest }: PopupProps) {
   return useRender({
     defaultTagName: "div",
     render,
-    props: { className: cx(styles.Menu__popup, className), children }
+    props: { ...rest, className: cx(styles.Menu__popup, className), children }
   })
 }
 
@@ -47,19 +41,16 @@ function Popup({ render, children, className }: PopupProps) {
  * ====================================================================================
  */
 
-type ItemProps = {
-  render?: RenderProp
+type ItemProps = useRender.ComponentProps<"div"> & {
   /** Sits before the label at a fixed width, so labels line up whether or not one is present. */
   icon?: ReactNode
   /** Trailing slot, for a check mark or similar. */
   indicator?: ReactNode
-  children?: ReactNode
-  className?: string
 }
 
-function Item({ render, icon, indicator, children, className }: ItemProps) {
+function Item({ render, icon, indicator, children, className, ...rest }: ItemProps) {
   return (
-    <Typography size="x-small" render={render ?? <div />} className={cx(styles.Menu__item, className)}>
+    <Typography {...rest} size="x-small" render={render ?? <div />} className={cx(styles.Menu__item, className)}>
       {icon && <span className={styles.Menu__itemIcon}>{icon}</span>}
       <span className={styles.Menu__itemLabel}>{children}</span>
       {indicator && <span className={styles.Menu__itemIndicator}>{indicator}</span>}
@@ -73,15 +64,12 @@ function Item({ render, icon, indicator, children, className }: ItemProps) {
  * ====================================================================================
  */
 
-type GroupLabelProps = {
-  render?: RenderProp
-  children?: ReactNode
-  className?: string
-}
+type GroupLabelProps = useRender.ComponentProps<"div">
 
-function GroupLabel({ render, children, className }: GroupLabelProps) {
+function GroupLabel({ render, children, className, ...rest }: GroupLabelProps) {
   return (
     <Typography
+      {...rest}
       size="xx-small"
       weight="semibold"
       render={render ?? <div />}
@@ -97,16 +85,13 @@ function GroupLabel({ render, children, className }: GroupLabelProps) {
  * ====================================================================================
  */
 
-type SeparatorProps = {
-  render?: RenderProp
-  className?: string
-}
+type SeparatorProps = useRender.ComponentProps<"div">
 
-function Separator({ render, className }: SeparatorProps) {
+function Separator({ render, className, ...rest }: SeparatorProps) {
   return useRender({
     defaultTagName: "div",
     render,
-    props: { className: cx(styles.Menu__separator, className) }
+    props: { ...rest, className: cx(styles.Menu__separator, className) }
   })
 }
 

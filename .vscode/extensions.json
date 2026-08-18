@@ -1,0 +1,16 @@
+{
+  "recommendations": [
+    // Required
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "phoenisx.cssvar",
+    "viijay-kr.react-ts-css",
+    // Optional
+    "aaron-bond.better-comments",
+    "mk12.better-git-line-blame",
+    "usernamehw.errorlens",
+    "mattpocock.ts-error-translator",
+    "blazejkustra.react-compiler-marker",
+    "yoavbls.pretty-ts-errors"
+  ]
+}

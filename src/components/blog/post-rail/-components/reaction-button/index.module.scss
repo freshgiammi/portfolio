@@ -1,0 +1,175 @@
+.ReactionButton {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+  // The pill a sidebar column gives each action naturally; capped so that when the rail sits
+  // inline below the article, the pills keep that size instead of stretching with the page.
+  max-width: 6.625rem;
+  padding: 0.4rem 0.6rem;
+  background: none;
+  border: 0;
+  color: var(--text-subtle);
+  cursor: pointer;
+  border: 1px solid var(--border-subtle);
+  border-radius: 0;
+  isolation: isolate;
+
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    border-color var(--transition-fast);
+
+  &[data-active],
+  &:hover:not(:disabled),
+  &:focus-visible {
+    background-color: color-mix(in srgb, var(--tone) 8%, transparent);
+    border-color: var(--tone);
+    color: var(--tone);
+  }
+
+  &[data-tone="accent"] {
+    --tone: var(--accent);
+  }
+
+  &[data-tone="danger"] {
+    --tone: var(--feedback-danger-default);
+  }
+
+  &[data-segmented-border] {
+    border-color: transparent;
+
+    &[data-active],
+    &:hover:not(:disabled),
+    &:focus-visible {
+      border-color: transparent;
+    }
+  }
+
+  // A spent reaction is still lit, so nothing here dims on `:disabled` — the button is finished,
+  // not unavailable.
+  &:disabled {
+    cursor: default;
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__segments {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: visible;
+  }
+
+  &__segment {
+    fill: none;
+    stroke: var(--border-subtle);
+    stroke-width: 1;
+    stroke-linecap: round;
+    rx: 0;
+    ry: 0;
+
+    &[data-filled] {
+      stroke: var(--tone);
+    }
+  }
+
+  // The burst is not in here at all: like the particles, it takes only its position from the icon
+  // before landing on the page.
+  &__iconContainer {
+    position: relative;
+    display: grid;
+    place-items: center;
+    flex: none;
+    isolation: isolate;
+  }
+
+  &__icon {
+    position: relative;
+    z-index: 1;
+    display: grid;
+
+    // Discrete frames rather than an eased curve, so the feedback lands as a pop rather than a
+    // stretch.
+    &[data-beat] {
+      animation: ReactionButton-beat 280ms steps(1, end);
+    }
+  }
+
+  // The only thing this button decides about the particles: which colour they are, by tone. The
+  // tone is named on the particle itself — it flies from the page now, out of --tone's reach.
+  &__particle {
+    color: var(--tone);
+  }
+
+  &__particleAccent {
+    --tone: var(--accent);
+  }
+
+  &__particleDanger {
+    --tone: var(--feedback-danger-default);
+  }
+
+  // One line of text: the number where there is one, the label otherwise.
+  &__label {
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &:has(&__count) &__label {
+    display: none;
+  }
+
+  // The roll inside sizes itself; the wrapper only has to not squash it. `@starting-style` covers the
+  // moment this mounts (a fresh post's first like/clap, or a slow stats fetch) with a soft entrance
+  // instead of the count just cutting in as the label disappears.
+  &__count {
+    display: flex;
+    opacity: 1;
+    transform: scale(1);
+    transition:
+      opacity 200ms ease-out,
+      transform 200ms ease-out;
+
+    @starting-style {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+  }
+}
+
+@keyframes ReactionButton-beat {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.35) translateY(-2px);
+  }
+  50% {
+    transform: scale(0.9);
+  }
+  75% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+// The particles and the burst each handle their own reduced motion, with the hook that flies them.
+@media (prefers-reduced-motion: reduce) {
+  .ReactionButton__icon[data-beat] {
+    animation: none;
+  }
+}

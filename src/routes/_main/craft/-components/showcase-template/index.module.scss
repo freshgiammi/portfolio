@@ -1,0 +1,319 @@
+@use "breakpoints" as bp;
+@use "typography" as type;
+
+// Laid out as something to read: one column at a measure the eye can follow, with the demo allowed
+// to break out of it. A piece of craft is worth a page of prose about it, and a page of prose set to
+// the width of a screen is a page nobody finishes.
+.Showcase {
+  // In rem rather than ch, because `ch` resolves against whichever font the element using it is set
+  // in: the same 50ch is a different width on the page grid and on a paragraph a step smaller. This
+  // is about seventy characters of the body size, which is what the column is for.
+  --measure: 32rem;
+
+  display: grid;
+  // The page is as wide as its widest thing, and the words are a column inside it that starts where
+  // everything else starts. Centring the text under a full-width header leaves both of them adrift.
+  grid-template-columns: min(var(--measure), 100%) 1fr;
+  max-width: 68rem;
+  margin-inline: auto;
+  padding: var(--spacing-xl) var(--spacing-lg) var(--spacing-2xl);
+  row-gap: var(--spacing-lg);
+
+  > * {
+    grid-column: 1;
+  }
+
+  // The things that are looked at rather than read, plus the sections, which pass the page's own
+  // columns down so that anything inside them can do either.
+  &__header,
+  &__demo,
+  &__split,
+  &__section {
+    grid-column: 1 / -1;
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding-block-end: var(--spacing-xs);
+  }
+
+  &__topRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+  }
+
+  &__subtitle {
+    color: var(--text-subtle);
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin-top: 0.35rem;
+  }
+
+  &__backLink {
+    width: fit-content;
+    color: var(--text-subtle);
+    text-decoration: none;
+
+    transition: color var(--transition-fast);
+
+    &:hover {
+      color: var(--text-default);
+    }
+  }
+
+  &__githubLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--text-subtle);
+    text-decoration: none;
+
+    transition: color var(--transition-fast);
+
+    &:hover {
+      color: var(--text-default);
+    }
+  }
+
+  &__demo {
+    border-radius: 0;
+    border: 1px solid var(--border-subtle);
+    background:
+      linear-gradient(
+          45deg,
+          transparent 49%,
+          color-mix(in srgb, var(--border-subtle) 60%, transparent) 50%,
+          transparent 51%
+        )
+        0 0 / 16px 16px,
+      var(--background);
+  }
+
+  // The canvas and its controls, side by side where there is room for both. The rail is a fixed
+  // width because the panel inside it is: giving it a share of the page would only stretch its
+  // sliders and squeeze the thing they are pointed at.
+  &__demoBody {
+    display: grid;
+
+    &[data-dials] {
+      grid-template-columns: minmax(0, 1fr) 17rem;
+    }
+  }
+
+  &__demoDials {
+    align-content: start;
+    padding: var(--spacing-sm);
+    border-inline-start: 1px solid var(--border-subtle);
+    background-color: var(--background);
+    border-end-end-radius: 0;
+  }
+
+  &__demoInner {
+    min-height: min(70dvh, 38rem);
+    padding: var(--spacing-lg);
+    display: grid;
+    place-items: center;
+  }
+
+  // A header strip above the demo rather than a control floated over it: a piece is free to use its
+  // whole canvas, and several of them throw things well past their own bounds. Its corners are the
+  // section's own radius less the border it sits inside, so the fill meets the frame cleanly without
+  // the section having to clip (which is exactly what a burst needs it not to do).
+  &__demoBar {
+    display: flex;
+    justify-content: flex-end;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background-color: var(--background);
+    border-bottom: 1px solid var(--border-subtle);
+    border-radius: 0;
+  }
+
+  &__reset {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0;
+    background: none;
+    border: 0;
+    color: var(--text-subtle);
+    font-family: inherit;
+    cursor: pointer;
+    transition: color var(--transition-fast);
+
+    &:hover,
+    &:focus-visible {
+      color: var(--accent);
+    }
+  }
+
+  // Every section is a heading and whatever follows it, with the space between sections doing the
+  // work that a rule or a box would otherwise have to.
+  &__section {
+    display: grid;
+    grid-template-columns: subgrid;
+    row-gap: var(--spacing-sm);
+    padding-block-start: var(--spacing-md);
+
+    > * {
+      grid-column: 1;
+      // Belt and braces for a browser without subgrid, where the track above is the whole width.
+      max-width: min(var(--measure), 100%);
+    }
+
+    > .Showcase__split {
+      grid-column: 1 / -1;
+      max-width: none;
+    }
+  }
+
+  &__sectionTitle {
+    color: var(--text-default);
+  }
+
+  // Set a step above the body and in the body's colour, so the opening reads as the piece talking
+  // rather than as a caption under the demo.
+  &__lede {
+    color: var(--text-default);
+    line-height: 1.7;
+  }
+
+  &__prose {
+    color: var(--text-subtle);
+    line-height: 1.75;
+  }
+
+  // Names of things, set apart from the prose without the box that inline code usually gets: at this
+  // size a box is a lump in the line.
+  &__prose code,
+  &__aside code,
+  &__listItem code {
+    color: var(--text-default);
+    font-size: 0.9em;
+    @include type.family("mono", $enforce: true);
+  }
+
+  // Kept for the things that genuinely are a list. Everything else is a sentence.
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    margin: 0;
+    padding-inline-start: var(--spacing-md);
+  }
+
+  &__listItem {
+    color: var(--text-subtle);
+    line-height: 1.7;
+
+    &::marker {
+      color: var(--accent);
+    }
+  }
+
+  // The one paragraph in a section that is worth stopping on, marked by the rule beside it rather
+  // than by a box: a box would make it a component, and it is a change of tone.
+  &__aside {
+    padding-inline-start: var(--spacing-md);
+    border-inline-start: 2px solid var(--accent);
+    color: var(--text-default);
+    line-height: 1.7;
+  }
+
+  // Two things that are genuinely a pair, side by side, and one under the other as soon as a column
+  // would be too narrow to read. Sparingly: everything else on the page is one column on purpose.
+  &__split {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-lg);
+    align-items: start;
+  }
+
+  &__splitTitle {
+    display: block;
+    padding-block-end: var(--spacing-xs);
+    color: var(--text-default);
+  }
+
+  &__tableScroll {
+    // The skin its table uses, inlined: full width, collapsed borders, left as the base alignment
+    // the numeric-column overrides below build on.
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--border-subtle);
+      background-color: var(--surface);
+      text-align: left;
+    }
+
+    th {
+      background-color: var(--surface-deep);
+      @include type.weight("semibold", $enforce: true);
+    }
+
+    overflow-x: auto;
+
+    caption {
+      padding-block-end: var(--spacing-xs);
+      color: var(--text-subtle);
+      text-align: left;
+    }
+
+    td,
+    thead th:not(:first-child) {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    // The row labels read as prose rather than as figures, so they drop the heading treatment the
+    // column headings keep.
+    tbody th {
+      background-color: transparent;
+      font-weight: inherit;
+    }
+
+    // The column a table exists to make a point about.
+    tbody td:first-of-type {
+      color: var(--accent);
+    }
+  }
+}
+
+@include bp.down("md") {
+  .Showcase {
+    padding: var(--spacing-lg) var(--spacing-md);
+
+    &__split {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--spacing-md);
+    }
+
+    &__demoInner {
+      min-height: min(60dvh, 30rem);
+      padding: var(--spacing-md);
+    }
+
+    // Under the canvas rather than beside it, since neither has the width to share.
+    &__demoBody[data-dials] {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    &__demoDials {
+      border-inline-start: 0;
+      border-block-start: 1px solid var(--border-subtle);
+    }
+  }
+}

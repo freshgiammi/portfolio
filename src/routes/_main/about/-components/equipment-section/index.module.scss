@@ -1,0 +1,92 @@
+.Section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+
+  &__label {
+    color: var(--text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+}
+
+.Domains {
+  column-width: 14rem;
+  column-gap: var(--spacing-lg);
+}
+
+.Domain {
+  break-inside: avoid-column;
+  margin-bottom: var(--spacing-sm);
+
+  &__label {
+    display: block;
+    margin-bottom: 0.375rem;
+    color: var(--text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+}
+
+.List {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.Item {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-xs);
+
+  &__note {
+    color: var(--text-subtle);
+  }
+
+  // Dotted rather than solid, and only on hover: a name that links out is the exception here, not
+  // the rule, so the affordance should read as "there's more" rather than as a normal inline link.
+  &__link {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px dotted var(--text-subtle);
+    transition: color var(--transition-fast);
+
+    &:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+  }
+}
+
+.Preview {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border-subtle);
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  &__fallback {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: stretch;
+    color: var(--text-subtle);
+  }
+
+  &__host {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.5rem 0.625rem;
+    color: var(--text-subtle);
+  }
+}

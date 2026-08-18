@@ -1,108 +1,108 @@
 @use "./tokens.scss";
 @use "./fonts.scss";
+@use "typography" as type;
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-:focus-visible {
-  outline-color: var(--accent-default);
-}
-
-html {
-  overscroll-behavior: none;
-  // Drives every scrollIntoView()/scrollTo() call, since the JS `behavior: "smooth"` option
-  // silently no-ops on iOS Safari and callers omit it.
-  scroll-behavior: smooth;
-
-  @media (prefers-reduced-motion: reduce) {
-    scroll-behavior: auto;
+/*
+ * Everything below lives in a `base` cascade layer, so ANY unlayered author rule — CSS modules,
+ * Storybook's own docs chrome — wins over it regardless of specificity. That is what lets the
+ * Storybook iframe import this file for tokens and fonts without global element rules (heading
+ * resets, link defaults) leaking into its UI, while the app itself keeps them: layered rules
+ * still beat the browser defaults they were written against. Element skins that only some pages
+ * render (tables) live in the stylesheets of the things that render them instead of here.
+ *
+ * The @use lines stay outside on purpose: layers declared by imported files (palette, semantic…)
+ * must not nest under `base`.
+ */
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
 
-  // Only a root-element background reaches the whole canvas, including the overscroll strip
-  // and the area behind the Android system nav bar. `--background` is the gradient's own 0%
-  // stop in both themes, so nothing shows bare white while the gradient layer rasterizes.
-  background-color: var(--background);
-  transition: background-color 0.3s;
-}
-
-body {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  isolation: isolate;
-  color: var(--text-default);
-  background: transparent;
-  min-height: 100vh;
-  min-height: 100dvh;
-  font-family:
-    Inter Variable,
-    Inter,
-    sans-serif;
-
-  overscroll-behavior: none;
-
-  transition: color 0.3s;
-
-  // Pinned gradient layer, standing in for `background-attachment: fixed`.
-  //
-  // Height is `100lvh` and top-anchored rather than `inset: 0`, so the layer is never resized:
-  // `lvh` is the URL-bar-hidden height, hence >= every dvh/svh state. A layer that does resize
-  // shows white bands on Android Chrome, because a 180deg gradient is sized to the element and
-  // growing it invalidates the whole texture rather than just the newly exposed strip.
-  &::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh; // fallback for browsers without lvh
-    height: 100lvh;
-    z-index: -1;
-    background-image: var(--gradient-subtle);
-    pointer-events: none;
+  :focus-visible {
+    outline-color: var(--accent);
   }
 
-  > * {
+  html {
+    // Chrome/Safari's default tap flash is a flat grey, off-brand next to everything else a tap does here.
+    -webkit-tap-highlight-color: color-mix(in srgb, var(--accent) 24%, transparent);
+
+    // No rubber band at either end, and no pull-to-refresh: the page stops where it stops. Vertical
+    // only, so a sideways scroll inside a rail still hands the gesture back at its edges.
+    overscroll-behavior-y: none;
+
+    // Only a root-element background reaches the whole canvas, including the overscroll strip
+    // and the area behind the Android system nav bar. `--background` is the gradient's own 0%
+    // stop in both themes, so nothing shows bare white while the gradient layer rasterizes.
+    background-color: var(--background);
+    transition: background-color 0.3s;
+
+    // Fibre: a tile of monochrome speckle, so the page has a surface to be rather than an
+    // expanse of one value. On the canvas rather than an element of its own, which is the whole reason
+    // it can be written here at all — the root background is already the layer beneath everything, so
+    // it needs no stacking of its own and can never come between the page and its content.
+    //
+    // Declared here rather than as a token because one rule uses it and no component can ask for it.
+    //
+    // Single-pixel salt-and-pepper: fine enough to read as tooth in the sheet rather than as pattern.
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='1' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0' intercept='1'/%3E%3CfeFuncG type='linear' slope='0' intercept='1'/%3E%3CfeFuncB type='linear' slope='0' intercept='1'/%3E%3CfeFuncA type='linear' slope='0.08'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='128' height='128' filter='url(%23g)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+
+    // The same speckle at a stronger mix, because grain can only be seen where it moves away from what it sits
+    // on: pale speckles above, dark ones here. Stronger in absolute terms and no stronger to look at,
+    // since what the eye answers to is the change against what is already there. Roughly 10% average
+    // coverage against the background below it, against the dark page's 4% on its own.
+    &[data-theme="light"] {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='1' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0' intercept='0'/%3E%3CfeFuncG type='linear' slope='0' intercept='0'/%3E%3CfeFuncB type='linear' slope='0' intercept='0'/%3E%3CfeFuncA type='linear' slope='0.07'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='128' height='128' filter='url(%23g)'/%3E%3C/svg%3E");
+    }
+
+    // Last, so it answers for whichever of the two above applied.
+    &[data-grain="off"] {
+      background-image: none;
+    }
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    position: relative;
     isolation: isolate;
+    color: var(--text-default);
+    background-color: transparent;
+    min-height: 100vh;
+    min-height: 100dvh;
+    font-family:
+      Inter Variable,
+      Inter,
+      sans-serif;
+
+    transition: color 0.3s;
+
+    > * {
+      isolation: isolate;
+    }
   }
-}
 
-a {
-  color: inherit;
-  text-decoration: none;
-  transition: color 0.2s ease-in-out;
-}
-
-*::selection {
-  color: var(--text-on-accent);
-  background-color: var(--accent);
-  text-decoration-line: underline;
-  text-underline-offset: 2px;
-  text-decoration-thickness: 2px;
-  text-decoration-color: var(--accent-alt);
-}
-
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: 250ms ease-out both vt-fade;
-}
-
-::view-transition {
-  background: var(--background);
-}
-
-@keyframes vt-fade {
-  from {
-    opacity: 1;
+  code,
+  pre,
+  kbd,
+  samp {
+    @include type.family("mono", $enforce: true);
   }
-  to {
-    opacity: 0;
-  }
-}
 
-::view-transition-new(root) {
-  animation-direction: reverse;
+  a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+  }
+
+  *::selection {
+    color: var(--text-on-accent);
+    background-color: var(--accent);
+    text-decoration-line: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 2px;
+    text-decoration-color: var(--accent-alt);
+  }
 }

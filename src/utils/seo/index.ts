@@ -4,34 +4,42 @@ import { env } from "@/env"
 
 const TWITTER_HANDLE = "@freshgiammi"
 
+export const TITLE_SUFFIX = / — freshgiammi$/
+
 /**
  * What a route declares as `staticData: { seo }`. Derived from the router augmentation rather than
  * redeclared, so the shape exists in exactly one place.
  */
 export type PageSeo = NonNullable<StaticDataRouteOption["seo"]>
 
-/** Drawn for any route that declares no `seo`, so a new page is never left without a card. */
-export const DEFAULT_SEO: PageSeo = {
-  title: "freshgiammi",
-  description: "Frontend engineering, developer tooling, and design systems.",
-  emoji: "👋🏻"
-}
-
 type SeoOptions = PageSeo & {
   path: string
   type?: "website" | "article"
 }
 
+/** First path segment, title-cased, drawn at the top of the card. */
+export function sectionFromPath(path: string) {
+  const segment = path.split("/").find(Boolean)
+  if (!segment) return "Home"
+  return segment.charAt(0).toUpperCase() + segment.slice(1)
+}
+
+/** The page's own name with the site suffix stripped: what a page header renders as its heading. */
+export function pageTitleFromSeo(seoTitle: string) {
+  return seoTitle.replace(TITLE_SUFFIX, "")
+}
+
 /**
- * Where the OG generator writes a page's card. Derived from the path alone, so the meta tag and the
- * generated file agree without either side keeping a list.
+ * Where a page's card lives. Derived from the path alone, so the meta tag and the image agree
+ * without either side keeping a list — and shaped like a file, so a card emitted ahead of time can
+ * answer from the CDN at the same url the renderer would have.
  */
 export function ogImagePath(path: string) {
   const normalized = path === "/" ? "/index" : path.replace(/\/$/, "")
   return `/og${normalized}.png`
 }
 
-function getSiteUrl() {
+export function getSiteUrl() {
   const envUrl = env.VITE_SITE_URL?.trim() ?? ""
 
   if (envUrl) {
@@ -42,7 +50,7 @@ function getSiteUrl() {
   return ""
 }
 
-export function toAbsoluteUrl(path: string) {
+function toAbsoluteUrl(path: string) {
   const normalized = path.startsWith("/") ? path : `/${path}`
   const siteUrl = getSiteUrl()
   if (!siteUrl) return normalized

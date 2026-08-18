@@ -1,0 +1,13 @@
+// The rail scrolls and therefore clips, so the padding is the room the cards need to lift and cast
+// inside it.
+.Rail {
+  display: flex;
+  gap: var(--spacing-md);
+  padding: 0.5rem 0.25rem 1.25rem;
+
+  // Standing in for the cards outside the window, and nothing else: no height of its own, so it
+  // never has a say in how tall the row is.
+  &__spacer {
+    flex-shrink: 0;
+  }
+}

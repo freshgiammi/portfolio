@@ -1,0 +1,27 @@
+.Page {
+  max-width: 80rem;
+  margin: 0 auto;
+  width: 100%;
+  padding: var(--spacing-xl) var(--spacing-lg) var(--spacing-2xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xl);
+}
+
+// The rails are several sections deep, so the panel spaces them the way the page spaces everything
+// else. The grid is one element and needs nothing.
+.Panel {
+  gap: var(--spacing-2xl);
+}
+
+.Section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+
+  &__label {
+    color: var(--text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+}

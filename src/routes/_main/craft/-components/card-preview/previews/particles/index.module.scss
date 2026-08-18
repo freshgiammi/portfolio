@@ -1,0 +1,22 @@
+// The box the throws leave from and the surface you point at, filling the frame it was given so its
+// middle is the frame's middle. It sits above the mark on purpose: the mark takes a stacking context
+// of its own the moment it scales, which both hides a particle for the first half of its flight and
+// steals the pointer back mid-hover, firing another throw on the way out.
+.Stage {
+  isolation: isolate;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  // Inherited by everything thrown from here, which is the only colour a particle has.
+  color: var(--accent);
+}
+
+// The one thing in the frame at rest: an icon-only button saying what happens if you point at it,
+// carrying the button primitive's own look. It only answers to the card around it — the stage above
+// takes the pointer, so the button never hovers of its own accord.
+.Mark {
+  :global(a:hover) &,
+  :global(a:focus-visible) & {
+    scale: 1.06;
+  }
+}

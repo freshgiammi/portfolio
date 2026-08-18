@@ -1,0 +1,27 @@
+// The window at the top of a card. Wide and shallow, so a row of them reads as a row of covers, and
+// its own positioning context because most of what happens inside leaves from the middle of it.
+.Preview {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 0;
+  background-color: var(--background);
+  // The same hatching the demo boxes use, so a card looks like a small window onto one.
+  background-image: linear-gradient(
+    45deg,
+    transparent 49%,
+    color-mix(in srgb, var(--border-subtle) 45%, transparent) 50%,
+    transparent 51%
+  );
+  background-size: 12px 12px;
+}
+
+// The shape the skeleton covers while a preview loads: the frame itself, and nothing else.
+.Loading {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

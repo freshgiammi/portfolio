@@ -1,0 +1,118 @@
+@use "typography" as type;
+
+.CodeBlock {
+  position: relative;
+  margin-bottom: 1rem;
+
+  pre {
+    margin: 0;
+    padding: 1rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 0;
+    line-height: 1.6;
+    box-shadow: var(--shadow-code);
+
+    code {
+      @include type.family("mono", $enforce: true);
+      @include type.size("x-small", $enforce: true);
+      line-height: 1.6;
+    }
+  }
+
+  // A label strip above the code, shown only when a filename/language is supplied. Its bottom edge
+  // is open so the code's own top border reads as the divider; the code then squares its top corners
+  // to meet it as one panel.
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.4rem 0.75rem;
+    border: 1px solid var(--border-subtle);
+    border-bottom: 0;
+    border-radius: 0 0 0 0;
+    background: var(--surface);
+    color: var(--text-subtle);
+  }
+
+  &__filename {
+    color: var(--text-subtle);
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // The body — not the outer wrapper — is the positioning context, so the action buttons sit at the
+  // code's top-right and clear the header above them.
+  &__body {
+    position: relative;
+  }
+
+  &[data-header] pre {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  // Wrapping removes the horizontal overflow itself, so any Scrollable around the code simply
+  // stops scrolling sideways and its edge fades disappear with it.
+  &[data-wrapped] {
+    pre {
+      code {
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+    }
+  }
+
+  // Hidden until hover so the buttons don't sit over the code; touch devices have no hover,
+  // so there they stay visible.
+  &__actions {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 1;
+    display: flex;
+    gap: 0.375rem;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+
+    @media (hover: none) {
+      opacity: 1;
+    }
+  }
+
+  &:hover &__actions,
+  &:focus-within &__actions {
+    opacity: 1;
+  }
+
+  &__action {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border: 1px solid var(--border-subtle);
+    border-radius: 0;
+    background: var(--surface);
+    color: var(--text-subtle);
+    cursor: pointer;
+    transition:
+      color var(--transition-fast),
+      border-color var(--transition-fast);
+
+    &:hover {
+      color: var(--accent);
+      border-color: var(--border-accent);
+    }
+
+    &[data-active],
+    &[data-done] {
+      color: var(--accent);
+      border-color: var(--border-accent);
+    }
+  }
+}

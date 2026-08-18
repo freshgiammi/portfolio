@@ -1,96 +1,261 @@
 /* Base color palette */
 @layer palette {
   :root {
-    --color-ivory: #fafaf8;
-    --color-sand: #1a7a7a;
-    --color-black: #000000;
-    --color-charcoal: #1b1b18;
-    --color-cement: #5c5c5c;
-    --color-cream: #f0efea;
-    --color-mist: #d4d3cc;
-    --color-amber: #4db4ad;
-    --color-terracotta: #146362;
+    // A single grayscale ramp, not one set per theme: gray has no hue of its own to get wrong, and
+    // light/dark just pick opposite ends of the same scale rather than needing their own separately
+    // hand-tuned neutrals. A fixed step size (05, then every 10, then 95) rather than one step per
+    // exact value the old named tokens happened to carry — every role stays in the same relative
+    // order it was in before, and the scale itself stays legible instead of accumulating one bespoke
+    // stop per consumer. Mid steps sit at their nominal lightness (`value / 100 * 255`, e.g. 90% →
+    // 230 → #e6e6e6); the two soft endpoints are eased outward a few points past theirs so the
+    // end gaps don't read as half-steps against the full stride in the middle.
+    //
+    // Palette layer only: nothing outside this file reaches for a `--color-*` directly, even a
+    // grayscale one. Anything that needs one of these tones gets a semantic token below instead —
+    // that's what keeps every actual colour decision centralised here rather than re-litigated at
+    // each call site.
+    --color-grayscale-05: #0a0a0a;
+    --color-grayscale-10: #1a1a1a;
+    --color-grayscale-20: #333333;
+    --color-grayscale-30: #4d4d4d;
+    --color-grayscale-40: #666666;
+    --color-grayscale-50: #808080;
+    --color-grayscale-60: #999999;
+    --color-grayscale-70: #b3b3b3;
+    --color-grayscale-80: #cccccc;
+    --color-grayscale-90: #e6e6e6;
+    --color-grayscale-95: #f5f5f5;
+    --color-grayscale-100: #ffffff;
 
-    // dark palette
-    --color-midnight: #0d0d0d;
-    --color-twilight: #141414;
-    --color-dusk: #1c1c1c;
-    --color-starlight: #dedede;
-    --color-stardim: #7a7a7a;
-    --color-aurora: #bd8838;
-    --color-aurora-glow: #cd9a48;
-    --color-eclipse: #262626;
-  }
-}
+    // One accent hue for the whole site, muted ~30% toward mid-gray so it reads as an accent rather
+    // than shouts as one, and ramped light to dark like the grayscale above. Each theme reads the
+    // ramp from the end that stays legible against its own background — dark from the top, light
+    // from the bottom — so both carry the same colour without either having to be the wrong
+    // lightness for the surface it sits on.
+    --color-aurora-glow: #c79444;
+    --color-aurora: #bc8839;
+    --color-aurora-deep: #8d642b;
+    --color-aurora-shade: #6c4d21;
 
-// Theme selectors are keyed on the attribute rather than on `:root`, so `data-theme` works on any
-// element: the block re-declares the whole set on the matching node, and the subtree inherits it.
-// `:root` is listed alongside the light selector because the document carries no attribute until the
-// theme is resolved.
-@layer accents {
-  :root,
-  [data-theme="light"] {
-    --accent-primary: var(--color-sand);
-    --accent-secondary: var(--color-amber);
-  }
+    // The hues the accent can be swapped to, each ramped the same way and each placed so both themes
+    // can read it. Their own names rather than the feedback hues' — an accent and a warning are
+    // different jobs, and a reader picking "the blue one" should not be picking the colour that
+    // means information.
+    //
+    // Every step is measured, not eyeballed. The light theme takes `-deep` and the dark theme the
+    // base, which is why the bases here are lighter than the feedback hues they started from: a
+    // mid-tone blue that reads fine as an alert badge only manages 3.6:1 as accent-coloured text on
+    // the dark background, and these are lifted until they clear 5.2:1 there. The deep ends clear
+    // 4.7:1 on the light background.
+    --color-tide-glow: #7ea1c4;
+    --color-tide: #628cb7;
+    --color-tide-deep: #2d537b;
+    --color-tide-shade: #224060;
 
-  [data-theme="dark"] {
-    --accent-primary: var(--color-aurora);
-    --accent-secondary: var(--color-aurora-glow);
+    --color-fern-glow: #6cb28b;
+    --color-fern: #4ca170;
+    --color-fern-deep: #31754f;
+    --color-fern-shade: #275a3d;
+
+    --color-orchid-glow: #a68ccc;
+    --color-orchid: #9373c0;
+    --color-orchid-deep: #5a3c84;
+    --color-orchid-shade: #452f67;
+
+    --color-ember-glow: #d48c85;
+    --color-ember: #cc7169;
+    --color-ember-deep: #8c322a;
+    --color-ember-shade: #6c2720;
+
+    --color-umber-glow: #b28875;
+    --color-umber: #aa7c69;
+    --color-umber-deep: #724f40;
+    --color-umber-shade: #553b30;
+
+    // Feedback hues.
+    --color-slate: #4a6f96;
+    --color-moss: #4f8f6b;
+    --color-violet: #7a5ea3;
+    --color-ochre: #a8823a;
+    --color-clay: #a8524a;
+    --color-azure: #7fa3cc;
+    --color-jade: #7fc79f;
+    --color-lavender: #a893cf;
+    --color-honey: #cfa768;
+    --color-coral: #cf8478;
   }
 }
 
 /* Semantic color assignments */
+// Theme selectors are keyed on the attribute rather than on `:root`, so `data-theme` works on any
+// element: each block re-declares its whole set on the matching node, and the subtree inherits it.
+// `:root` is listed alongside the light selector because the document carries no attribute until
+// the theme is resolved. Accents pass through one indirection and everything else does not: the
+// `--ramp-*` step below is which hue the reader picked, which is a real question with a real answer
+// that neither the palette nor the theme can give on its own. An `--accent-primary`-style hop for
+// anything else would still be a hop with nothing to decide.
 @layer semantic {
   // Theme-independent, and the same in every scope.
   :root {
-    --header-height: 3.25rem;
+    --header-height: 4rem;
+
+    // A fixed light tone and a fixed mid tone for decoration that shouldn't track the site's theme
+    // at all — a physical photo backing and its caption ink stay themselves regardless of light/dark
+    // (see `polaroid-stack`/`gallery-lightbox`), unlike `--surface`/`--text-subtle`, which are
+    // deliberately theme- and accent-aware.
+    --neutral-fixed-light: var(--color-grayscale-95);
+    --neutral-fixed-medium: var(--color-grayscale-40);
+
+    // Code header is one step darker than the code itself so the label strip reads as chrome.
+    // In light the code is white and the header is light gray; in dark both are near-black
+    // with the header a touch darker.
   }
 
-  // Derived tokens, re-declared on every themed node. Without this a nested scope would inherit the
-  // ancestor's already-computed value instead of resolving `var(--accent-primary)` against its own.
-  :root,
-  [data-theme] {
-    --accent: var(--accent-primary);
-    --accent-alt: var(--accent-secondary);
-    --accent-default: var(--accent-primary);
-    --color-accent: var(--accent-primary);
-    --border-accent: var(--accent-primary);
+  // Which hue the accent is cut from. The themes below read the ramp by position rather than by
+  // name, so a hue is swapped here in four lines and nothing downstream knows the difference.
+  //
+  // `:root` carries the default, so a document with no attribute yet is already aurora rather than
+  // unstyled, and the attribute selector below only has to answer for the other five.
+  :root {
+    --ramp-glow: var(--color-aurora-glow);
+    --ramp-base: var(--color-aurora);
+    --ramp-deep: var(--color-aurora-deep);
+    --ramp-shade: var(--color-aurora-shade);
   }
 
-  :root,
+  [data-accent="tide"] {
+    --ramp-glow: var(--color-tide-glow);
+    --ramp-base: var(--color-tide);
+    --ramp-deep: var(--color-tide-deep);
+    --ramp-shade: var(--color-tide-shade);
+  }
+
+  [data-accent="fern"] {
+    --ramp-glow: var(--color-fern-glow);
+    --ramp-base: var(--color-fern);
+    --ramp-deep: var(--color-fern-deep);
+    --ramp-shade: var(--color-fern-shade);
+  }
+
+  [data-accent="orchid"] {
+    --ramp-glow: var(--color-orchid-glow);
+    --ramp-base: var(--color-orchid);
+    --ramp-deep: var(--color-orchid-deep);
+    --ramp-shade: var(--color-orchid-shade);
+  }
+
+  [data-accent="ember"] {
+    --ramp-glow: var(--color-ember-glow);
+    --ramp-base: var(--color-ember);
+    --ramp-deep: var(--color-ember-deep);
+    --ramp-shade: var(--color-ember-shade);
+  }
+
+  [data-accent="umber"] {
+    --ramp-glow: var(--color-umber-glow);
+    --ramp-base: var(--color-umber);
+    --ramp-deep: var(--color-umber-deep);
+    --ramp-shade: var(--color-umber-shade);
+  }
+
   [data-theme="light"] {
     color-scheme: light;
 
-    --background: var(--color-ivory);
-    --surface: var(--color-cream);
-    --surface-raised: var(--color-ivory);
+    // The dark theme's end of the ramp measures 2.93:1 against this background, so light takes the
+    // deeper end: identical hue, placed where accent-coloured text is still readable. Whichever hue
+    // is selected, this is the step of it that clears 4.5:1 here.
+    --accent: var(--ramp-deep);
+    --accent-alt: var(--ramp-base);
+    --border-accent: var(--ramp-deep);
 
-    --accent-hover: var(--color-terracotta);
+    // A touch of accent mixed into every gray step, rather than the raw palette colour, so hue only
+    // ever enters through the accent — never through the neutral ramp itself.
+    --background: color-mix(in srgb, var(--color-grayscale-100) 97%, var(--accent) 3%);
+    --surface: color-mix(in srgb, var(--color-grayscale-95) 97%, var(--accent) 3%);
+    --surface-elevated: color-mix(in srgb, var(--color-grayscale-90) 97%, var(--accent) 3%);
+    // One ramp step darker than `--surface`, for an element that sits on a surface but must read
+    // as heavier than it (a table's header row).
+    --surface-deep: color-mix(in srgb, var(--color-grayscale-80) 97%, var(--accent) 3%);
 
-    --text-default: var(--color-charcoal);
-    --text-subtle: var(--color-cement);
-    --text-on-accent: var(--color-ivory);
+    --component: color-mix(in srgb, var(--color-grayscale-100) 97%, var(--accent) 3%);
+    --component-elevated: color-mix(in srgb, var(--color-grayscale-95) 97%, var(--accent) 3%);
+    --component-deep: color-mix(in srgb, var(--color-grayscale-90) 97%, var(--accent) 3%);
 
-    --border-default: var(--color-charcoal);
-    --border-subtle: var(--color-mist);
+    // Text stays on the neutral ramp, unmixed: hue in body copy reads as dirt, and the accent's
+    // legibility was tuned against backgrounds, not for glyphs. Surfaces keep the tint.
+    --text-default: var(--color-grayscale-10);
+    // Two steps off the default rather than three: subtle still has to carry real copy (page
+    // subtitles, prose asides) against this background, where grayscale-40 measured ~5:1 —
+    // nominally passing, visibly thin.
+    --text-subtle: var(--color-grayscale-30);
+    --text-on-accent: var(--color-grayscale-95);
+
+    // A step off `--surface`, never level with it: a subtle border still has to be a border, and one
+    // that resolves to the same step as the surface it sits on is an invisible line that reads as a
+    // missing one. Light takes the step below the surface, dark the step above — each away from its
+    // own background.
+    --border-default: color-mix(in srgb, var(--color-grayscale-10) 97%, var(--accent) 3%);
+    --border-subtle: color-mix(in srgb, var(--color-grayscale-80) 97%, var(--accent) 3%);
+
+    // Solid, not derived from the accent — states (alerts, form validation, status badges) need
+    // to stay recognisable independent of whatever the current theme's accent hue is.
+    --feedback-info-default: var(--color-slate);
+    --feedback-success-default: var(--color-moss);
+    --feedback-important-default: var(--color-violet);
+    --feedback-warning-default: var(--color-ochre);
+    --feedback-danger-default: var(--color-clay);
+
+    // Each feedback colour carries its own steps, so a call site reads the step it means instead
+    // of hand-rolling a mix against whichever surface happens to sit behind it. All three derive
+    // from the default colour, so a hue change upstream moves every step together.
+    @each $state in info, success, important, warning, danger {
+      --feedback-#{$state}-subtle: color-mix(in srgb, var(--feedback-#{$state}-default) 12%, var(--surface));
+      --feedback-#{$state}-border: color-mix(in srgb, var(--feedback-#{$state}-default) 50%, var(--border-subtle));
+    }
   }
 
+  // Dark is the default, so it also answers for a document that carries no attribute yet — the
+  // server cannot resolve "system", and the head script has not run on the very first paint. The
+  // `:not()` guard rather than plain `:root` is what keeps this from depending on which of the two
+  // theme blocks is written first: both selectors would otherwise weigh the same on a light `html`.
+  :root:not([data-theme="light"]),
   [data-theme="dark"] {
     color-scheme: dark;
 
-    --background: var(--color-midnight);
-    --surface: var(--color-twilight);
-    --surface-raised: var(--color-dusk);
+    --accent: var(--ramp-base);
+    --accent-alt: var(--ramp-glow);
+    --border-accent: var(--ramp-base);
 
-    --accent-hover: var(--color-aurora-glow);
+    --background: color-mix(in srgb, var(--color-grayscale-05) 97%, var(--accent) 3%);
+    --surface: color-mix(in srgb, var(--color-grayscale-10) 97%, var(--accent) 3%);
+    --surface-elevated: color-mix(in srgb, var(--color-grayscale-20) 97%, var(--accent) 3%);
+    // One ramp step darker than `--surface`. With the surface already near-black, that is the
+    // background's own step — the header reads as recessed into the page rather than raised off it.
+    --surface-deep: color-mix(in srgb, var(--color-grayscale-05) 97%, var(--accent) 3%);
 
-    --text-default: var(--color-starlight);
-    --text-subtle: var(--color-stardim);
-    --text-on-accent: var(--color-midnight);
+    --component: color-mix(in srgb, var(--color-grayscale-10) 97%, var(--accent) 3%);
+    --component-elevated: color-mix(in srgb, var(--color-grayscale-10) 97%, var(--accent) 3%);
+    --component-deep: color-mix(in srgb, var(--color-grayscale-05) 97%, var(--accent) 3%);
 
-    --border-default: var(--color-starlight);
-    --border-subtle: var(--color-eclipse);
+    --text-default: var(--color-grayscale-90);
+    // Mirrors the light theme's reasoning, one step toward its own default: grayscale-50 sat
+    // under 5:1 against this background.
+    --text-subtle: var(--color-grayscale-60);
+    --text-on-accent: var(--color-grayscale-05);
+
+    --border-default: color-mix(in srgb, var(--color-grayscale-90) 97%, var(--accent) 3%);
+    --border-subtle: color-mix(in srgb, var(--color-grayscale-20) 97%, var(--accent) 3%);
+
+    --feedback-info-default: var(--color-azure);
+    --feedback-success-default: var(--color-jade);
+    --feedback-important-default: var(--color-lavender);
+    --feedback-warning-default: var(--color-honey);
+    --feedback-danger-default: var(--color-coral);
+
+    @each $state in info, success, important, warning, danger {
+      --feedback-#{$state}-subtle: color-mix(in srgb, var(--feedback-#{$state}-default) 12%, var(--surface));
+      --feedback-#{$state}-border: color-mix(in srgb, var(--feedback-#{$state}-default) 50%, var(--border-subtle));
+    }
 
     // Force Shiki dark theme.
     //
@@ -126,10 +291,9 @@
 /* Border radius values */
 @layer radius {
   :root {
-    --radius-xs: 0.125rem;
-    --radius-sm: 0.25rem;
-    --radius-md: 0.5rem;
-    --radius-lg: 1rem;
+    --radius-sm: 2px;
+    --radius-md: 4px;
+    --radius-lg: 6px;
   }
 }
 
@@ -153,8 +317,6 @@
     --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.12);
     --shadow-code: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
     --shadow-elevation: 0 1px 3px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.04);
-    --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.02);
-    --shadow-none: none;
   }
 
   [data-theme="dark"] {
@@ -165,26 +327,5 @@
     --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.5);
     --shadow-code: 0 1px 3px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.4);
     --shadow-elevation: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.35);
-    --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.3);
-    --shadow-none: none;
-  }
-}
-
-/* Gradients */
-@layer gradients {
-  :root,
-  [data-theme="light"] {
-    --gradient-subtle: linear-gradient(180deg, var(--color-ivory) 0%, var(--color-cream) 100%);
-    --gradient-surface: linear-gradient(135deg, var(--color-ivory) 0%, var(--color-cream) 50%, var(--color-ivory) 100%);
-  }
-
-  [data-theme="dark"] {
-    --gradient-subtle: linear-gradient(180deg, var(--color-midnight) 0%, var(--color-twilight) 100%);
-    --gradient-surface: linear-gradient(
-      135deg,
-      var(--color-midnight) 0%,
-      var(--color-twilight) 50%,
-      var(--color-midnight) 100%
-    );
   }
 }

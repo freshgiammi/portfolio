@@ -23,8 +23,7 @@ export default {
             )
             if (hasOnSubmit) {
               const idAttribute = node.attributes.find(
-                attr =>
-                  attr.type === "JSXAttribute" && attr.name?.type === "JSXIdentifier" && attr.name?.name === "id"
+                attr => attr.type === "JSXAttribute" && attr.name?.type === "JSXIdentifier" && attr.name?.name === "id"
               )
               if (!idAttribute) {
                 context.report({

@@ -1,0 +1,68 @@
+@use "breakpoints" as bp;
+@use "typography" as type;
+
+.Root {
+  --page-gap: var(--spacing-lg);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--page-gap);
+  padding: var(--spacing-xl) var(--spacing-lg) var(--spacing-2xl);
+  max-width: 80rem;
+  margin: 0 auto;
+  width: 100%;
+
+  &[data-gap="2xl"] {
+    --page-gap: var(--spacing-2xl);
+  }
+
+  &[data-width="narrow"] {
+    max-width: 60rem;
+  }
+}
+
+.Content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--page-gap);
+}
+
+.Header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+
+  &__intro {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  &__title {
+    @include bp.down("md") {
+      @include type.size("large");
+    }
+  }
+
+  &__subtitle {
+    color: var(--text-subtle);
+    margin-top: 0.25rem;
+    max-width: 40rem;
+  }
+
+  &__aside {
+    color: var(--text-subtle);
+    margin-top: var(--spacing-xs);
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

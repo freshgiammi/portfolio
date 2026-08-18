@@ -1,133 +1,79 @@
-.Toc {
-  // Sticky offset, the trigger, the gap under it and some breathing room at the bottom: what the
-  // list has to leave for everything that is not the list.
-  --toc-chrome: 7.5rem;
+@use "typography" as type;
 
+.Toc {
   display: flex;
   flex-direction: column;
-
-  // Framed and filled, so it reads as a control at a glance rather than as a heading that happens
-  // to be clickable.
-  &__trigger {
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--spacing-xs);
-    width: 100%;
-    padding: 0.375rem 0.5rem;
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-sm);
-    background: var(--surface);
-    cursor: pointer;
-    color: var(--text-default);
-    transition:
-      color var(--transition-fast),
-      border-color var(--transition-fast);
-
-    &:hover {
-      color: var(--accent);
-      border-color: var(--border-accent);
-
-      .Toc__caret {
-        color: var(--accent);
-      }
-    }
-
-    // Points down when the panel is open, right when collapsed, so the control reads as a
-    // disclosure rather than as a button that navigates somewhere.
-    &[data-panel-open] .Toc__caret {
-      transform: rotate(0deg);
-    }
-  }
+  gap: var(--spacing-sm);
+  width: 100%;
+  min-width: 0;
 
   &__label {
-    text-transform: uppercase;
-  }
-
-  &__caret {
-    flex-shrink: 0;
     color: var(--text-subtle);
-    transform: rotate(-90deg);
-    transition:
-      transform var(--transition-fast),
-      color var(--transition-fast);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
   }
 
-  // A margin rather than padding: the panel's height is animated from the measured content height,
-  // so padding would sit inside that measurement and clip the last row mid-animation. Collapsed,
-  // the `[hidden]` rule below removes the box and the margin goes with it.
-  &__panel {
-    margin-top: var(--spacing-xs);
-    overflow: hidden;
-    height: var(--collapsible-panel-height);
-    transition: height 200ms ease;
-
-    &[hidden]:not([hidden="until-found"]) {
-      display: none;
-    }
-
-    &[data-starting-style],
-    &[data-ending-style] {
-      height: 0;
-    }
+  // `Scrollable`'s content box sizes to its widest unwrapped line by default, which is exactly what
+  // a horizontally-scrolling rail wants and exactly what breaks ellipsis truncation here: it would
+  // rather grow past the sidebar than let a long heading clip. `!important` because that sizing is
+  // an inline style Base UI itself sets, which no ordinary rule can outrank.
+  &__scrollContent {
+    min-width: 0 !important;
   }
 
-  // The single continuous rail every item sits against, and the only thing here that scrolls, so a
-  // long outline never pushes the trigger out of view.
+  // Height and scroll are `Scrollable`'s job now; this just lays out the rows inside it.
   &__list {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
     flex-direction: column;
-    border-left: 1px solid var(--border-subtle);
-    max-height: calc(100dvh - var(--header-height) - var(--toc-chrome));
-    overflow-y: auto;
-    // The collapse animation measures this element, so the cap above is what it animates to.
-    overscroll-behavior: contain;
   }
 
   &__link {
-    position: relative;
-    display: block;
-    padding: 0.3125rem 0 0.3125rem 0.75rem;
-    color: var(--text-subtle);
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.25rem 0;
+    color: var(--text-default);
     text-decoration: none;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     transition: color var(--transition-fast);
 
-    // The thumb: the active item draws its own segment of accent over the rail, so the rail shows
-    // position without needing a border on every row.
-    &::before {
-      content: "";
-      position: absolute;
-      left: -1px;
-      top: 0;
-      bottom: 0;
-      width: 1px;
-      background: var(--accent);
-      opacity: 0;
-      transition: opacity var(--transition-fast);
-    }
-
     &:hover {
-      color: var(--text-default);
+      color: var(--accent);
       text-decoration: none;
     }
 
-    &[data-active] {
-      color: var(--accent);
+    // Read already: muted rather than struck through, so the outline still reads as a map of the
+    // page instead of a checklist of what's done. Nested (not a sibling `:hover` rule) so it wins
+    // on specificity regardless of source order — a plain sibling `&:hover` ties with this on
+    // specificity and loses to whichever rule happens to come later in the stylesheet.
+    &[data-state="past"] {
+      color: var(--text-subtle);
+      opacity: 0.65;
 
-      &::before {
+      &:hover {
+        color: var(--accent);
         opacity: 1;
       }
     }
-  }
-}
 
-:global(.toc-hide-scrollbar)::-webkit-scrollbar {
-  display: none;
+    &[data-state="active"] {
+      color: var(--accent);
+    }
+  }
+
+  &__index {
+    @include type.family("mono", $enforce: true);
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+    color: inherit;
+    opacity: 0.6;
+  }
+
+  &__text {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 }

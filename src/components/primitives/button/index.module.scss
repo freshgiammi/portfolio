@@ -1,0 +1,185 @@
+.Button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  border: 1px solid var(--border-subtle);
+  border-radius: 0;
+  background-color: var(--component);
+  color: var(--accent);
+  cursor: pointer;
+  user-select: none;
+  touch-action: none;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+
+  svg {
+    display: block;
+  }
+
+  // The icon rides in its own span so a text glyph (an emoji) escapes the label's tracking —
+  // and any size an svg carries with explicit dimensions is untouched.
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    letter-spacing: normal;
+  }
+
+  &:not(:disabled):active {
+    scale: 0.96;
+  }
+
+  &[data-size="small"] {
+    height: 2rem;
+    padding-inline: 0.75rem;
+
+    .Button__icon svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  &[data-size="medium"] {
+    height: 2.25rem;
+    padding-inline: var(--spacing-sm);
+
+    .Button__icon svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &[data-size="large"] {
+    height: 2.5rem;
+    padding-inline: 1.25rem;
+
+    .Button__icon svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  // An icon with no label squares itself up.
+  &[data-icon-only] {
+    aspect-ratio: 1;
+    padding-inline: 0;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
+
+  &[data-variant="primary"] {
+    color: var(--accent);
+    border-color: var(--border-accent);
+    background-color: var(--component);
+
+    &:not(:disabled):hover,
+    &:not(:disabled):focus-visible,
+    &[data-popup-open] {
+      color: var(--accent-alt);
+      border-color: var(--accent-alt);
+      background-color: var(--component);
+    }
+  }
+
+  &[data-variant="secondary"] {
+    color: var(--text-default);
+    border-color: var(--border-default);
+
+    &:not(:disabled):hover,
+    &:not(:disabled):focus-visible,
+    &[data-popup-open] {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+  }
+
+  &[data-variant="tertiary"] {
+    border-color: transparent;
+    background-color: transparent;
+    color: var(--text-default);
+
+    &:not(:disabled):hover,
+    &:not(:disabled):focus-visible,
+    &[data-popup-open] {
+      background-color: var(--component);
+      color: var(--text-default);
+    }
+  }
+
+  // Behaviour swaps the palette; the variants above keep their shape. Written before them so
+  // each variant decides how much of it to take.
+
+  &[data-behaviour="danger"] {
+    color: var(--feedback-danger-default);
+    border-color: var(--feedback-danger-border);
+    background-color: var(--feedback-danger-subtle);
+
+    &:not(:disabled):hover,
+    &:not(:disabled):focus-visible,
+    &[data-popup-open] {
+      color: var(--feedback-danger-default);
+      border-color: var(--feedback-danger-default);
+    }
+
+    &[data-variant="secondary"] {
+      background-color: transparent;
+    }
+
+    &[data-variant="tertiary"] {
+      border-color: transparent;
+      background-color: transparent;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus-visible,
+      &[data-popup-open] {
+        border-color: transparent;
+        background-color: var(--feedback-danger-subtle);
+      }
+    }
+  }
+
+  // No accent anywhere: the neutral ramp only, keeping the same heavy/quiet/ghost split the
+  // accent variants have.
+  &[data-behaviour="neutral"] {
+    // Secondary is the reference: a quiet outline that deepens on hover.
+    color: var(--text-default);
+    border-color: var(--border-default);
+
+    &:not(:disabled):hover,
+    &:not(:disabled):focus-visible,
+    &[data-popup-open] {
+      color: var(--text-default);
+      border-color: var(--border-default);
+    }
+
+    // Primary reads heavier: solid deep surface, strong text and border. Hover lifts the fill one
+    // ramp step (`--surface`), the same move tertiary's hover makes.
+    &[data-variant="primary"] {
+      color: var(--text-default);
+      border-color: var(--border-default);
+      background-color: var(--surface-deep);
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus-visible,
+      &[data-popup-open] {
+        background-color: var(--component);
+      }
+    }
+
+    &[data-variant="tertiary"] {
+      border-color: transparent;
+      background-color: transparent;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus-visible,
+      &[data-popup-open] {
+        color: var(--text-default);
+        border-color: transparent;
+        background-color: var(--component);
+      }
+    }
+  }
+}

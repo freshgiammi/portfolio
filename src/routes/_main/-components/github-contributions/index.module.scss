@@ -1,0 +1,397 @@
+@use "breakpoints" as bp;
+@use "typography" as type;
+
+.GithubContributions {
+  // One ramp, mixed from the accent rather than picked out of the palette, so the calendar follows
+  // the theme's hue the way everything else does. Level 0 is a quiet step off the background rather
+  // than a fifth shade of accent: an empty day should read as absence, not as a very small amount.
+  --contribution-level-0: color-mix(in srgb, var(--text-subtle) 14%, transparent);
+  --contribution-level-1: color-mix(in srgb, var(--accent) 28%, transparent);
+  --contribution-level-2: color-mix(in srgb, var(--accent) 50%, transparent);
+  --contribution-level-3: color-mix(in srgb, var(--accent) 75%, transparent);
+  --contribution-level-4: var(--accent);
+
+  // A day never goes below this. Columns take their share of the width while there is enough of
+  // it, and stop at the floor rather than carrying on down to the five pixels that half a page
+  // divided by fifty-three weeks would otherwise ask for. What does not fit overflows, and the
+  // rail around this scrolls it.
+  --contribution-cell: 0.5rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+
+  &__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--spacing-lg);
+    padding-bottom: var(--spacing-xs);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  &__primaryStat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  &__yearValue {
+    color: var(--text-default);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  &__yearLabel {
+    color: var(--text-subtle);
+  }
+
+  &__subStats {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  &__subStat {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.1rem;
+  }
+
+  &__subValue {
+    color: var(--text-default);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  &__subLabel {
+    color: var(--text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  &__divider {
+    width: 1px;
+    height: 1.25rem;
+    background-color: var(--border-subtle);
+  }
+
+  // On a phone the two halves cannot share the row: the label wraps mid-phrase and the
+  // sub-statistics squeeze against the big number. Stacked, each keeps its natural shape.
+  @include bp.down("sm") {
+    .GithubContributions__header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--spacing-sm);
+    }
+
+    .GithubContributions__subStat {
+      align-items: flex-start;
+    }
+  }
+
+  // Column per week, seven rows for the days, which is why the server hands the days over sorted
+  // and starting on a Sunday: the DOM order is the layout order. The month row above shares the
+  // template, so a name lands exactly over the week it names.
+  &__calendar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  &__months,
+  &__grid {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(var(--contribution-cell), 1fr);
+    gap: 2px;
+  }
+
+  &__months {
+    @include type.size("xxx-small", $enforce: true);
+
+    color: var(--text-subtle);
+  }
+
+  // A name is wider than the week it sits over; it runs into its empty right-hand neighbours the
+  // way GitHub's do, rather than stretching its column and pulling the cells out of line.
+  &__month {
+    white-space: nowrap;
+    line-height: 1;
+  }
+
+  &__legend {
+    @include type.size("xxx-small", $enforce: true);
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    color: var(--text-subtle);
+
+    // The ramp runs edge to edge like the grid does; only the words keep their distance from it.
+    > span:first-child {
+      margin-right: 0.3rem;
+    }
+
+    > span:last-child {
+      margin-left: 0.3rem;
+    }
+  }
+
+  &__legendCell {
+    width: var(--contribution-cell);
+    aspect-ratio: 1;
+    // A hair of separation, so adjacent levels still read as distinct squares rather than one bar.
+    margin-left: 1px;
+    border-radius: 1px;
+    background-color: var(--contribution-level-0);
+
+    &:first-of-type {
+      margin-left: 0;
+    }
+
+    &[data-level="1"] {
+      background-color: var(--contribution-level-1);
+    }
+
+    &[data-level="2"] {
+      background-color: var(--contribution-level-2);
+    }
+
+    &[data-level="3"] {
+      background-color: var(--contribution-level-3);
+    }
+
+    &[data-level="4"] {
+      background-color: var(--contribution-level-4);
+    }
+  }
+
+  &__grid {
+    // Rows sized by the squares in them, and no taller. A day carries an aspect ratio, and a box
+    // with one is start-aligned in its track rather than stretched to it, so any height given to
+    // this grid beyond what the squares need comes back as dead space under every row.
+    grid-template-rows: repeat(7, auto);
+  }
+
+  // The year keeps its shape at any width: it is the same grid of squares whether or not the column
+  // is wide enough to hold all of it, and the part that does not fit is scrolled to rather than
+  // shrunk away or dropped.
+  &__calendarRail {
+    --scrollable-fade-size: 1.5rem;
+  }
+
+  &__day {
+    border-radius: 1px;
+    aspect-ratio: 1;
+    min-height: 0;
+    background-color: var(--contribution-level-0);
+
+    &[data-level="1"] {
+      background-color: var(--contribution-level-1);
+    }
+
+    &[data-level="2"] {
+      background-color: var(--contribution-level-2);
+    }
+
+    &[data-level="3"] {
+      background-color: var(--contribution-level-3);
+    }
+
+    &[data-level="4"] {
+      background-color: var(--contribution-level-4);
+    }
+
+    // A dot in the middle of the cell, well clear of the 2px gap, so a run of marked days stays a
+    // run of dots rather than merging into one shape. Painted rather than given a child element:
+    // these are `span`s in a grid, 9px wide and 370 of them, and none of that wants one apiece.
+    &[data-milestone] {
+      background-image: radial-gradient(circle at center, var(--accent-alt) 0 1.5px, transparent 1.5px);
+    }
+
+    // Which cell the popup is about, said on the cell rather than only in the popup beside it. Every
+    // cell is a trigger of the same tooltip, so `data-popup-open` is on exactly one of them at a
+    // time; hover covers the moment before it opens, and the pointer leaving takes both away.
+    //
+    // Drawn inside the cell's own 9px, where a ring around it would land in its neighbours' laps.
+    &:hover,
+    &[data-popup-open] {
+      box-shadow: inset 0 0 0 1px var(--accent-alt);
+    }
+  }
+
+  &__tooltip {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    color: var(--text-default);
+  }
+
+  &__tooltipHead {
+    display: flex;
+    align-items: baseline;
+    gap: var(--spacing-xs);
+    // A day is one short line; wrapping it would only make the popup taller than the cell it names.
+    white-space: nowrap;
+  }
+
+  &__tooltipDate {
+    color: var(--text-subtle);
+  }
+
+  // Under a rule, because this is a different kind of statement from the count above it: one is
+  // what GitHub counted, the other is what the day was for.
+  &__tooltipMilestones {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding-top: 0.2rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  &__tooltipMilestone {
+    display: flex;
+    // Titles run long and the popup is capped, so the icon holds the top line rather than centring
+    // itself against a paragraph.
+    align-items: flex-start;
+    gap: 0.3rem;
+    color: var(--accent);
+
+    svg {
+      flex-shrink: 0;
+      margin-top: 0.15em;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-xs) var(--spacing-sm);
+    padding-top: var(--spacing-xs);
+    border-top: 1px solid var(--border-subtle);
+    color: var(--text-subtle);
+  }
+
+  &__fact {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+  }
+
+  // The one lit thing in the block, and only when there is a streak to be lit about.
+  &__flame {
+    position: relative;
+    display: inline-flex;
+    // Off the top of the tip, and out of the way of everything: an ember that pushed the row around
+    // as it rose would move the sentence beside it once a second.
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 65%;
+      left: 50%;
+      width: 2px;
+      height: 2px;
+      border-radius: 50%;
+      background-color: var(--feedback-warning-default);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    &[data-lit] {
+      color: var(--feedback-danger-default);
+
+      // Pivoted at the base, so the flicker leans the tip rather than sliding the whole glyph.
+      svg {
+        transform-origin: 50% 90%;
+        animation: GithubContributions-flicker 1.9s ease-in-out infinite;
+      }
+
+      // Two embers off the same flame: same travel, opposite drift, half a cycle apart, so the
+      // pair reads as a stream rather than as one dot blinking on a timer.
+      &::before {
+        --drift: -3px;
+
+        animation: GithubContributions-ember 1.9s ease-out infinite;
+      }
+
+      &::after {
+        --drift: 3px;
+
+        animation: GithubContributions-ember 1.9s ease-out 0.95s infinite;
+      }
+    }
+  }
+}
+
+// Red at rest, ochre at the peaks, and the glow widens with the heat: a flame is brightest where it
+// moves most, and that pairing is what keeps a twelve-pixel glyph reading as fire rather than as a
+// throbbing icon.
+@keyframes GithubContributions-flicker {
+  0%,
+  100% {
+    color: var(--feedback-danger-default);
+    transform: scale(1) rotate(-1.5deg);
+    filter: drop-shadow(0 0 2px color-mix(in srgb, var(--feedback-danger-default) 55%, transparent));
+  }
+  20% {
+    color: var(--feedback-warning-default);
+    transform: scale(1.1) rotate(1.5deg);
+    filter: drop-shadow(0 0 5px color-mix(in srgb, var(--feedback-warning-default) 75%, transparent));
+  }
+  40% {
+    color: var(--feedback-danger-default);
+    transform: scale(0.96) rotate(-1deg);
+    filter: drop-shadow(0 0 2px color-mix(in srgb, var(--feedback-danger-default) 45%, transparent));
+  }
+  65% {
+    color: var(--feedback-warning-default);
+    transform: scale(1.06) rotate(1deg);
+    filter: drop-shadow(0 0 4px color-mix(in srgb, var(--feedback-warning-default) 65%, transparent));
+  }
+  85% {
+    color: var(--feedback-danger-default);
+    transform: scale(0.99) rotate(-0.5deg);
+    filter: drop-shadow(0 0 3px color-mix(in srgb, var(--feedback-danger-default) 50%, transparent));
+  }
+}
+
+// Lit late and out early: an ember is only visible for the middle of its climb, which is what makes
+// it look like it left the flame rather than like it was drawn above it.
+@keyframes GithubContributions-ember {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) scale(0.5);
+  }
+  25% {
+    opacity: 1;
+    transform: translate(calc(-50% + var(--drift) * 0.3), -3px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--drift)), -9px) scale(0.3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  // The colour is the state; the flicker and the embers were only ever decoration on top of it.
+  .GithubContributions__flame[data-lit] {
+    color: var(--feedback-danger-default);
+
+    svg,
+    &::before,
+    &::after {
+      animation: none;
+    }
+
+    svg {
+      filter: drop-shadow(0 0 3px color-mix(in srgb, var(--feedback-danger-default) 55%, transparent));
+    }
+  }
+}

@@ -1,0 +1,390 @@
+.Appearance {
+  &__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+    color: var(--text-subtle);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    &:hover,
+    &[data-popup-open] {
+      color: var(--accent);
+      background-color: var(--surface);
+    }
+  }
+
+  &__popup {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    width: 15rem;
+    // The rails inside do the scrolling, so the panel itself never becomes a scroller of scrollers.
+    max-height: none;
+    overflow: visible;
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  &__label {
+    color: var(--text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* ---------- Theme ---------- */
+
+  // One frame around the three rather than a frame each: they are one choice, and three boxes read
+  // as three separate ones.
+  &__themes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  &__theme {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.5rem 0.25rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 0;
+    background-color: var(--background);
+    color: var(--text-subtle);
+    cursor: pointer;
+    transition:
+      border-color var(--transition-fast),
+      background-color var(--transition-fast),
+      color var(--transition-fast);
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    &:hover:not([data-checked]) {
+      color: var(--text-default);
+      border-color: var(--border-default);
+      background-color: var(--surface);
+    }
+
+    &[data-checked] {
+      color: var(--accent);
+      background-color: var(--surface);
+      border-color: var(--border-accent);
+    }
+  }
+
+  &__presets {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  &__preset {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.55rem 0.25rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 0;
+    background-color: var(--background);
+    color: var(--text-subtle);
+    cursor: pointer;
+    transition:
+      border-color var(--transition-fast),
+      background-color var(--transition-fast),
+      color var(--transition-fast);
+
+    &:hover:not([data-checked]) {
+      color: var(--text-default);
+      border-color: var(--border-default);
+      background-color: var(--surface);
+    }
+
+    &[data-checked] {
+      color: var(--accent);
+      background-color: var(--surface);
+      border-color: var(--accent);
+    }
+  }
+
+  &__presetMeta {
+    display: flex;
+    align-items: center;
+    gap: 0.28rem;
+    line-height: 0;
+  }
+
+  &__presetSlash {
+    color: var(--text-subtle);
+    opacity: 0.45;
+    font-size: 10px;
+    line-height: 1;
+    user-select: none;
+  }
+
+  &__presetTheme {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-subtle);
+    line-height: 0;
+
+    .Appearance__preset[data-checked] & {
+      color: var(--accent);
+    }
+  }
+
+  &__presetDot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text-default) 15%, transparent);
+
+    &[data-accent="aurora"] {
+      background-color: var(--color-aurora);
+    }
+    &[data-accent="tide"] {
+      background-color: var(--color-tide);
+    }
+    &[data-accent="fern"] {
+      background-color: var(--color-fern);
+    }
+    &[data-accent="orchid"] {
+      background-color: var(--color-orchid);
+    }
+    &[data-accent="ember"] {
+      background-color: var(--color-ember);
+    }
+    &[data-accent="umber"] {
+      background-color: var(--color-umber);
+    }
+  }
+
+  /* ---------- Locked ---------- */
+
+  // Quiet enough to be furniture until it is read, which is the job: a reader who is not curious
+  // should not feel they are missing a button.
+  &__locked {
+    display: flex;
+    // On the first line rather than centred against the paragraph: the message runs to three lines
+    // here, and an icon floating beside the middle of them reads as a stray mark.
+    align-items: flex-start;
+    gap: 0.4rem;
+    padding: 0.5rem 0.1rem 0.15rem;
+    border-top: 1px solid var(--border-subtle);
+    color: var(--text-subtle);
+    line-height: 1.5;
+    user-select: none;
+
+    // An SVG is a flex item like any other, and a flex item with room to give will give it: without
+    // this the 12px icon is squeezed to five and change by the text beside it.
+    svg {
+      flex-shrink: 0;
+      margin-top: 0.2em;
+    }
+  }
+
+  /* ---------- Accent ---------- */
+
+  &__hues {
+    display: flex;
+    // Room for everything a dot draws outside its own box: 3px of selected ring, plus the ~1px each
+    // side that the hover lift adds. A scroller clips whatever it is not given room for, and both of
+    // those live outside the 26px.
+    padding: 6px 5px;
+  }
+
+  &__hueRow {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  // Big enough to be a colour rather than a bullet, and to be worth aiming at on a touch screen.
+  &__hue {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    // A ring in the panel's own ink, because a pale hue on a pale panel has no edge of its own.
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text-default) 20%, transparent);
+    transition:
+      box-shadow var(--transition-fast),
+      scale var(--transition-fast);
+
+    &:hover {
+      scale: 1.08;
+    }
+
+    // Outside the dot rather than over it: the hue is the thing being chosen, so nothing is drawn
+    // on top of it to say so.
+    &[data-checked] {
+      box-shadow:
+        inset 0 0 0 1px color-mix(in srgb, var(--text-default) 20%, transparent),
+        0 0 0 2px var(--background),
+        0 0 0 3px var(--accent);
+    }
+
+    // Every dot names its own hue, aurora included. Leaving one to inherit `--ramp-base` is leaving
+    // it to paint whichever hue is currently selected: the palette would then show the active colour
+    // twice and never the one that row is for.
+    &[data-accent="aurora"] {
+      background-color: var(--color-aurora);
+    }
+
+    &[data-accent="tide"] {
+      background-color: var(--color-tide);
+    }
+
+    &[data-accent="fern"] {
+      background-color: var(--color-fern);
+    }
+
+    &[data-accent="orchid"] {
+      background-color: var(--color-orchid);
+    }
+
+    &[data-accent="ember"] {
+      background-color: var(--color-ember);
+    }
+
+    &[data-accent="umber"] {
+      background-color: var(--color-umber);
+    }
+  }
+
+  /* ---------- Decoration ---------- */
+
+  &__decoration {
+    border-top: 1px solid var(--border-subtle);
+    padding-top: var(--spacing-xs);
+  }
+
+  &__decorationTrigger {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    width: 100%;
+    padding: 0.2rem 0;
+    border: none;
+    background-color: transparent;
+    color: var(--text-subtle);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: color var(--transition-fast);
+
+    &:hover {
+      color: var(--text-default);
+    }
+
+    svg {
+      transition: rotate var(--transition-fast);
+    }
+
+    &[data-panel-open] svg {
+      rotate: 90deg;
+    }
+  }
+
+  // Height animated from the panel's own measurement, which Base UI publishes as this variable.
+  //
+  // The open height is the base rule and the closed one is the override, rather than the other way
+  // round: an opening panel carries `data-open` and `data-starting-style` at the same time, and two
+  // rules of equal weight are settled by which is written last. With the open rule last it won both
+  // frames, the height never started at zero, and there was nothing to animate.
+  &__decorationPanel {
+    overflow: hidden;
+    height: var(--collapsible-panel-height);
+    transition: height var(--transition-base);
+
+    &[data-starting-style],
+    &[data-ending-style] {
+      height: 0;
+    }
+  }
+
+  &__switches {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding-top: 0.35rem;
+  }
+
+  &__switch {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.35rem 0.3rem;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+    color: var(--text-default);
+    cursor: pointer;
+    text-align: left;
+    transition: background-color var(--transition-fast);
+
+    &:hover {
+      background-color: var(--surface);
+    }
+  }
+
+  &__box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+    // Sits on the first line of the label rather than centred against both of them.
+    margin-top: 1px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 0;
+    background-color: var(--background);
+    transition: all var(--transition-fast);
+
+    .Appearance__switch[data-checked] & {
+      border-color: var(--border-accent);
+      background-color: var(--accent);
+      color: var(--text-on-accent);
+    }
+  }
+
+  &__tick {
+    display: flex;
+  }
+
+  &__switchText {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+  }
+
+  &__hint {
+    color: var(--text-subtle);
+  }
+}

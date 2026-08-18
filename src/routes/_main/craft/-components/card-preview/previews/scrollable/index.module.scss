@@ -1,0 +1,26 @@
+// Overrides the shared component's own `width: stretch`: a thumbnail reads better as a small,
+// centred object than as a box stretched to the full card.
+.Box {
+  width: 6rem;
+  // Scrolled by this preview itself, never by a visitor: a card is a link, and a drag or wheel
+  // gesture over it should reach the link underneath, not get eaten by the box demonstrating itself.
+  pointer-events: none;
+}
+
+.List {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding: 0.5rem 0;
+  width: 100%;
+
+  &__row {
+    display: block;
+    text-align: center;
+    padding: 0.25rem 0;
+    border-radius: 0;
+    background-color: var(--surface);
+    color: var(--text-subtle);
+    font-size: 0.7rem;
+  }
+}

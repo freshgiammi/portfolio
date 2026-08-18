@@ -14,9 +14,9 @@
 
   &__message {
     color: var(--text-subtle);
-    background: var(--surface);
+    background-color: var(--surface);
     border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-sm);
+    border-radius: 0;
     padding: var(--spacing-xs) var(--spacing-sm);
     max-width: 100%;
     overflow-wrap: break-word;
@@ -24,33 +24,18 @@
 
   &__image {
     height: 35dvh;
-    border-radius: var(--radius-sm);
+    // The box is what gets laid out now, and it fills whatever width it is handed unless told the
+    // proportions of the picture inside it. Matches `public/images/404.jpg` at 983 × 603.
+    width: auto;
+    border-radius: 0;
     box-shadow: var(--shadow-lg);
     max-width: 100%;
-    object-fit: cover;
   }
 
   &__actions {
     display: flex;
     align-items: center;
     gap: var(--spacing-lg);
-  }
-
-  &__retryButton {
-    background-color: transparent;
-    border: none;
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    cursor: pointer;
-    color: var(--accent);
-    transition: color var(--transition-fast);
-
-    &:hover {
-      color: var(--accent-alt);
-      text-decoration: underline;
-      text-underline-offset: 2px;
-    }
   }
 
   &__homeLink {

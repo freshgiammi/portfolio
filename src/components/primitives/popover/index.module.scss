@@ -1,0 +1,27 @@
+.Popover {
+  &__popup {
+    background-color: var(--background);
+    border: 1px solid var(--border-subtle);
+    border-radius: 0;
+    box-shadow: var(--shadow-lg);
+    padding: var(--spacing-xs);
+    min-width: 180px;
+    max-height: min(60vh, 22rem);
+    overflow-y: auto;
+    outline: none;
+
+    transition:
+      opacity var(--transition-fast),
+      scale var(--transition-fast),
+      filter var(--transition-fast);
+
+    transform-origin: var(--transform-origin);
+
+    &[data-ending-style],
+    &[data-starting-style] {
+      opacity: 0;
+      scale: 0.95;
+      filter: blur(2px);
+    }
+  }
+}

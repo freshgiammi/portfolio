@@ -1,0 +1,133 @@
+@use "breakpoints" as bp;
+
+.Accordion {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.Item {
+  border-bottom: 1px solid var(--border-subtle);
+
+  &__trigger {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--spacing-md);
+    width: 100%;
+    padding: var(--spacing-sm) 0;
+    background: none;
+    border: none;
+    text-align: left;
+    color: var(--text-default);
+    cursor: pointer;
+    transition: color var(--transition-fast);
+
+    &:hover {
+      color: var(--accent);
+    }
+
+    &:focus-visible {
+      outline: 1px solid var(--border-accent);
+      outline-offset: 0.25rem;
+    }
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+  }
+
+  &__company {
+    color: var(--text-subtle);
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    color: var(--text-subtle);
+    flex-shrink: 0;
+  }
+
+  &__period {
+    white-space: nowrap;
+  }
+
+  &__caret {
+    flex-shrink: 0;
+    transition: transform var(--transition-fast);
+  }
+
+  &__trigger[data-panel-open] &__caret {
+    transform: scaleY(-1);
+  }
+
+  &__panel {
+    height: var(--accordion-panel-height);
+    overflow: hidden;
+    transition: height var(--transition-fast);
+
+    &[data-starting-style],
+    &[data-ending-style] {
+      height: 0;
+    }
+  }
+
+  &__panelContent {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    padding-bottom: var(--spacing-md);
+  }
+
+  &__description {
+    color: var(--text-subtle);
+    line-height: 1.6;
+  }
+
+  &__highlights {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0;
+    padding-left: var(--spacing-sm);
+    color: var(--text-subtle);
+
+    li {
+      line-height: 1.5;
+
+      &::marker {
+        color: var(--accent);
+      }
+
+      b {
+        color: var(--text-default);
+      }
+    }
+  }
+}
+
+.InlineLink {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+
+  &:hover {
+    color: var(--accent-alt);
+  }
+}
+
+@include bp.down("sm") {
+  .Item__trigger {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0.375rem;
+  }
+
+  .Item__meta {
+    justify-content: space-between;
+  }
+}

@@ -1,0 +1,104 @@
+// A button that is not dressed as one: it inherits the heading's size and gives away only the cursor.
+.Wave {
+  // Nought to one, written every frame a press lasts; the shake below scales off it.
+  --wind: 0;
+
+  position: relative;
+  display: inline-grid;
+  // The emoji paints to its advance edge, so the text after it reads as glued on without this.
+  margin-inline-end: 0.18em;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+
+  &__hand {
+    display: grid;
+    transform-origin: 70% 70%;
+
+    // Nothing at rest, so a covered animation never starts itself once the wind-up stops applying.
+    &[data-motion="hello"] {
+      animation: Wave-hello 2.4s ease-in-out 1;
+    }
+
+    &[data-motion="beat"] {
+      animation: Wave-beat 420ms ease-in-out;
+    }
+
+    &[data-winding] {
+      animation: Wave-windup 260ms ease-in-out infinite;
+    }
+  }
+
+  // A halo in the page's background colour, so the emoji reads over the grain, backdrop or a photo.
+  &__particle {
+    text-shadow:
+      0 0 3px var(--background),
+      0 0 6px var(--background);
+  }
+}
+
+@keyframes Wave-hello {
+  0%,
+  60%,
+  100% {
+    transform: rotate(0deg);
+  }
+  10% {
+    transform: rotate(14deg);
+  }
+  20% {
+    transform: rotate(-8deg);
+  }
+  30% {
+    transform: rotate(14deg);
+  }
+  40% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+}
+
+// Damped: each swing goes less far than the last, reading as a knock rather than a pose.
+@keyframes Wave-beat {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  22% {
+    transform: rotate(-15deg) scale(1.13);
+  }
+  48% {
+    transform: rotate(9deg) scale(1.07);
+  }
+  72% {
+    transform: rotate(-5deg) scale(1.03);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+// Size barely moves across the swing; the growing angle carries the effort, not a pulsing scale.
+@keyframes Wave-windup {
+  0%,
+  100% {
+    transform: rotate(calc(var(--wind) * -16deg)) scale(calc(1 + var(--wind) * 0.17));
+  }
+  50% {
+    transform: rotate(calc(var(--wind) * 16deg)) scale(calc(1 + var(--wind) * 0.22));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .Wave__hand,
+  .Wave__hand[data-motion],
+  .Wave__hand[data-winding] {
+    animation: none;
+  }
+}

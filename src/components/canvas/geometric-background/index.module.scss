@@ -1,0 +1,74 @@
+.Frame {
+  // How loud the texture is, read at paint time rather than baked into the shapes: the layout is
+  // generated once and the intensity is a property of the theme, not of the arrangement.
+  //
+  // Dark carries less of it. The same alpha over a near-black background is a bigger step in
+  // lightness than it is over a near-white one, so a wash that reads as texture in light reads as
+  // a smudge sitting on top of the page in dark.
+  --geometric-opacity: 0.25;
+
+  // Both selectors, and the `:not()` guard, for the same reason `tokens.scss` uses them: dark is
+  // the default, and also what a document with no attribute yet resolves to.
+  :root:not([data-theme="light"]) &,
+  [data-theme="dark"] & {
+    --geometric-opacity: 0.1;
+  }
+
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: -1;
+  width: clamp(380px, 42vw, 640px);
+  height: clamp(340px, 40vh, 560px);
+  overflow: hidden;
+  pointer-events: none;
+
+  // Fades the two inward-facing edges (top, left) to transparent; bottom and right stay hard since
+  // they sit flush against the viewport corner and have nothing to blend into.
+  //
+  // Two independent directional fades need two mask layers — and critically, the default
+  // `mask-composite` is `add`, which *unions* them back into an opaque rectangle rather than
+  // fading the corner where both ramps overlap. `intersect` multiplies the two alpha channels
+  // instead, so it's guarded behind `@supports`: without it, browsers fall back to a single
+  // (top-only) fade rather than an actively broken opaque box.
+  mask-image: linear-gradient(to top, black 55%, transparent 100%);
+
+  @supports (mask-composite: intersect) {
+    mask-image:
+      linear-gradient(to top, black 55%, transparent 100%), linear-gradient(to left, black 55%, transparent 100%);
+    mask-composite: intersect;
+  }
+}
+
+.Canvas {
+  position: absolute;
+  top: calc(-1 * var(--overscan));
+  left: calc(-1 * var(--overscan));
+  animation: drift 30s ease-in-out infinite;
+  will-change: transform;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+// A loose, irregular loop rather than a simple back-and-forth on one axis — every stop lands at a
+// different fraction of `--drift-range` so the motion reads as organic drift, not a mechanical
+// bounce. First and last stops match, so the `infinite` loop has no seam.
+@keyframes drift {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(var(--drift-range), calc(var(--drift-range) * -0.6));
+  }
+  50% {
+    transform: translate(calc(var(--drift-range) * -0.4), var(--drift-range));
+  }
+  75% {
+    transform: translate(calc(var(--drift-range) * -1), calc(var(--drift-range) * -0.3));
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}

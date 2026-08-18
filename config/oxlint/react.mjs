@@ -76,8 +76,26 @@ export default defineConfig({
     "react/exhaustive-deps": "warn",
     // https://oxc.rs/docs/guide/usage/linter/rules/react/no-unstable-nested-components.html
     "react/no-unstable-nested-components": ["warn", { allowAsProps: true }],
-    // https://oxc.rs/docs/guide/usage/linter/rules/react/react-compiler.html
-    "react/react-compiler": "error",
+    // https://oxc.rs/docs/guide/usage/linter/rules/react/incompatible-library.html
+    "react/incompatible-library": "warn",
+    // https://oxc.rs/docs/guide/usage/linter/rules/react/no-deriving-state-in-effects.html
+    "react/no-deriving-state-in-effects": "warn",
+    // https://oxc.rs/docs/guide/usage/linter/rules/react/capitalized-calls.html
+    "react/capitalized-calls": "warn",
+    // https://oxc.rs/docs/guide/usage/linter/rules/react/memo-dependencies.html
+    "react/memo-dependencies": "warn",
+    // https://oxc.rs/docs/guide/usage/linter/rules/react/exhaustive-effect-dependencies.html
+    "react/exhaustive-effect-dependencies": "warn",
+    // Overlaps with `react/rules-of-hooks` above (same Rules of React checks, compiler-powered
+    // implementation): oxc ships this off by default for exactly that reason, and so do we.
+    // https://oxc.rs/docs/guide/usage/linter/rules/react/hooks.html
+    "react/hooks": "off",
+    // https://oxc.rs/docs/guide/usage/linter/rules/react/syntax.html
+    "react/syntax": "error",
+    // https://oxc.rs/docs/guide/usage/linter/rules/react/unsupported-syntax.html
+    "react/unsupported-syntax": "warn",
+    // https://oxc.rs/docs/guide/usage/linter/rules/react/rule-suppression.html
+    "react/rule-suppression": "warn",
 
     /*
      * ==========================================

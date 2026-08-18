@@ -1,0 +1,56 @@
+.Demo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-lg);
+  width: min(32rem, 100%);
+  margin-inline: auto;
+}
+
+.SourceLabel {
+  color: var(--text-subtle);
+  margin-bottom: var(--spacing-xs);
+}
+
+.Inspiration {
+  max-width: 32rem;
+}
+
+// A real card, not a diagram of one: the same markup renders in both states, which is the whole
+// argument the skeleton is making.
+.Card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  background-color: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 0;
+
+  &__avatar {
+    width: 3.5rem;
+    height: 3.5rem;
+    flex: none;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+    min-width: 0;
+  }
+
+  &__bio {
+    color: var(--text-subtle);
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin-top: 0.15rem;
+  }
+}

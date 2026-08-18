@@ -10,21 +10,39 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as MainRouteImport } from './routes/_main'
+import { Route as AiManifestoRouteImport } from './routes/ai-manifesto'
+import { Route as FeedDotxmlRouteImport } from './routes/feed[.]xml'
 import { Route as MainIndexRouteImport } from './routes/_main/index'
-import { Route as ApiActivityRouteImport } from './routes/api/activity'
+import { Route as MainBlogRouteRouteImport } from './routes/_main/blog/route'
+import { Route as MainCraftRouteRouteImport } from './routes/_main/craft/route'
+import { Route as MainThoughtsRouteRouteImport } from './routes/_main/thoughts/route'
+import { Route as OgSplatRouteImport } from './routes/og/$'
 import { Route as MainAboutIndexRouteImport } from './routes/_main/about/index'
 import { Route as MainBlogIndexRouteImport } from './routes/_main/blog/index'
-import { Route as MainProjectsIndexRouteImport } from './routes/_main/projects/index'
-import { Route as MainShowcaseIndexRouteImport } from './routes/_main/showcase/index'
+import { Route as MainCraftIndexRouteImport } from './routes/_main/craft/index'
+import { Route as MainFindsIndexRouteImport } from './routes/_main/finds/index'
 import { Route as MainThoughtsIndexRouteImport } from './routes/_main/thoughts/index'
 import { Route as MainWorkIndexRouteImport } from './routes/_main/work/index'
-import { Route as ApiReadsSlugRouteImport } from './routes/api/reads.$slug'
 import { Route as MainBlogSlugIndexRouteImport } from './routes/_main/blog/$slug/index'
-import { Route as MainShowcasePolaroidStackIndexRouteImport } from './routes/_main/showcase/polaroid-stack/index'
-import { Route as MainThoughtsIdIndexRouteImport } from './routes/_main/thoughts/$id/index'
+import { Route as MainCraftConfettiIndexRouteImport } from './routes/_main/craft/confetti/index'
+import { Route as MainCraftParticlesIndexRouteImport } from './routes/_main/craft/particles/index'
+import { Route as MainCraftPolaroidStackIndexRouteImport } from './routes/_main/craft/polaroid-stack/index'
+import { Route as MainCraftScrollableIndexRouteImport } from './routes/_main/craft/scrollable/index'
+import { Route as MainCraftSkeletonIndexRouteImport } from './routes/_main/craft/skeleton/index'
+import { Route as MainThoughtsSlugIndexRouteImport } from './routes/_main/thoughts/$slug/index'
 
 const MainRoute = MainRouteImport.update({
   id: '/_main',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AiManifestoRoute = AiManifestoRouteImport.update({
+  id: '/ai-manifesto',
+  path: '/ai-manifesto',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FeedDotxmlRoute = FeedDotxmlRouteImport.update({
+  id: '/feed.xml',
+  path: '/feed.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MainIndexRoute = MainIndexRouteImport.update({
@@ -32,9 +50,24 @@ const MainIndexRoute = MainIndexRouteImport.update({
   path: '/',
   getParentRoute: () => MainRoute,
 } as any)
-const ApiActivityRoute = ApiActivityRouteImport.update({
-  id: '/api/activity',
-  path: '/api/activity',
+const MainBlogRouteRoute = MainBlogRouteRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => MainRoute,
+} as any)
+const MainCraftRouteRoute = MainCraftRouteRouteImport.update({
+  id: '/craft',
+  path: '/craft',
+  getParentRoute: () => MainRoute,
+} as any)
+const MainThoughtsRouteRoute = MainThoughtsRouteRouteImport.update({
+  id: '/thoughts',
+  path: '/thoughts',
+  getParentRoute: () => MainRoute,
+} as any)
+const OgSplatRoute = OgSplatRouteImport.update({
+  id: '/og/$',
+  path: '/og/$',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MainAboutIndexRoute = MainAboutIndexRouteImport.update({
@@ -43,146 +76,205 @@ const MainAboutIndexRoute = MainAboutIndexRouteImport.update({
   getParentRoute: () => MainRoute,
 } as any)
 const MainBlogIndexRoute = MainBlogIndexRouteImport.update({
-  id: '/blog/',
-  path: '/blog/',
-  getParentRoute: () => MainRoute,
+  id: '/',
+  path: '/',
+  getParentRoute: () => MainBlogRouteRoute,
 } as any)
-const MainProjectsIndexRoute = MainProjectsIndexRouteImport.update({
-  id: '/projects/',
-  path: '/projects/',
-  getParentRoute: () => MainRoute,
+const MainCraftIndexRoute = MainCraftIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MainCraftRouteRoute,
 } as any)
-const MainShowcaseIndexRoute = MainShowcaseIndexRouteImport.update({
-  id: '/showcase/',
-  path: '/showcase/',
+const MainFindsIndexRoute = MainFindsIndexRouteImport.update({
+  id: '/finds/',
+  path: '/finds/',
   getParentRoute: () => MainRoute,
 } as any)
 const MainThoughtsIndexRoute = MainThoughtsIndexRouteImport.update({
-  id: '/thoughts/',
-  path: '/thoughts/',
-  getParentRoute: () => MainRoute,
+  id: '/',
+  path: '/',
+  getParentRoute: () => MainThoughtsRouteRoute,
 } as any)
 const MainWorkIndexRoute = MainWorkIndexRouteImport.update({
   id: '/work/',
   path: '/work/',
   getParentRoute: () => MainRoute,
 } as any)
-const ApiReadsSlugRoute = ApiReadsSlugRouteImport.update({
-  id: '/api/reads/$slug',
-  path: '/api/reads/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const MainBlogSlugIndexRoute = MainBlogSlugIndexRouteImport.update({
-  id: '/blog/$slug/',
-  path: '/blog/$slug/',
-  getParentRoute: () => MainRoute,
+  id: '/$slug/',
+  path: '/$slug/',
+  getParentRoute: () => MainBlogRouteRoute,
 } as any)
-const MainShowcasePolaroidStackIndexRoute =
-  MainShowcasePolaroidStackIndexRouteImport.update({
-    id: '/showcase/polaroid-stack/',
-    path: '/showcase/polaroid-stack/',
-    getParentRoute: () => MainRoute,
+const MainCraftConfettiIndexRoute = MainCraftConfettiIndexRouteImport.update({
+  id: '/confetti/',
+  path: '/confetti/',
+  getParentRoute: () => MainCraftRouteRoute,
+} as any)
+const MainCraftParticlesIndexRoute = MainCraftParticlesIndexRouteImport.update({
+  id: '/particles/',
+  path: '/particles/',
+  getParentRoute: () => MainCraftRouteRoute,
+} as any)
+const MainCraftPolaroidStackIndexRoute =
+  MainCraftPolaroidStackIndexRouteImport.update({
+    id: '/polaroid-stack/',
+    path: '/polaroid-stack/',
+    getParentRoute: () => MainCraftRouteRoute,
   } as any)
-const MainThoughtsIdIndexRoute = MainThoughtsIdIndexRouteImport.update({
-  id: '/thoughts/$id/',
-  path: '/thoughts/$id/',
-  getParentRoute: () => MainRoute,
+const MainCraftScrollableIndexRoute =
+  MainCraftScrollableIndexRouteImport.update({
+    id: '/scrollable/',
+    path: '/scrollable/',
+    getParentRoute: () => MainCraftRouteRoute,
+  } as any)
+const MainCraftSkeletonIndexRoute = MainCraftSkeletonIndexRouteImport.update({
+  id: '/skeleton/',
+  path: '/skeleton/',
+  getParentRoute: () => MainCraftRouteRoute,
+} as any)
+const MainThoughtsSlugIndexRoute = MainThoughtsSlugIndexRouteImport.update({
+  id: '/$slug/',
+  path: '/$slug/',
+  getParentRoute: () => MainThoughtsRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof MainIndexRoute
-  '/api/activity': typeof ApiActivityRoute
-  '/api/reads/$slug': typeof ApiReadsSlugRoute
+  '/ai-manifesto': typeof AiManifestoRoute
+  '/feed.xml': typeof FeedDotxmlRoute
+  '/blog': typeof MainBlogRouteRouteWithChildren
+  '/craft': typeof MainCraftRouteRouteWithChildren
+  '/thoughts': typeof MainThoughtsRouteRouteWithChildren
+  '/og/$': typeof OgSplatRoute
   '/about/': typeof MainAboutIndexRoute
   '/blog/': typeof MainBlogIndexRoute
-  '/projects/': typeof MainProjectsIndexRoute
-  '/showcase/': typeof MainShowcaseIndexRoute
+  '/craft/': typeof MainCraftIndexRoute
+  '/finds/': typeof MainFindsIndexRoute
   '/thoughts/': typeof MainThoughtsIndexRoute
   '/work/': typeof MainWorkIndexRoute
   '/blog/$slug/': typeof MainBlogSlugIndexRoute
-  '/showcase/polaroid-stack/': typeof MainShowcasePolaroidStackIndexRoute
-  '/thoughts/$id/': typeof MainThoughtsIdIndexRoute
+  '/craft/confetti/': typeof MainCraftConfettiIndexRoute
+  '/craft/particles/': typeof MainCraftParticlesIndexRoute
+  '/craft/polaroid-stack/': typeof MainCraftPolaroidStackIndexRoute
+  '/craft/scrollable/': typeof MainCraftScrollableIndexRoute
+  '/craft/skeleton/': typeof MainCraftSkeletonIndexRoute
+  '/thoughts/$slug/': typeof MainThoughtsSlugIndexRoute
 }
 export interface FileRoutesByTo {
-  '/api/activity': typeof ApiActivityRoute
+  '/ai-manifesto': typeof AiManifestoRoute
+  '/feed.xml': typeof FeedDotxmlRoute
+  '/og/$': typeof OgSplatRoute
   '/': typeof MainIndexRoute
-  '/api/reads/$slug': typeof ApiReadsSlugRoute
   '/about': typeof MainAboutIndexRoute
   '/blog': typeof MainBlogIndexRoute
-  '/projects': typeof MainProjectsIndexRoute
-  '/showcase': typeof MainShowcaseIndexRoute
+  '/craft': typeof MainCraftIndexRoute
+  '/finds': typeof MainFindsIndexRoute
   '/thoughts': typeof MainThoughtsIndexRoute
   '/work': typeof MainWorkIndexRoute
   '/blog/$slug': typeof MainBlogSlugIndexRoute
-  '/showcase/polaroid-stack': typeof MainShowcasePolaroidStackIndexRoute
-  '/thoughts/$id': typeof MainThoughtsIdIndexRoute
+  '/craft/confetti': typeof MainCraftConfettiIndexRoute
+  '/craft/particles': typeof MainCraftParticlesIndexRoute
+  '/craft/polaroid-stack': typeof MainCraftPolaroidStackIndexRoute
+  '/craft/scrollable': typeof MainCraftScrollableIndexRoute
+  '/craft/skeleton': typeof MainCraftSkeletonIndexRoute
+  '/thoughts/$slug': typeof MainThoughtsSlugIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_main': typeof MainRouteWithChildren
-  '/api/activity': typeof ApiActivityRoute
+  '/ai-manifesto': typeof AiManifestoRoute
+  '/feed.xml': typeof FeedDotxmlRoute
+  '/_main/blog': typeof MainBlogRouteRouteWithChildren
+  '/_main/craft': typeof MainCraftRouteRouteWithChildren
+  '/_main/thoughts': typeof MainThoughtsRouteRouteWithChildren
+  '/og/$': typeof OgSplatRoute
   '/_main/': typeof MainIndexRoute
-  '/api/reads/$slug': typeof ApiReadsSlugRoute
   '/_main/about/': typeof MainAboutIndexRoute
   '/_main/blog/': typeof MainBlogIndexRoute
-  '/_main/projects/': typeof MainProjectsIndexRoute
-  '/_main/showcase/': typeof MainShowcaseIndexRoute
+  '/_main/craft/': typeof MainCraftIndexRoute
+  '/_main/finds/': typeof MainFindsIndexRoute
   '/_main/thoughts/': typeof MainThoughtsIndexRoute
   '/_main/work/': typeof MainWorkIndexRoute
   '/_main/blog/$slug/': typeof MainBlogSlugIndexRoute
-  '/_main/showcase/polaroid-stack/': typeof MainShowcasePolaroidStackIndexRoute
-  '/_main/thoughts/$id/': typeof MainThoughtsIdIndexRoute
+  '/_main/craft/confetti/': typeof MainCraftConfettiIndexRoute
+  '/_main/craft/particles/': typeof MainCraftParticlesIndexRoute
+  '/_main/craft/polaroid-stack/': typeof MainCraftPolaroidStackIndexRoute
+  '/_main/craft/scrollable/': typeof MainCraftScrollableIndexRoute
+  '/_main/craft/skeleton/': typeof MainCraftSkeletonIndexRoute
+  '/_main/thoughts/$slug/': typeof MainThoughtsSlugIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/api/activity'
-    | '/api/reads/$slug'
+    | '/ai-manifesto'
+    | '/feed.xml'
+    | '/blog'
+    | '/craft'
+    | '/thoughts'
+    | '/og/$'
     | '/about/'
     | '/blog/'
-    | '/projects/'
-    | '/showcase/'
+    | '/craft/'
+    | '/finds/'
     | '/thoughts/'
     | '/work/'
     | '/blog/$slug/'
-    | '/showcase/polaroid-stack/'
-    | '/thoughts/$id/'
+    | '/craft/confetti/'
+    | '/craft/particles/'
+    | '/craft/polaroid-stack/'
+    | '/craft/scrollable/'
+    | '/craft/skeleton/'
+    | '/thoughts/$slug/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/api/activity'
+    | '/ai-manifesto'
+    | '/feed.xml'
+    | '/og/$'
     | '/'
-    | '/api/reads/$slug'
     | '/about'
     | '/blog'
-    | '/projects'
-    | '/showcase'
+    | '/craft'
+    | '/finds'
     | '/thoughts'
     | '/work'
     | '/blog/$slug'
-    | '/showcase/polaroid-stack'
-    | '/thoughts/$id'
+    | '/craft/confetti'
+    | '/craft/particles'
+    | '/craft/polaroid-stack'
+    | '/craft/scrollable'
+    | '/craft/skeleton'
+    | '/thoughts/$slug'
   id:
     | '__root__'
     | '/_main'
-    | '/api/activity'
+    | '/ai-manifesto'
+    | '/feed.xml'
+    | '/_main/blog'
+    | '/_main/craft'
+    | '/_main/thoughts'
+    | '/og/$'
     | '/_main/'
-    | '/api/reads/$slug'
     | '/_main/about/'
     | '/_main/blog/'
-    | '/_main/projects/'
-    | '/_main/showcase/'
+    | '/_main/craft/'
+    | '/_main/finds/'
     | '/_main/thoughts/'
     | '/_main/work/'
     | '/_main/blog/$slug/'
-    | '/_main/showcase/polaroid-stack/'
-    | '/_main/thoughts/$id/'
+    | '/_main/craft/confetti/'
+    | '/_main/craft/particles/'
+    | '/_main/craft/polaroid-stack/'
+    | '/_main/craft/scrollable/'
+    | '/_main/craft/skeleton/'
+    | '/_main/thoughts/$slug/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   MainRoute: typeof MainRouteWithChildren
-  ApiActivityRoute: typeof ApiActivityRoute
-  ApiReadsSlugRoute: typeof ApiReadsSlugRoute
+  AiManifestoRoute: typeof AiManifestoRoute
+  FeedDotxmlRoute: typeof FeedDotxmlRoute
+  OgSplatRoute: typeof OgSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -194,6 +286,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ai-manifesto': {
+      id: '/ai-manifesto'
+      path: '/ai-manifesto'
+      fullPath: '/ai-manifesto'
+      preLoaderRoute: typeof AiManifestoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/feed.xml': {
+      id: '/feed.xml'
+      path: '/feed.xml'
+      fullPath: '/feed.xml'
+      preLoaderRoute: typeof FeedDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_main/': {
       id: '/_main/'
       path: '/'
@@ -201,11 +307,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainIndexRouteImport
       parentRoute: typeof MainRoute
     }
-    '/api/activity': {
-      id: '/api/activity'
-      path: '/api/activity'
-      fullPath: '/api/activity'
-      preLoaderRoute: typeof ApiActivityRouteImport
+    '/_main/blog': {
+      id: '/_main/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof MainBlogRouteRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/craft': {
+      id: '/_main/craft'
+      path: '/craft'
+      fullPath: '/craft'
+      preLoaderRoute: typeof MainCraftRouteRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/thoughts': {
+      id: '/_main/thoughts'
+      path: '/thoughts'
+      fullPath: '/thoughts'
+      preLoaderRoute: typeof MainThoughtsRouteRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/og/$': {
+      id: '/og/$'
+      path: '/og/$'
+      fullPath: '/og/$'
+      preLoaderRoute: typeof OgSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_main/about/': {
@@ -217,31 +344,31 @@ declare module '@tanstack/react-router' {
     }
     '/_main/blog/': {
       id: '/_main/blog/'
-      path: '/blog'
+      path: '/'
       fullPath: '/blog/'
       preLoaderRoute: typeof MainBlogIndexRouteImport
-      parentRoute: typeof MainRoute
+      parentRoute: typeof MainBlogRouteRoute
     }
-    '/_main/projects/': {
-      id: '/_main/projects/'
-      path: '/projects'
-      fullPath: '/projects/'
-      preLoaderRoute: typeof MainProjectsIndexRouteImport
-      parentRoute: typeof MainRoute
+    '/_main/craft/': {
+      id: '/_main/craft/'
+      path: '/'
+      fullPath: '/craft/'
+      preLoaderRoute: typeof MainCraftIndexRouteImport
+      parentRoute: typeof MainCraftRouteRoute
     }
-    '/_main/showcase/': {
-      id: '/_main/showcase/'
-      path: '/showcase'
-      fullPath: '/showcase/'
-      preLoaderRoute: typeof MainShowcaseIndexRouteImport
+    '/_main/finds/': {
+      id: '/_main/finds/'
+      path: '/finds'
+      fullPath: '/finds/'
+      preLoaderRoute: typeof MainFindsIndexRouteImport
       parentRoute: typeof MainRoute
     }
     '/_main/thoughts/': {
       id: '/_main/thoughts/'
-      path: '/thoughts'
+      path: '/'
       fullPath: '/thoughts/'
       preLoaderRoute: typeof MainThoughtsIndexRouteImport
-      parentRoute: typeof MainRoute
+      parentRoute: typeof MainThoughtsRouteRoute
     }
     '/_main/work/': {
       id: '/_main/work/'
@@ -250,69 +377,134 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainWorkIndexRouteImport
       parentRoute: typeof MainRoute
     }
-    '/api/reads/$slug': {
-      id: '/api/reads/$slug'
-      path: '/api/reads/$slug'
-      fullPath: '/api/reads/$slug'
-      preLoaderRoute: typeof ApiReadsSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_main/blog/$slug/': {
       id: '/_main/blog/$slug/'
-      path: '/blog/$slug'
+      path: '/$slug'
       fullPath: '/blog/$slug/'
       preLoaderRoute: typeof MainBlogSlugIndexRouteImport
-      parentRoute: typeof MainRoute
+      parentRoute: typeof MainBlogRouteRoute
     }
-    '/_main/showcase/polaroid-stack/': {
-      id: '/_main/showcase/polaroid-stack/'
-      path: '/showcase/polaroid-stack'
-      fullPath: '/showcase/polaroid-stack/'
-      preLoaderRoute: typeof MainShowcasePolaroidStackIndexRouteImport
-      parentRoute: typeof MainRoute
+    '/_main/craft/confetti/': {
+      id: '/_main/craft/confetti/'
+      path: '/confetti'
+      fullPath: '/craft/confetti/'
+      preLoaderRoute: typeof MainCraftConfettiIndexRouteImport
+      parentRoute: typeof MainCraftRouteRoute
     }
-    '/_main/thoughts/$id/': {
-      id: '/_main/thoughts/$id/'
-      path: '/thoughts/$id'
-      fullPath: '/thoughts/$id/'
-      preLoaderRoute: typeof MainThoughtsIdIndexRouteImport
-      parentRoute: typeof MainRoute
+    '/_main/craft/particles/': {
+      id: '/_main/craft/particles/'
+      path: '/particles'
+      fullPath: '/craft/particles/'
+      preLoaderRoute: typeof MainCraftParticlesIndexRouteImport
+      parentRoute: typeof MainCraftRouteRoute
+    }
+    '/_main/craft/polaroid-stack/': {
+      id: '/_main/craft/polaroid-stack/'
+      path: '/polaroid-stack'
+      fullPath: '/craft/polaroid-stack/'
+      preLoaderRoute: typeof MainCraftPolaroidStackIndexRouteImport
+      parentRoute: typeof MainCraftRouteRoute
+    }
+    '/_main/craft/scrollable/': {
+      id: '/_main/craft/scrollable/'
+      path: '/scrollable'
+      fullPath: '/craft/scrollable/'
+      preLoaderRoute: typeof MainCraftScrollableIndexRouteImport
+      parentRoute: typeof MainCraftRouteRoute
+    }
+    '/_main/craft/skeleton/': {
+      id: '/_main/craft/skeleton/'
+      path: '/skeleton'
+      fullPath: '/craft/skeleton/'
+      preLoaderRoute: typeof MainCraftSkeletonIndexRouteImport
+      parentRoute: typeof MainCraftRouteRoute
+    }
+    '/_main/thoughts/$slug/': {
+      id: '/_main/thoughts/$slug/'
+      path: '/$slug'
+      fullPath: '/thoughts/$slug/'
+      preLoaderRoute: typeof MainThoughtsSlugIndexRouteImport
+      parentRoute: typeof MainThoughtsRouteRoute
     }
   }
 }
 
+interface MainBlogRouteRouteChildren {
+  MainBlogIndexRoute: typeof MainBlogIndexRoute
+  MainBlogSlugIndexRoute: typeof MainBlogSlugIndexRoute
+}
+
+const MainBlogRouteRouteChildren: MainBlogRouteRouteChildren = {
+  MainBlogIndexRoute: MainBlogIndexRoute,
+  MainBlogSlugIndexRoute: MainBlogSlugIndexRoute,
+}
+
+const MainBlogRouteRouteWithChildren = MainBlogRouteRoute._addFileChildren(
+  MainBlogRouteRouteChildren,
+)
+
+interface MainCraftRouteRouteChildren {
+  MainCraftIndexRoute: typeof MainCraftIndexRoute
+  MainCraftConfettiIndexRoute: typeof MainCraftConfettiIndexRoute
+  MainCraftParticlesIndexRoute: typeof MainCraftParticlesIndexRoute
+  MainCraftPolaroidStackIndexRoute: typeof MainCraftPolaroidStackIndexRoute
+  MainCraftScrollableIndexRoute: typeof MainCraftScrollableIndexRoute
+  MainCraftSkeletonIndexRoute: typeof MainCraftSkeletonIndexRoute
+}
+
+const MainCraftRouteRouteChildren: MainCraftRouteRouteChildren = {
+  MainCraftIndexRoute: MainCraftIndexRoute,
+  MainCraftConfettiIndexRoute: MainCraftConfettiIndexRoute,
+  MainCraftParticlesIndexRoute: MainCraftParticlesIndexRoute,
+  MainCraftPolaroidStackIndexRoute: MainCraftPolaroidStackIndexRoute,
+  MainCraftScrollableIndexRoute: MainCraftScrollableIndexRoute,
+  MainCraftSkeletonIndexRoute: MainCraftSkeletonIndexRoute,
+}
+
+const MainCraftRouteRouteWithChildren = MainCraftRouteRoute._addFileChildren(
+  MainCraftRouteRouteChildren,
+)
+
+interface MainThoughtsRouteRouteChildren {
+  MainThoughtsIndexRoute: typeof MainThoughtsIndexRoute
+  MainThoughtsSlugIndexRoute: typeof MainThoughtsSlugIndexRoute
+}
+
+const MainThoughtsRouteRouteChildren: MainThoughtsRouteRouteChildren = {
+  MainThoughtsIndexRoute: MainThoughtsIndexRoute,
+  MainThoughtsSlugIndexRoute: MainThoughtsSlugIndexRoute,
+}
+
+const MainThoughtsRouteRouteWithChildren =
+  MainThoughtsRouteRoute._addFileChildren(MainThoughtsRouteRouteChildren)
+
 interface MainRouteChildren {
+  MainBlogRouteRoute: typeof MainBlogRouteRouteWithChildren
+  MainCraftRouteRoute: typeof MainCraftRouteRouteWithChildren
+  MainThoughtsRouteRoute: typeof MainThoughtsRouteRouteWithChildren
   MainIndexRoute: typeof MainIndexRoute
   MainAboutIndexRoute: typeof MainAboutIndexRoute
-  MainBlogIndexRoute: typeof MainBlogIndexRoute
-  MainProjectsIndexRoute: typeof MainProjectsIndexRoute
-  MainShowcaseIndexRoute: typeof MainShowcaseIndexRoute
-  MainThoughtsIndexRoute: typeof MainThoughtsIndexRoute
+  MainFindsIndexRoute: typeof MainFindsIndexRoute
   MainWorkIndexRoute: typeof MainWorkIndexRoute
-  MainBlogSlugIndexRoute: typeof MainBlogSlugIndexRoute
-  MainShowcasePolaroidStackIndexRoute: typeof MainShowcasePolaroidStackIndexRoute
-  MainThoughtsIdIndexRoute: typeof MainThoughtsIdIndexRoute
 }
 
 const MainRouteChildren: MainRouteChildren = {
+  MainBlogRouteRoute: MainBlogRouteRouteWithChildren,
+  MainCraftRouteRoute: MainCraftRouteRouteWithChildren,
+  MainThoughtsRouteRoute: MainThoughtsRouteRouteWithChildren,
   MainIndexRoute: MainIndexRoute,
   MainAboutIndexRoute: MainAboutIndexRoute,
-  MainBlogIndexRoute: MainBlogIndexRoute,
-  MainProjectsIndexRoute: MainProjectsIndexRoute,
-  MainShowcaseIndexRoute: MainShowcaseIndexRoute,
-  MainThoughtsIndexRoute: MainThoughtsIndexRoute,
+  MainFindsIndexRoute: MainFindsIndexRoute,
   MainWorkIndexRoute: MainWorkIndexRoute,
-  MainBlogSlugIndexRoute: MainBlogSlugIndexRoute,
-  MainShowcasePolaroidStackIndexRoute: MainShowcasePolaroidStackIndexRoute,
-  MainThoughtsIdIndexRoute: MainThoughtsIdIndexRoute,
 }
 
 const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   MainRoute: MainRouteWithChildren,
-  ApiActivityRoute: ApiActivityRoute,
-  ApiReadsSlugRoute: ApiReadsSlugRoute,
+  AiManifestoRoute: AiManifestoRoute,
+  FeedDotxmlRoute: FeedDotxmlRoute,
+  OgSplatRoute: OgSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

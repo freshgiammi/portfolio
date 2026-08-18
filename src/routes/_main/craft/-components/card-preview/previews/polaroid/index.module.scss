@@ -1,0 +1,20 @@
+// The real stack at thumbnail size, and deaf to the pointer, since the card around it is a link.
+//
+// Scaled rather than narrowed: a polaroid is a photograph, a caption and the paper around them at
+// fixed sizes, and squeezing its width alone reflows the caption and thins the border while the
+// photo stays the same shape. Scaling shrinks the whole picture, which is what a thumbnail is.
+.Shrink {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  // The unscaled stack is taller than the frame, and a row track that overflows is placed at the
+  // start unless the content itself is centred: `place-items` alone only centres within the track.
+  place-content: center;
+  pointer-events: none;
+
+  > div {
+    width: 14rem;
+    margin: 0;
+    scale: 0.4;
+  }
+}

@@ -4,7 +4,7 @@ import process from "node:process"
 
 import { createLogger, type Plugin } from "vite"
 
-import { getRepoInfo } from "./git"
+import { getRepoInfo } from "./git.ts"
 
 const modules = {
   BuildInfo: `virtual:buildinfo`,

@@ -1,3 +1,6 @@
+@use "breakpoints" as bp;
+@use "typography" as type;
+
 .Home {
   display: flex;
   flex-direction: column;
@@ -6,11 +9,12 @@
   max-width: 80rem;
   margin: 0 auto;
   width: 100%;
+  isolation: isolate;
 
   &__main {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-3xl);
+    gap: var(--spacing-2xl);
     flex: 1;
   }
 
@@ -18,7 +22,8 @@
     display: flex;
     flex-direction: row;
     gap: var(--spacing-2xl);
-    align-items: flex-start;
+    align-items: center;
+    justify-content: space-between;
   }
 
   &__heroText {
@@ -26,6 +31,7 @@
     flex-direction: column;
     gap: var(--spacing-sm);
     flex: 1;
+    max-width: stretch;
     padding-top: var(--spacing-xs);
   }
 
@@ -36,6 +42,10 @@
 
   &__heroTitle {
     margin-bottom: var(--spacing-xs);
+
+    @include bp.down("md") {
+      @include type.size("x-large");
+    }
   }
 
   &__heroTitleAccent {
@@ -43,51 +53,27 @@
     font-style: italic;
   }
 
-  &__wave {
-    display: inline-block;
-    transform-origin: 70% 70%;
-    animation: wave 2.4s ease-in-out 1;
-  }
-
-  @keyframes wave {
-    0%,
-    60%,
-    100% {
-      transform: rotate(0deg);
-    }
-    10% {
-      transform: rotate(14deg);
-    }
-    20% {
-      transform: rotate(-8deg);
-    }
-    30% {
-      transform: rotate(14deg);
-    }
-    40% {
-      transform: rotate(-4deg);
-    }
-    50% {
-      transform: rotate(10deg);
-    }
-  }
-
   &__heroBio {
     color: var(--text-subtle);
     max-width: 34rem;
-    line-height: 1.7;
 
+    b,
     strong {
       color: var(--text-default);
     }
+  }
+
+  // A quiet highlight: a few words at a time — bright against the paragraph's own tone, weight
+  // unchanged so it recedes compared to `b`/`strong` inside the same paragraph.
+  &__subtle {
+    color: var(--text-default);
   }
 
   &__section {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-sm);
-    padding-top: var(--spacing-lg);
-    border-top: 1px solid var(--border-subtle);
+    scroll-margin-top: calc(var(--header-height) + var(--spacing-lg));
   }
 
   &__sectionHeader {
@@ -98,15 +84,19 @@
   }
 
   &__sectionLabel {
-    color: var(--accent);
+    color: var(--text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
   }
 
   &__sectionLink {
     display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: var(--spacing-xs);
     color: var(--text-subtle);
     text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
 
     &:hover {
       color: var(--accent);
@@ -114,82 +104,167 @@
     }
   }
 
-  // Prose and socials side by side. The socials column is sized so its rows are all one width,
-  // which is what makes the handles line up.
-  &__sayHello {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--spacing-2xl);
-  }
-
-  // Takes whatever the prose leaves, which is the rest of the row given the prose stops at its
-  // own 36rem cap.
-  &__socials {
+  &__githubSection {
     display: flex;
     flex-direction: column;
-    flex: 1;
-    border-top: 1px solid var(--border-subtle);
+    gap: var(--spacing-sm);
   }
 
-  // The middle column takes the slack, so the icon sits left and the handle right no matter how
-  // long the label is.
-  &__socialLink {
+  &__githubActivityGrid {
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+    gap: var(--spacing-xl);
+    max-height: 22rem;
+    align-items: start;
+    min-height: 0;
+  }
+
+  &__githubContributions {
+    min-height: 0;
+    height: auto !important;
+    align-self: stretch;
+    border-right: 1px solid var(--border-subtle);
+    padding-right: var(--spacing-lg);
+
+    @include bp.down("lg") {
+      border-right: none;
+      padding-right: 0;
+    }
+  }
+
+  &__latestActivity {
+    min-height: 0;
+    height: auto !important;
+    align-self: stretch;
+  }
+
+  &__socials {
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: var(--spacing-xs);
-    padding: var(--spacing-xs) 0;
-    border-bottom: 1px solid var(--border-subtle);
-    color: var(--text-default);
+    gap: var(--spacing-xs) var(--spacing-sm);
+    margin-top: var(--spacing-xs);
+  }
+
+  &__socialItem {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+
+    & + &::before {
+      content: "/";
+      color: var(--border-subtle);
+      user-select: none;
+      pointer-events: none;
+    }
+  }
+
+  &__socialLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--text-subtle);
     text-decoration: none;
     transition: color var(--transition-fast);
 
     &:hover {
       color: var(--accent);
-      text-decoration: none;
-
-      .Home__socialHandle {
-        color: inherit;
-      }
+      text-decoration: underline;
+      text-underline-offset: 3px;
     }
   }
 
   &__socialIcon {
     flex-shrink: 0;
+    color: inherit;
   }
 
-  &__socialHandle {
-    color: var(--text-subtle);
-    transition: color var(--transition-fast);
+  // The query container for the sections below: the centered column's width is what actually
+  // decides whether the finds teaser fits four columns, and a viewport breakpoint can't see that —
+  // the same viewport width yields different column widths here depending on nothing but padding.
+  &__section {
+    container: home-finds / inline-size;
   }
 
-  &__bodyText {
-    color: var(--text-subtle);
-    line-height: 1.7;
-    max-width: 36rem;
+  &__findsGrid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-content: start;
+    gap: var(--spacing-xs);
+
+    @container home-finds (max-width: 52rem) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @container home-finds (max-width: 28rem) {
+      grid-template-columns: minmax(0, 1fr);
+
+      & > :nth-last-child(-n + 2) {
+        display: none;
+      }
+    }
   }
 
-  &__inlineLink {
+  &__chipLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
     color: var(--accent);
-    text-decoration: underline;
-    text-underline-offset: 2px;
+    font-weight: 600;
+    text-decoration: none;
 
     &:hover {
       color: var(--accent-alt);
     }
   }
-}
 
-@media (max-width: 48rem) {
-  // `stretch` rather than the row's `flex-start`, so the stacked list still spans the full width.
-  .Home__sayHello {
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--spacing-md);
+  &__chipLabel {
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
 
+  &__chipIcon {
+    width: 0.95em;
+    height: 0.95em;
+    display: inline-block;
+    flex-shrink: 0;
+    text-decoration: none;
+
+    &[data-emoji] {
+      width: auto;
+      height: auto;
+      font-size: 0.95em;
+      line-height: 1;
+      transform: translateY(0.08em);
+    }
+  }
+}
+
+@include bp.down("lg") {
+  .Home__githubActivityGrid {
+    grid-template-columns: minmax(0, 1fr);
+    max-height: none;
+  }
+
+  .Home__latestActivity {
+    height: auto !important;
+    max-height: none;
+    align-self: auto;
+  }
+
+  .Home__githubContributions {
+    align-self: auto;
+  }
+}
+
+@include bp.down("md") {
   .Home__hero {
     flex-direction: column;
+    align-items: stretch;
+  }
+
+  .Home__photoFrame {
+    order: -1;
   }
 
   // The stack stays at its full portrait size by letting the hero text overlap its bottom
@@ -248,11 +323,8 @@
       pointer-events: auto;
     }
 
-    -webkit-mask-image: var(--photo-frame-mask-vertical);
     mask-image: var(--photo-frame-mask-vertical);
-    -webkit-mask-size: 100% 100%;
     mask-size: 100% 100%;
-    -webkit-mask-repeat: no-repeat;
     mask-repeat: no-repeat;
 
     // Guarded because layers composite as `add` by default, which unions them: the horizontal

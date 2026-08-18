@@ -2,10 +2,12 @@
   &__popup {
     background-color: var(--background);
     border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-md);
+    border-radius: 0;
     box-shadow: var(--shadow-lg);
     padding: var(--spacing-xs);
     min-width: 180px;
+    max-height: min(60vh, 22rem);
+    overflow-y: auto;
     outline: none;
 
     transition:
@@ -28,30 +30,30 @@
     align-items: center;
     gap: var(--spacing-xs);
     width: 100%;
-    padding: var(--spacing-xs) var(--spacing-sm);
+    padding: var(--spacing-xs) var(--spacing-xs);
     cursor: pointer;
     box-sizing: border-box;
 
     // only first and last get border radius, respectively on top and bottom
     &:first-child {
-      border-top-left-radius: var(--radius-xs);
-      border-top-right-radius: var(--radius-xs);
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
     }
     &:last-child {
-      border-bottom-left-radius: var(--radius-xs);
-      border-bottom-right-radius: var(--radius-xs);
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
     }
 
     &:hover:not(:disabled) {
-      background: var(--surface);
+      background-color: var(--surface);
     }
     &[data-highlighted] {
-      background: var(--surface);
+      background-color: var(--surface);
       outline: none;
     }
 
     &[aria-checked="true"] {
-      background: var(--surface);
+      background-color: var(--surface);
     }
   }
 
@@ -91,12 +93,12 @@
   &__groupLabel {
     text-transform: uppercase;
     color: var(--text-subtle);
-    padding: var(--spacing-xs) var(--spacing-sm);
+    padding: var(--spacing-xs) var(--spacing-xs);
   }
 
   &__separator {
     height: 1px;
-    background: var(--border-subtle);
+    background-color: var(--border-subtle);
     margin: var(--spacing-xs) 0;
   }
 }

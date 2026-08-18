@@ -3,7 +3,9 @@
   "name": "freshgiammi-portfolio",
   "compatibility_date": "2025-09-02",
   "compatibility_flags": ["nodejs_compat"],
-  "main": "@tanstack/react-start/server-entry",
+  // Start's own entry, wrapped in `src/worker.ts` because this has to name a file: the vite plugin
+  // builds whatever this points at and reads its default export.
+  "main": "./src/worker.ts",
   "observability": { "enabled": true },
   // The custom domain below is the only public hostname: no second copy of the site answering on
   // `<name>.<subdomain>.workers.dev`.
@@ -17,6 +19,12 @@
       "database_name": "freshgiammi-reads",
       "database_id": "35f63144-32eb-4d1f-8ef7-a468f4b1a599",
       "migrations_dir": "migrations"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "TWEETS_KV",
+      "id": "7772b01ee4fe4cdcbe8f36ae87aaab3d"
     }
   ]
 }

@@ -1,5 +1,29 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
-  "entry": ["content-collections.ts", "src/utils/seo/og.tsx"],
-  "ignoreDependencies": ["cloudflare"]
+  "entry": [
+    "content-collections.ts",
+    "src/utils/seo/og.tsx",
+    "src/storybook/main.ts",
+    "src/storybook/manager.ts",
+    "src/storybook/preview.tsx",
+    "src/storybook/vite.config.ts",
+    "src/storybook/lib/mocks/cloudflare-workers.ts",
+    "src/storybook/lib/mocks/static-assets.ts"
+  ],
+  "ignoreDependencies": [
+    "cloudflare",
+    "@storybook/addon-a11y",
+    "@storybook/addon-docs",
+    "@tanstack/eslint-plugin-router",
+    "eslint-plugin-react-refresh",
+    "eslint-plugin-simple-import-sort"
+  ],
+  "ignore": [
+    "config/oxlint/rules/**",
+    "config/oxlint/utils/**",
+    "src/styles/_breakpoints.scss",
+    "src/styles/_gradients.scss",
+    "src/theme/scope.tsx"
+  ],
+  "ignoreExportsUsedInFile": true
 }

@@ -1,29 +1,30 @@
 import { Link, type NotFoundRouteProps } from "@tanstack/react-router"
-import { Image } from "@unpic/react"
+import { cx } from "cva"
+import type { ComponentProps } from "react"
 import { staticAssets } from "virtual:static-assets"
 
-import { Icon } from "@/components/ui/icons"
-import { Typography } from "@/components/ui/typography"
+import { Button } from "@/components/primitives/button"
+import { Icon } from "@/components/primitives/icons"
+import { Image } from "@/components/primitives/image"
+import { Typography } from "@/components/primitives/typography"
 
 import styles from "./index.module.scss"
 
-type NotFoundProps = NotFoundRouteProps
+type NotFoundProps = NotFoundRouteProps & ComponentProps<"div">
 
-export function NotFound(_props: NotFoundProps) {
+export function NotFound({ className, ...rest }: NotFoundProps) {
   return (
-    <div className={styles.NotFound}>
+    <div {...rest} className={cx(styles.NotFound, className)}>
       <Typography size="large" family="serif">
         404
       </Typography>
       <Typography size="x-small" weight="regular" className={styles.NotFound__subtitle}>
-        This page doesn&apos;t exist.
+        This page wandered off. There&apos;s nothing here.
       </Typography>
-      <Image src={staticAssets("images/404.jpg")} alt="" layout="fullWidth" className={styles.NotFound__image} />
-
-      <Typography size="x-small" className={styles.NotFound__homeLink} render={<Link to="/" />}>
-        <Icon.ArrowLeftIcon size={14} />
+      <Image src={staticAssets("images/404.jpg")} alt="" className={styles.NotFound__image} />
+      <Button variant="tertiary" icon={<Icon.ArrowLeftIcon />} render={<Link to="/" />}>
         Go home
-      </Typography>
+      </Button>
     </div>
   )
 }

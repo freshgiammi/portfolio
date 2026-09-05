@@ -25,17 +25,37 @@ const MILESTONE_ICON: Record<MilestoneKind, Icon.Icon> = {
 
 const MONTH_FORMAT = new Intl.DateTimeFormat("en-US", { month: "short", timeZone: "UTC" })
 
-// One label per week column, on the column whose Sunday opens a new month — the same rule GitHub
-// uses, so a name sits over the grid rather than over the whole year.
+// One label per week column, over the column whose days mostly fall in a new month — the same
+// placement GitHub uses, so a name sits over the grid rather than over the whole year. Two guards
+// keep names apart: the label follows the column's majority month rather than its first day, so a
+// one-day sliver (like the year's opening Sunday) never claims a column, and a label too close to
+// the previous one is dropped, since a name is wider than its column and runs into its neighbours.
+const MONTH_LABEL_GAP = 3
+
 function monthLabels(days: Array<ContributionDay>) {
   const labels: Array<string | null> = []
   let previous = ""
+  let lastLabelAt = -MONTH_LABEL_GAP
 
-  for (let index = 0; index < days.length; index += 7) {
-    const month = MONTH_FORMAT.format(new Date(days[index]!.date))
+  for (let start = 0, column = 0; start < days.length; start += 7, column += 1) {
+    const week = days.slice(start, start + 7)
+    const counts = new Map<string, number>()
+    for (const day of week) {
+      const month = MONTH_FORMAT.format(new Date(day.date))
+      counts.set(month, (counts.get(month) ?? 0) + 1)
+    }
+    const best = Math.max(...counts.values())
+    // First-seen wins ties, so a split column keeps its earlier month.
+    const month = week.map(day => MONTH_FORMAT.format(new Date(day.date))).find(name => counts.get(name) === best)!
+
     const changed = month !== previous
     previous = month
-    labels.push(changed ? month : null)
+    if (changed && column - lastLabelAt >= MONTH_LABEL_GAP) {
+      lastLabelAt = column
+      labels.push(month)
+    } else {
+      labels.push(null)
+    }
   }
 
   return labels

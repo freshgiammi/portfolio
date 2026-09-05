@@ -1,13 +1,16 @@
 import { createContext, useContext } from "react"
 
-import type { ResolvedTheme, ThemeKey } from "@/theme"
+import type { Preferences } from "@/preferences"
+import type { AccentKey, ResolvedTheme, ThemeKey } from "@/theme"
 
 export type ThemeContextValue = {
   /** What the reader chose, including "system". */
   theme: ThemeKey
+  /** Palette — `accent` in `Preferences` / `data-accent`. */
+  accent: AccentKey
   /** What that resolves to, and what `data-theme` carries. `undefined` until "system" can be read. */
   resolved: ResolvedTheme | undefined
-  setTheme: (key: ThemeKey) => void
+  setTheme: (patch: Partial<Pick<Preferences, "theme" | "accent">>) => void
 }
 
 export const ThemeContext = createContext<ThemeContextValue | null>(null)

@@ -3,7 +3,7 @@ import { type ReactNode, useCallback, useSyncExternalStore } from "react"
 
 import { usePreferences } from "@/preferences/context"
 import type { ResolvedTheme, ThemeKey } from "@/theme"
-import { ThemeContext } from "@/theme/context/context"
+import { ThemeContext, type ThemeContextValue } from "@/theme/context/context"
 import { withoutTransitions } from "@/utils/transitions"
 
 const MEDIA = "(prefers-color-scheme: dark)"
@@ -19,10 +19,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   // script paints the right theme in the meantime.
   const resolved: ResolvedTheme | undefined = resolveAttribute(preferences.theme, { hydrated, systemPrefersDark })
 
-  const setTheme = useCallback((key: ThemeKey) => setPreference("theme", key), [setPreference])
+  const setTheme = useCallback<ThemeContextValue["setTheme"]>(patch => setPreference(patch), [setPreference])
 
   return (
-    <ThemeContext.Provider value={{ theme: preferences.theme, resolved, setTheme }}>{children}</ThemeContext.Provider>
+    <ThemeContext.Provider value={{ theme: preferences.theme, accent: preferences.accent, resolved, setTheme }}>
+      {children}
+    </ThemeContext.Provider>
   )
 }
 

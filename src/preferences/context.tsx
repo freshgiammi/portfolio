@@ -4,7 +4,7 @@ import type { Preferences } from "@/preferences"
 
 export type PreferencesContextValue = {
   preferences: Preferences
-  setPreference: <Key extends keyof Preferences>(key: Key, value: Preferences[Key]) => void
+  setPreference: (patch: Partial<Preferences>) => void
 }
 
 export const PreferencesContext = createContext<PreferencesContextValue | null>(null)
@@ -19,5 +19,5 @@ export function usePreferences(): PreferencesContextValue {
 /** Whether the things kept back are open, and the way to open them. */
 export function useUnlocked(): { unlocked: boolean; unlock: () => void } {
   const { preferences, setPreference } = usePreferences()
-  return { unlocked: preferences.unlocked, unlock: () => setPreference("unlocked", true) }
+  return { unlocked: preferences.unlocked, unlock: () => setPreference({ unlocked: true }) }
 }

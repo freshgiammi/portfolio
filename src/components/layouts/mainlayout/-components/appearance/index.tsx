@@ -30,10 +30,10 @@ const DECORATIONS = [
 type AppearanceProps = Popover.Root.Props
 
 export function Appearance(props: AppearanceProps) {
-  const { theme, setTheme } = useTheme()
+  const { theme, accent, setTheme } = useTheme()
   const { preferences, setPreference } = usePreferences()
 
-  const currentPreset = PRESETS.find(p => p.theme === theme && p.accent === preferences.accent)?.key ?? ""
+  const currentPreset = PRESETS.find(p => p.theme === theme && p.accent === accent)?.key ?? ""
 
   return (
     <Popover.Root {...props}>
@@ -54,8 +54,8 @@ export function Appearance(props: AppearanceProps) {
                 onValueChange={value => {
                   const preset = PRESETS.find(p => p.key === value)
                   if (!preset) return
-                  setTheme(preset.theme)
-                  setPreference("accent", preset.accent)
+                  // Preset pairs theme + palette (accent) — both must be persisted, not just theme.
+                  setTheme({ theme: preset.theme, accent: preset.accent })
                 }}
                 className={styles.Appearance__presets}>
                 {PRESETS.map(preset => (
@@ -84,7 +84,10 @@ export function Appearance(props: AppearanceProps) {
                     Theme
                   </Typography>
 
-                  <RadioGroup value={theme} onValueChange={setTheme} className={styles.Appearance__themes}>
+                  <RadioGroup
+                    value={theme}
+                    onValueChange={(value: ThemeKey) => setTheme({ theme: value })}
+                    className={styles.Appearance__themes}>
                     {(Object.entries(THEMES) as Array<[ThemeKey, (typeof THEMES)[ThemeKey]]>).map(
                       ([key, { label }]) => (
                         <Radio.Root key={key} value={key} className={styles.Appearance__theme}>
@@ -106,8 +109,8 @@ export function Appearance(props: AppearanceProps) {
                   <Tooltip.Provider>
                     <Scrollable scrollbar="hover" contentClassName={styles.Appearance__hues}>
                       <RadioGroup
-                        value={preferences.accent}
-                        onValueChange={value => setPreference("accent", value)}
+                        value={accent}
+                        onValueChange={(value: AccentKey) => setTheme({ accent: value })}
                         className={styles.Appearance__hueRow}>
                         {(Object.entries(ACCENTS) as Array<[AccentKey, (typeof ACCENTS)[AccentKey]]>).map(
                           ([key, { label }]) => (
@@ -145,7 +148,11 @@ export function Appearance(props: AppearanceProps) {
                         <Checkbox.Root
                           key={key}
                           checked={preferences[key]}
-                          onCheckedChange={checked => setPreference(key, checked)}
+                          onCheckedChange={checked => {
+                            const patch: Partial<Preferences> = {}
+                            patch[key] = checked
+                            setPreference(patch)
+                          }}
                           className={styles.Appearance__switch}>
                           <span className={styles.Appearance__box}>
                             <Checkbox.Indicator className={styles.Appearance__tick}>

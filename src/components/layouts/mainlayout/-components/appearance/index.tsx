@@ -33,7 +33,9 @@ export function Appearance(props: AppearanceProps) {
   const { theme, accent, setTheme } = useTheme()
   const { preferences, setPreference } = usePreferences()
 
-  const currentPreset = PRESETS.find(p => p.theme === theme && p.accent === accent)?.key ?? ""
+  // Two presets on the shelf for everyone; unlocking opens the rest.
+  const presets = preferences.unlocked ? PRESETS : PRESETS.filter(p => p.key === "aurora" || p.key === "umber")
+  const currentPreset = presets.find(p => p.theme === theme && p.accent === accent)?.key ?? ""
 
   return (
     <Popover.Root {...props}>
@@ -57,8 +59,9 @@ export function Appearance(props: AppearanceProps) {
                   // Preset pairs theme + palette (accent) — both must be persisted, not just theme.
                   setTheme({ theme: preset.theme, accent: preset.accent })
                 }}
+                data-locked={!preferences.unlocked || undefined}
                 className={styles.Appearance__presets}>
-                {PRESETS.map(preset => (
+                {presets.map(preset => (
                   <Radio.Root key={preset.key} value={preset.key} className={styles.Appearance__preset}>
                     <span className={styles.Appearance__presetMeta}>
                       <span className={styles.Appearance__presetDot} data-accent={preset.accent} />

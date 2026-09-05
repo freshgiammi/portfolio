@@ -95,6 +95,12 @@
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.5rem;
+
+    // Two presets on the shelf when locked: they split the row rather than leaving the third
+    // column empty.
+    &[data-locked] {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
   &__preset {
